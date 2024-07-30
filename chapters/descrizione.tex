@@ -1,58 +1,61 @@
 \chapter{Descrizione del Progetto}
 \label{cap:descrizione}
 
-Introduzione al contesto applicativo.\\
-
-\noindent Esempio di utilizzo di un termine nel glossario \\
-\gls{api}. \\
-
-\noindent Esempio di citazione in linea \\
-\cite{site:agile-manifesto}. \\
-
-\noindent Esempio di citazione nel pie' di pagina \\
-citazione\footcite{womak:lean-thinking} \\
+\textit{\indent Questo capitolo fornisce il background tecnico essenziale per comprendere il progetto, analizza le problematiche delle tecnologie coinvolte e illustra l'idea fondamentale alla base del lavoro svolto.}
 
 \section{Background}
 
-Background
+~\\
+\indent Questa sezione illustra il funzionamento e i principi fondamentali delle tecnologie chiave del progetto.
+Queste tecnologie costituiscono la base essenziale per la comprensione di questo studio. 
 
-\subsection{Tcp e UDP}
+\subsection{Protocolli di Trasporto Tradizionali}
+~\\
+\indent Nel panorama dei \gls{protocolli di rete}\glsfirstoccur, i \gls{protocolli di trasporto}\glsfirstoccur TCP (Transmission Control Protocol) e UDP (User Datagram Protocol) hanno svolto e svolgono tutt'ora un ruolo fondamentale sin dalla nascita di Internet.
+Questi protocolli sono stati la spina dorsale delle comunicazioni per decenni, supportando una vasta gamma di servizi e applicazioni.\\
+In particolare TCP, con la sua affidabilità e il suo controllo di flusso, ha svolto un ruolo fondamentale nelle comunicazioni che richiedevano l'integrità dei dati, mentre UDP ha trovato il suo spazio nei servizi che privilegiavano la velocità rispetto all'affidabilità. 
+Tuttavia, con l'evoluzione delle nuove tecnologie e la creazione di nuovi protocolli, le limitazioni di questi protocolli sono diventate sempre più evidenti. Nella concezione di base di TCP e UDP, ideata alla fine degli anni 80', non erano state previste le sfide delle reti moderne, 
+caratterizzate da :  
+\begin{itemize}
+    \item Connesioni mobili e variabili;
+    
+    \item Necessità di ridurre la latenza per la numerosità di applicazione in tempo reale;
+    
+    \item Proliferazione di dispositivi IOT;
+     
+    \item Requisiti di sicurezza sempre più stringenti.
+\end{itemize}
 
-Background del tcp e Udp
+Queste nuove sfide hanno evidenziato una serie di problematiche nei protocolli. La consapevolezza di questi limiti ha portato alla ricerca di nuove soluzioni, cercando di superare le inefficienze pur mantenendo tutti i punti di forza.
+Questi studi hanno portato alla creazione di nuovi protocolli come QUIC\glsfirstoccur ed a estensioni come MPTCP\glsfirstoccur, che cercano di far fronte alle sfide del mondo moderno offrendo prestaazioni migliori, maggiore sicurezza e flessibilità.
+\\
+\\
+Nelle sezioni successive esamineremo in dettaglio alcune parti di TCP e UDP, per poi esplorare come QUIC e MPTCP si propongono di risolvere e superare le inefficienze presenti e le possibili ripercussioni.
+
+\subsubsection{TCP (Transmission Control Protocol)}
+
+\paragraph{ Caratteristiche principali}
+\paragraph{ Handshake }
+\paragraph{ Vantaggi e limitazioni}
+
+\subsubsection{UDP (User Datagram Protocol)}
 
 \subsection{QUIC}
 
-Background di QUIC
+Spiegazione di quic completa
 
 \subsection{MPTCP}
 
-Un po di MPtcp
+Spiegazione di quic completa
 
 \section{Problemi e Motivazioni}
 
-Introduzione all'idea dello stage.
+Problemi di QUIc 
+
+\section{L'idea}
+
+Problemi di QUIC e MPTCP. 
 
 \section{Ispirazione - Related Works ?}
 
-Related Works
-
-\begin{description}
-    \item[{\hyperref[cap:processi-metodologie]{Il secondo capitolo}}] descrive ...
-    
-    \item[{\hyperref[cap:descrizione-stage]{Il terzo capitolo}}] approfondisce ...
-    
-    \item[{\hyperref[cap:analisi-requisiti]{Il quarto capitolo}}] approfondisce ...
-    
-    \item[{\hyperref[cap:progettazione-codifica]{Il quinto capitolo}}] approfondisce ...
-    
-    \item[{\hyperref[cap:verifica-validazione]{Il sesto capitolo}}] approfondisce ...
-    
-    \item[{\hyperref[cap:conclusioni]{Nel settimo capitolo}}] descrive ...
-\end{description}
-
-Riguardo la stesura del testo, relativamente al documento sono state adottate le seguenti convenzioni tipografiche:
-\begin{itemize}
-	\item gli acronimi, le abbreviazioni e i termini ambigui o di uso non comune menzionati vengono definiti nel glossario, situato alla fine del presente documento;
-	\item per la prima occorrenza dei termini riportati nel glossario viene utilizzata la seguente nomenclatura: \emph{parola}\glsfirstoccur;
-	\item i termini in lingua straniera o facenti parti del gergo tecnico sono evidenziati con il carattere \emph{corsivo}.
-\end{itemize}
+Lavori di Ispirazione, 
