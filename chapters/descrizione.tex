@@ -7,7 +7,7 @@
 
 ~\\
 \indent Questa sezione illustra il funzionamento e i principi fondamentali delle tecnologie chiave del progetto.
-Queste tecnologie costituiscono la base essenziale per la comprensione di questo studio. 
+Quest'ultime costituiscono la base essenziale per la comprensione di questo studio. 
 
 \subsection{Protocolli di Trasporto Tradizionali}
 ~\\
@@ -32,14 +32,16 @@ Questi studi hanno portato alla creazione di nuovi protocolli come \emph{QUIC}\g
 Nelle sezioni successive esamineremo in dettaglio alcune parti di \emph{TCP} e \emph{UDP}, per poi esplorare come \emph{QUIC} e \emph{MPTCP} si propongono di risolvere e superare le inefficienze presenti e le possibili ripercussioni.
 
 \subsubsection{TCP (Transmission Control Protocol)}
-
+% Fonte https://www.ietf.org/rfc/rfc793.txt %
 ~\\
-\indent Il \emph{Transmission Control Protocol (TCP)}, come anticipato nella sezione precedente, è uno dei protocolli cardine su cui si basa la comunicazione su Internet. Dato il suo ruolo e la vasta gamma di funzioni che offre, una analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi. Pertanto, in questa sezione, ci concentreremo solo su alcuni aspetti specifici del TCP che sono fondamentali per la comprensione del nostro studio su \emph{QUIC}. 
+\indent Il \emph{Transmission Control Protocol (TCP)}, come anticipato nella sezione precedente, è uno dei protocolli cardine su cui si basa la comunicazione su Internet. Dato il suo ruolo e la vasta gamma di funzioni che offre, un'analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi. Pertanto, in questa sezione, ci concentreremo solo su alcuni aspetti specifici del TCP che sono fondamentali per la comprensione del nostro studio su \emph{QUIC}. 
 In particolare, esamineremo nel dettaglio :
 \begin{itemize}
     \item Caratteristiche principali di una connessione \emph{TCP};
     
     \item Il processo di \emph{Handshake} \glsfirstoccur;
+    
+    \item Il meccanismo di \emph{Ritrasmissione \glsfirstoccur};
     
     \item I metodi utilizzati per garantire la sicurezza dei dati.
 \end{itemize}
@@ -55,14 +57,24 @@ Questa caratteristica è alla base di molte delle sue funzionalità avanzate, tr
     \item[Controllo di Flusso e Congestione] Utilizza il sistema delle \emph{sliding window} \glsfirstoccur per ottimizzare il flusso di dati e diminuire il numero di segmenti ritrasmetti in caso di situazione di congestione.
 \end{description}
 
-Queste funzionalità si riflettono sulla struttura stessa di un segmento TCP, come si può vedere nella Figura \ref{fig}. Segue una breve descrizione delle singole sezioni:
+Queste funzionalità si riflettono sulla struttura stessa di un segmento TCP, come si può vedere nella Figura \ref{fig}. Segue una breve descrizione di alcune delle sezioni a noi necessarie:
 
 \begin{itemize}
 \item \textit{\textbf{Source Port - Destination Port}}: Identificano rispettivamente il numero della porta di origine e destinazione .
-\item \textit{\textbf{Sequence Number}}: Questo campo è utilizzato per verificare l'integrità dei dati trasmessi, assicurando che eventuali errori possano essere rilevati e gestiti.
-\item \textit{\textbf{Acknowledgement Number}}: Indica la dimensione della finestra di ricezione, permettendo il controllo del flusso di dati tra mittente e destinatario, ottimizzando così la trasmissione.
-\item \textit{\textbf{Checksum}}: Contiene i dati effettivi da trasmettere.
-\item \textit{\textbf{Data}}: Contiene i dati effettivi da trasmettere.
+\item \textit{\textbf{Sequence Number}}: Definisce il Numero di Sequenza, che indica la posizione del primo segmento TCP all'intenro del flusso. Inoltre se il \emph{control bits SYN \glsfirstoccur} è presente allora il \emph{sequence number} rappresenta il \emph{initial sequence number (ISN)} e il primo otteto successivo avrà come \emph{sequence number ISN+1};
+\item \textit{\textbf{Acknowledgement Number}}: Se il \emph{control bits ACK \glsfirstoccur} è presente questo campo contiene il valore del prossimo \emph{sequence number} che il ricevente del segmento si aspetta di ricevere;
+\item \textit{\textbf{Control Bits}}: Sono dei bit utilizzati per il controllo del protocollo. 
+\begin{itemize}
+    \item \textit{\textbf{URG}}: Se impostato a 1 indica la presenza di dati urgenti.
+    \item \textit{\textbf{ACK}}: Se impostato a 1 indica che l'\emph{acknowledgmen Number} è valido;
+    \item \textit{\textbf{PSH}}: Se impostato a 1 indica che i dati devono essere elaborati dai livelli superiori.
+    \item \textit{\textbf{RST}}: Se impostato a 1 indica che la connesione non è più valida;
+    \item \textit{\textbf{SYN}}: Se impostato a 1 indica che il mittente vuole stabilire una connesione TCP;
+    \item \textit{\textbf{FIN}}: Se impostato a 1 indica che il mittente vuole terminare la connessione TCP.
+\end{itemize}
+
+\item \textit{\textbf{Checksum}}: Valore utilizzato per verificare la validità del segmento. Si ottiene facendo il complemento a uno della somma complementare a uno a 16 bit dell'header, del \emph{payload} e altri di valori.
+\item \textit{\textbf{Data}}: Rappresenta il vero e proprio payload da trasmettere.
 \end{itemize}
 
 \begin{figure}[!h]
@@ -72,8 +84,21 @@ Queste funzionalità si riflettono sulla struttura stessa di un segmento TCP, co
 \label{fig}
 \end{figure}
 
+È importante quindi notare che per costruzione il protocollo identifica univocamente una connesione TCP con una tupla composta da 4 elementi:
 
+\begin{center}
+    \small
+    $[\text{Indirizzo IP sorgente}, \text{Porta sorgente}] \leftrightarrow [\text{Indirizzo IP destinazione}, \text{Porta destinazione}]$
+\end{center}
+
+Questa struttura offre diversi vantaggi. Permettere a un singolo \emph{host} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. Inoltre garantisce l'unicità di ogni connessione all'interno della rete.
+\\
+Tuttavia, questa rigida definzione comporta delle limitazioni significative. In quanto una qualsiasi modifica ad un elemento della tupla (ad esempio, un cambiamento di porta o una migrazione dell'indirizzo IP) comporta la terminazione della connesione esistente. Questo diventa ancora più limitativo nel contesto delle comunicazioni moderne dove i casi di \emph{multihoming \glsfirstoccur} e cambi frequenti di indirizzo IP sono sepmre più comuni.
+\\
+\\
+Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzioni come \emph{MPTCP (Multipath TCP)} e viene affrontata in modo indiretto anche in \emph{QUIC (Quick Udp Internet Connection)}.
 \paragraph{ Handshake }
+\paragraph{ Ritrasmissioni }
 \paragraph{ Sicurezza }
 \paragraph{ Vantaggi e Svantaggi }
 \subsubsection{UDP (User Datagram Protocol)}
