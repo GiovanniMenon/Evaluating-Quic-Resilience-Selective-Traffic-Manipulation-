@@ -26,14 +26,15 @@ caratterizzate da :
     \item Requisiti di sicurezza sempre più vincolanti.
 \end{itemize}
 
-Queste nuove sfide hanno evidenziato una serie di problematiche nei protocolli. La consapevolezza di questi limiti ha portato alla ricerca di nuove soluzioni, cercando di superare le inefficienze pur mantenendo tutti i punti di forza.
+\noindent Queste nuove sfide hanno evidenziato una serie di problematiche nei protocolli. La consapevolezza di questi limiti ha portato alla ricerca di nuove soluzioni, cercando di superare le inefficienze pur mantenendo tutti i punti di forza.
 Questi studi hanno portato alla creazione di nuovi protocolli come \emph{QUIC}\glsfirstoccur ed a estensioni come \emph{MPTCP}\glsfirstoccur, che cercano di far fronte alle sfide del mondo moderno offrendo prestazioni migliori, maggiore sicurezza e flessibilità.
+\\
 \\
 Nelle sezioni successive esamineremo in dettaglio alcune parti di \emph{TCP} e \emph{UDP}, per poi esplorare come \emph{QUIC} e \emph{MPTCP} si propongono di risolvere e superare le inefficienze presenti e le possibili ripercussioni.
 
 \subsubsection{TCP (Transmission Control Protocol)}
-% Fonte https://www.ietf.org/rfc/rfc793.txt %
 ~\\
+% Fonte https://www.ietf.org/rfc/rfc793.txt %
 \indent Il \emph{Transmission Control Protocol (TCP)}, come anticipato nella sezione precedente, è uno dei protocolli cardine su cui si basa la comunicazione su Internet. Dato il suo ruolo e la vasta gamma di funzioni che offre, un'analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi. Pertanto, in questa sezione, ci concentreremo solo su alcuni aspetti specifici del TCP che sono fondamentali per la comprensione del nostro studio su \emph{QUIC}. 
 In particolare, esamineremo nel dettaglio :
 \begin{itemize}
@@ -46,8 +47,8 @@ In particolare, esamineremo nel dettaglio :
     \item I metodi utilizzati per garantire la sicurezza dei dati.
 \end{itemize}
 
-\subsubsection{ Caratteristiche principali} 
-\indent Il \emph{Transmission Control Protocol} si distingue come un protocollo orientato alla connessione. Questa sua caratteristica significa che, prima di qualsiasi scambio di dati, deve essere stabilita una connessione dedicata tra il \emph{client \glsfirstoccur} e l'\emph{host\glsfirstoccur}.
+\paragraph{ Caratteristiche principali}
+\noindent Il \emph{Transmission Control Protocol} si distingue come un protocollo orientato alla connessione. Questa sua caratteristica significa che, prima di qualsiasi scambio di dati, deve essere stabilita una connessione dedicata tra il \emph{client \glsfirstoccur} e l'\emph{host\glsfirstoccur}.
 Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra cui:
 \begin{description}
     \item[Affidabilità] Viene utilizzato il meccanismo degli \emph{acknowledgements} \glsfirstoccur per garantire la corretta consegna dei segmenti;
@@ -57,7 +58,7 @@ Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra 
     \item[Controllo di Flusso e Congestione] Utilizza il sistema delle \emph{sliding window} \glsfirstoccur per ottimizzare il flusso di dati e diminuire il numero di segmenti ritrasmetti in caso di situazione di congestione.
 \end{description}
 
-Queste funzionalità si riflettono sulla struttura stessa di un segmento TCP, come si può vedere nella Figura \ref{fig}. Segue una breve descrizione di alcune delle sezioni a noi necessarie:
+\noindent Queste funzionalità si riflettono sulla struttura stessa di un segmento TCP, come si può vedere nella Figura \ref{fig}. Segue una breve descrizione di alcune delle sezioni a noi necessarie:
 
 \begin{itemize}
 \item \textit{\textbf{Source Port - Destination Port}}: Identificano rispettivamente il numero della porta di origine e destinazione .
@@ -84,31 +85,79 @@ Queste funzionalità si riflettono sulla struttura stessa di un segmento TCP, co
 \label{fig}
 \end{figure}
 
-È importante quindi notare che per costruzione il protocollo identifica univocamente una connesione TCP con una tupla composta da 4 elementi:
+\noindent È importante quindi notare che per costruzione il protocollo identifica univocamente una connesione TCP con una tupla composta da 4 elementi:
 
 \begin{center}
     \small
     $[\text{Indirizzo IP sorgente}, \text{Porta sorgente}] \leftrightarrow [\text{Indirizzo IP destinazione}, \text{Porta destinazione}]$
 \end{center}
 
-Questa struttura offre diversi vantaggi. Permettere a un singolo \emph{host} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. Inoltre garantisce l'unicità di ogni connessione all'interno della rete.
+\noindent Questa struttura offre diversi vantaggi. Permettere a un singolo \emph{host} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. 
+Inoltre garantisce l'unicità di ogni connessione all'interno della rete.
 \\
 Tuttavia, questa rigida definzione comporta delle limitazioni significative. In quanto una qualsiasi modifica ad un elemento della tupla (ad esempio, un cambiamento di porta o una migrazione dell'indirizzo IP) comporta la terminazione della connesione esistente. Questo diventa ancora più limitativo nel contesto delle comunicazioni moderne dove i casi di \emph{multihoming \glsfirstoccur} e cambi frequenti di indirizzo IP sono sempre più comuni.
 \\
 \\
 Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzioni come \emph{MPTCP (Multipath TCP)} e viene affrontata in modo indiretto anche in \emph{QUIC (Quick Udp Internet Connection)}.
+
 \paragraph{ Handshake }
+% https://it.wikipedia.org/wiki/Round_Trip_Time
+
+\noindent Come accennato in precedenza, uno dei punti cardine del \emph{TCP} è la necessità di stabilire una connessione prima di qualsiasi scambio di dati. Questo processo, noto come \emph{three-way handshake} (o più semplicemente "stretta di mano in tre passaggi"), richiede lo scambio di tre messaggi tra \emph{host} e \emph{client}. La Figura \ref{handshake} illustra questo processo.
+
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.75\columnwidth]{descrizione/tcp/three-way-handshake}
+        \caption{\emph{three-way handshake}}
+        \label{handshake}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.90\columnwidth]{descrizione/tcp/rtt-handshake}
+        \caption{\emph{RTT (Round Trip Time)}}
+        \label{rtt}
+    \end{minipage}
+\end{figure}
+
+\noindent Segue ora una breve spiegazione dei passaggi che avvengono in questo processo : 
+
+\begin{enumerate}
+    \item \textbf{Client invia un segmento SYN al Server}: Il segmento ha il campo \emph{SYN} impostato a 1 e il suo \emph{sequence number} contiene il \emph{ISN (Initial Sequence Number)} del Client;
+    \item \textbf{Server invia un segmento SYN/ACK al Client}: Il Server risponde con un segmento i cui campi \emph{SYN} e \emph{ACK} sono impostati a 1. Il suo \emph{sequence number} contiene un nuovo valore y mentre l'\emph{Acknowledgement number} contiene il valore \emph{ISN+1};
+    \item \textbf{Client invia un segmento ACK al Server}: Il Client risponde inviando un segmento il cui campo \emph{ACK} è impostato a 1 e l'\emph{acknowledgement number} è dato da \emph{y+1}.
+\end{enumerate}
+
+\noindent Tutti i segmenti utilizzati in questa fase hanno il campo \emph{data} vuoto, ossia sono solamente degli \emph{header}. 
+Oltre a stabilire la connessione, l'\emph{handshake} riveste un ruolo fondamentale in vari aspetti della comunicazione TCP.
+Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche una base inziale per misurare il \emph{RTT (Round Trip Time)} \glsfirstoccur (Figura \ref{rtt}), che è essenziale per ottimizzare il controllo di flusso e la gestione della congestione della rete.
+
 \paragraph{ Ritrasmissioni }
+
+In questa sezione esamineremo come avvengono le ritrasmissioni.
+
 \paragraph{ Sicurezza }
+
+In questa sezione parliamo del tls 1.2 e 1.3 non nel dettaglio. Solo per accennare che non è supportato direttamente dal protocollo. 
+Inoltre rivediamo l'handshake nel caso di uso del tls. 
+
 \subsubsection{UDP (User Datagram Protocol)}
+
+C'e' molto poco da dire qui. Niente di particolare se non le caratteristiche principali e la composizione del pacchetto. 
 
 \subsection{QUIC}
 
-Spiegazione di quic completa
+Qua c'è molto da dire
+
+Da pensare ai capitoli 
 
 \subsection{MPTCP}
 
-Spiegazione di quic completa
+Qua c'è molto da dire
+
+Da pensare ai capitoli 
 
 \section{I problemi e l'Idea}
 
