@@ -146,7 +146,7 @@ In particolare, è importante sapere che il calcolo del RTO è dinamico e dipend
 \\\\
 \noindent(Forse fuori tema e da rimuovere)(inerente nel caso si testasse sulle reti mobili)
 \\
-Sono numerose le cause che posso provocare la perdita di un pacchetto. Nel caso delle reti mobile ciò può accadere in punti diversi dell'infrasstruttura. Nel caso il segmento venga perso tra il client e la stazione base in \emph{RAN \glsfirstoccur} è compito del \emph{link layer} occuparsi della ritrasmissione. Questo significa che, se il pacchetto venisse perso un numero di volte ma poi venisse ricevuto, il TCP non rileverebbe alcun pacchetto perso ma solo un aumento del \emph{RTT}.
+Sono numerose le cause che possono provocare la perdita di un pacchetto. Nel caso delle reti mobile ciò può accadere in punti diversi dell'infrasstruttura. Nel caso il segmento venga perso tra il client e la stazione base in \emph{RAN \glsfirstoccur} è compito del \emph{link layer} occuparsi della ritrasmissione. Questo significa che, se il pacchetto venisse perso un numero di volte ma poi venisse ricevuto, il TCP non rileverebbe alcun pacchetto perso ma solo un aumento del \emph{RTT}.
 \paragraph{ Sicurezza }
 
 \noindent Nella sua forma nativa, il protocollo \emph{TCP}, non offre meccanismi di sicurezza come autenticazione, integrità dei dati o confidenzialità. Infatti, \emph{TCP} non implementa alcuna funzionalità di crittografia o altri sistemi con lo scopo di proteggere i dati durante la trasmissione.
@@ -176,9 +176,31 @@ Nel contesto di questo studio, ci concentreremo in particolare sul protocollo \e
 \noindent È importante notare che con il \emph{TLS 1.3} si ha un \emph{2RTT}, ovvero vengono richiesti due \emph{Round Trip} prima dell'effettivo invio dei dati. 
 
 \subsubsection{UDP (User Datagram Protocol)}
+% https://datatracker.ietf.org/doc/html/rfc768
+~\\
+\indent Dopo aver esaminato brevemente il \emph{Transmission Control Protocol (TCP)},
+procediamo ora all'analisi del \emph{User Datagram Protocol (UDP)}. 
+Diversamente dal \emph{TCP}, questo protocollo si distingue per la sua semplicità e la minor complessità, offrendo un approccio più diretto alla trasmissione dei dati.
+\\
+Nonostante la sua relativa semplicità, una trattazione esaustiva dell'UDP andrebbe comunque oltre gli scopi di questa tesi. 
+Di conseguenza ci concentreremo sulla struttura di un \emph{datagramma {UDP}} descritto in Figura \ref{udp-datagram}.
+\\
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{descrizione/udp/segmento}
+    \caption{Datagramma UDP (Da modificare)}
+    \label{udp-datagram}
+\end{figure}
 
-C'e' molto poco da dire qui. Niente di particolare se non le caratteristiche principali e la composizione del pacchetto. 
+\noindent Si può facilmente notare che l'\emph{header} di un datagramma \emph{UDP} è notevolmente più semplice rispetto a quello di un segmento \emph{TCP}.
+In quanto questo è composto da soli quattro campi, i quali sono :  
+\begin{itemize}
+    \item \textit{\textbf{Source Port - Destination Port}}: Identificano rispettivamente il numero della porta di origine e destinazione. In questo caso il campo relativo alla \emph{source port} può essere omesso ed in tal caso settato a 0.
+    \item \textit{\textbf{Lenght}}: Questo campo specifica la lunghezza in byte dell'\emph{header} e del \emph{payload}. La lunghezza minima è di 8 \emph{bytes} mentre il limite superiore è di 65,607 \emph{bytes}.
+    \item \textit{\textbf{Checksum}}: Questo campo è opzionale e può essere usato per effettuare dei controli di errore sul datagramma.
+\end{itemize}
 
+Aggiungere che questo rispecchjia a pieno il suo campo di utilizzo in quanto un header senza overhead implica veloicita etc etc
 \subsection{QUIC}
 
 Qua c'è molto da dire
