@@ -15,7 +15,7 @@ Quest'ultime costituiscono la base essenziale per la comprensione di questo stud
 Questi protocolli sono stati la spina dorsale delle comunicazioni per decenni, supportando una vasta gamma di servizi e applicazioni.\\
 In particolare \emph{TCP}, con la sua affidabilità e il suo controllo di flusso, ha svolto un ruolo fondamentale nelle comunicazioni che richiedevano l'integrità dei dati, mentre \emph{UDP} ha trovato il suo spazio nei servizi che privilegiavano la velocità rispetto all'affidabilità. 
 Tuttavia, con l'evoluzione delle nuove tecnologie e la creazione di nuovi protocolli, le limitazioni di questi protocolli sono diventate sempre più evidenti. Nella concezione di base di \emph{TCP} e \emph{UDP}, ideata agli inizi del 1970, non erano state previste le sfide delle reti moderne, 
-caratterizzate da :  
+caratterizzate da:  
 \begin{itemize}
     \item Connesioni mobili e variabili;
     
@@ -136,12 +136,44 @@ Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche u
 
 \paragraph{ Ritrasmissioni }
 
-In questa sezione esamineremo come avvengono le ritrasmissioni.
-
+\noindent La gestione degli errori nel \emph{TCP} è un argomento estremamente complesso che necessiterebbe di uno studio dedicato. 
+Tuttavia, ciò va oltre allo scopo di questa tesi e per motivi di spazio non verrà discusso. Pertanto ci limiteremo a descrivere brevemente il meccanismo di ritrasmissione, necessario per comprendere alcuni concetti della tesi.
+\\\\
+\noindent Il \emph{TCP} è un protocollo progettato per garantire l'affidabilità nella trasmissione dei dati. La ritrasmissione dei segmenti persi o danneggiati è uno dei meccanismi chiave per raggiungere questo obbiettivo. Questo processo si basa sulla logica degli \emph{acknowledgements}. Quando un segmento viene inviato, il mittente attende una conferma di ricezione (\emph{ACK}) dal destinatario. Se questa conferma non viene ricevuta entro un determinato intervallo di tempo, chiamato \emph{RTO (Retransmission TimeOut) \glsfirstoccur}, il mittente assume che il segmento sia stato perso e lo ritrasmette.
+In particolare, è importante sapere che il calcolo del RTO è dinamico e dipende fortemente dal \emph{RTT} e da numerosi altri valori. 
+\\\\
+\noindent(Si puo' dedicare piu' spazio a questa sezione approndendo casistiche e meccanismi ulteriori)
+\\\\
+\noindent(Forse fuori tema e da rimuovere)(inerente nel caso si testasse sulle reti mobili)
+\\
+Sono numerose le cause che posso provocare la perdita di un pacchetto. Nel caso delle reti mobile ciò può accadere in punti diversi dell'infrasstruttura. Nel caso il segmento venga perso tra il client e la stazione base in \emph{RAN \glsfirstoccur} è compito del \emph{link layer} occuparsi della ritrasmissione. Questo significa che, se il pacchetto venisse perso un numero di volte ma poi venisse ricevuto, il TCP non rileverebbe alcun pacchetto perso ma solo un aumento del \emph{RTT}.
 \paragraph{ Sicurezza }
 
-In questa sezione parliamo del tls 1.2 e 1.3 non nel dettaglio. Solo per accennare che non è supportato direttamente dal protocollo. 
-Inoltre rivediamo l'handshake nel caso di uso del tls. 
+\noindent Nella sua forma nativa, il protocollo \emph{TCP}, non offre meccanismi di sicurezza come autenticazione, integrità dei dati o confidenzialità. Infatti, \emph{TCP} non implementa alcuna funzionalità di crittografia o altri sistemi con lo scopo di proteggere i dati durante la trasmissione.
+Per colmare questa mancanza, vengono utlizzati protocolli aggiuntivi come il \emph{Transport Layer Security (TLS)} e il \emph{Secure Sockets Layer (SSL)} (suo predecessore). Questi protocolli crittografici operano al \emph{livello di presentazione \glsfirstoccur} dello schema \emph{ISO/OSI \glsfirstoccur} e di conseguenza ad un livello superiore rispetto al \emph{TCP}.
+Forniscono entrambi le funzionalità di sicurezza essenziali, garantendo una comunicazione protetta e affidabile.
+\\\\
+Nel contesto di questo studio, ci concentreremo in particolare sul protocollo \emph{TLS 1.3}, l'ultima versione di esso. Esamineremo brevemente la nuova procedura di handshake (Figura \ref{tlsHand}), essenziale per negoziare i parametri di sicurezza e stabilire una comunicazione cifrata.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{descrizione/tcp/tls-handshake}
+    \caption{Nuovo Handshake (da modificare)}
+    \label{tlsHand}
+\end{figure}
+
+Segue ora una breve spiegazione dei nuovi passaggi che avvengono in questo processo :
+\begin{enumerate}
+    \item \textbf{Client invia un messaggio ClientHello al Server}: Il messaggio contiene una lista dei cifrari supportati dal client;
+    \item \textbf{Server risponde con un messaggio ServerHello al Client}: Il Server risponde con un messaggio che contiene: 
+    \begin{itemize}
+        \item  Il cifrario selezionato tra quelli inviati dal Client;
+        \item  La chiave pubblica del server per l'algoritmo di scambio chiavi scelto.
+    \end{itemize}
+    Segue poi il messaggio \emph{Certificate}, che include il certificato del server, e un messaggio \emph{Finished} che conclude la sua parte dell'\emph{handshake};
+    \item \textbf{Client invia un messaggio Finished}: Il Client dopo aver ricevuto il messaggio \emph{Finished} dal Server possiede tutte le informazioni necessarie per confermare il completamento dell'\emph{handshake} e invia a sua volta un messaggio \emph{Finished} per confermare il termine di tale operazione.
+\end{enumerate}
+
+\noindent È importante notare che con il \emph{TLS 1.3} si ha un \emph{2RTT}, ovvero vengono richiesti due \emph{Round Trip} prima dell'effettivo invio dei dati. 
 
 \subsubsection{UDP (User Datagram Protocol)}
 
