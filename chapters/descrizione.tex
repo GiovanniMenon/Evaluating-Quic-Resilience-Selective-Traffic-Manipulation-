@@ -11,7 +11,7 @@ Quest'ultime costituiscono la base essenziale per la comprensione di questo stud
 
 \subsection{Protocolli di Trasporto Tradizionali}
 ~\\
-\indent Nel panorama dei \gls{protocolli di rete}\glsfirstoccur, i \gls{protocolli di trasporto}\glsfirstoccur \emph{TCP (Transmission Control Protocol)}  e \emph{UDP (User Datagram Protocol)} hanno svolto e svolgono tutt'ora un ruolo fondamentale sin dalla nascita di Internet.
+\indent Nel panorama dei \gls{protocolli di rete} \glsfirstoccur, i \gls{protocolli di trasporto} \glsfirstoccur \emph{TCP (Transmission Control Protocol)}  e \emph{UDP (User Datagram Protocol)} hanno svolto e svolgono tutt'ora un ruolo fondamentale sin dalla nascita di Internet.
 Questi protocolli sono stati la spina dorsale delle comunicazioni per decenni, supportando una vasta gamma di servizi e applicazioni.\\
 In particolare \emph{TCP}, con la sua affidabilità e il suo controllo di flusso, ha svolto un ruolo fondamentale nelle comunicazioni che richiedevano l'integrità dei dati, mentre \emph{UDP} ha trovato il suo spazio nei servizi che privilegiavano la velocità rispetto all'affidabilità. 
 Tuttavia, con l'evoluzione delle nuove tecnologie e la creazione di nuovi protocolli, le limitazioni di questi protocolli sono diventate sempre più evidenti. Nella concezione di base di \emph{TCP} e \emph{UDP}, ideata agli inizi del 1970, non erano state previste le sfide delle reti moderne, 
@@ -35,12 +35,12 @@ Nelle sezioni successive esamineremo in dettaglio alcune parti di \emph{TCP} e \
 \subsubsection{TCP (Transmission Control Protocol)}
 ~\\
 % Fonte https://www.ietf.org/rfc/rfc793.txt %
-\indent Il \emph{Transmission Control Protocol (TCP)}, come anticipato nella sezione precedente, è uno dei protocolli cardine su cui si basa la comunicazione su Internet. Dato il suo ruolo e la vasta gamma di funzioni che offre, un'analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi. Pertanto, in questa sezione, ci concentreremo solo su alcuni aspetti specifici del TCP che sono fondamentali per la comprensione del nostro studio su \emph{QUIC}. 
+\indent Il \emph{Transmission Control Protocol (TCP)}, come anticipato nella sezione precedente, è uno dei protocolli cardine su cui si basa la comunicazione su Internet. Dato il suo ruolo e la vasta gamma di funzioni che offre, un'analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi. Pertanto, in questa sezione, ci concentreremo solo su alcuni aspetti specifici del \emph{TCP} che sono fondamentali per la comprensione del nostro studio su \emph{QUIC}. 
 In particolare, esamineremo nel dettaglio :
 \begin{itemize}
     \item Caratteristiche principali di una connessione \emph{TCP};
     
-    \item Il processo di \emph{\gls{Handshake}} \glsfirstoccur;
+    \item Il processo di \emph{\gls{Handshake} \glsfirstoccur};
     
     \item Il meccanismo di \emph{Ritrasmissione};
     
@@ -48,30 +48,30 @@ In particolare, esamineremo nel dettaglio :
 \end{itemize}
 
 \paragraph{ Caratteristiche principali}
-\noindent Il \emph{Transmission Control Protocol} si distingue come un protocollo orientato alla connessione. Questa sua caratteristica significa che, prima di qualsiasi scambio di dati, deve essere stabilita una connessione dedicata tra il \emph{client \glsfirstoccur} e l'\emph{host\glsfirstoccur}.
+\noindent Il \emph{Transmission Control Protocol} si distingue come un protocollo orientato alla connessione. Questa sua caratteristica significa che, prima di qualsiasi scambio di dati, deve essere stabilita una connessione dedicata tra il \emph{\gls{client} \glsfirstoccur} e il \emph{\gls{server} \glsfirstoccur}.
 Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra cui:
 \begin{description}
-    \item[Affidabilità] Viene utilizzato il meccanismo degli \emph{acknowledgements}\glsfirstoccur per garantire la corretta consegna dei segmenti;
+    \item[Affidabilità] Viene utilizzato il meccanismo degli \emph{\gls{acknowledgements} \glsfirstoccur} per garantire la corretta consegna dei segmenti;
 
-    \item[Controllo di Errore] Implementa un sistema di verifica della integrità dei dati tramite il meccanismo degli \emph{checksum} \glsfirstoccur;
+    \item[Controllo di Errore] Implementa un sistema di verifica della integrità dei dati tramite il meccanismo degli \emph{\gls{checksum} \glsfirstoccur} ;
     
-    \item[Controllo di Flusso e Congestione] Utilizza il sistema delle \emph{sliding window} \glsfirstoccur per ottimizzare il flusso di dati e diminuire il numero di segmenti ritrasmetti in caso di situazione di congestione.
+    \item[Controllo di Flusso e Congestione] Utilizza il sistema delle \emph{\gls{sliding window} \glsfirstoccur}  per ottimizzare il flusso di dati e diminuire il numero di segmenti ritrasmetti in caso di situazione di congestione.
 \end{description}
 
-\noindent Queste funzionalità si riflettono sulla struttura stessa di un segmento TCP, come si può vedere nella Figura \ref{fig}. Segue una breve descrizione di alcune delle sezioni a noi necessarie:
+\noindent Queste funzionalità si riflettono sulla struttura stessa di un segmento \emph{TCP}, come si può vedere nella Figura \ref{fig}. Segue una breve descrizione di alcune delle sezioni a noi necessarie:
 
 \begin{itemize}
 \item \textit{\textbf{Source Port - Destination Port}}: Identificano rispettivamente il numero della porta di origine e destinazione .
-\item \textit{\textbf{Sequence Number}}: Definisce il \emph{sequence number}, che indica la posizione del primo segmento TCP all'intenro del flusso. Inoltre se il \emph{control bits SYN \glsfirstoccur} è presente allora il \emph{sequence number} rappresenta il \emph{initial sequence number (ISN)} e il primo otteto successivo avrà come \emph{sequence number ISN+1};
-\item \textit{\textbf{Acknowledgement Number}}: Se il \emph{control bits ACK \glsfirstoccur} è presente questo campo contiene il valore del prossimo \emph{sequence number} che il ricevente del segmento si aspetta di ricevere;
+\item \textit{\textbf{Sequence Number}}: Definisce il \emph{sequence number}, che indica la posizione del primo segmento \emph{TCP} all'intenro del flusso. Inoltre se il \emph{control bits SYN} è presente allora il \emph{sequence number} rappresenta il \emph{initial sequence number (\glslink{ISN}{ISN})} e il primo otteto successivo avrà come \emph{sequence number ISN+1};
+\item \textit{\textbf{Acknowledgement Number}}: Se il \emph{control bits ACK} è presente questo campo contiene il valore del prossimo \emph{sequence number} che il ricevente del segmento si aspetta di ricevere;
 \item \textit{\textbf{Control Bits}}: Sono dei bit utilizzati per il controllo del protocollo. 
 \begin{itemize}
     \item \textit{\textbf{URG}}: Se impostato a 1 indica la presenza di dati urgenti.
-    \item \textit{\textbf{ACK}}: Se impostato a 1 indica che l'\emph{acknowledgmen  number} è valido;
+    \item \textit{\textbf{ACK}}: Se impostato a 1 indica che l'\emph{acknowledgement number} è valido;
     \item \textit{\textbf{PSH}}: Se impostato a 1 indica che i dati devono essere elaborati dai livelli superiori.
     \item \textit{\textbf{RST}}: Se impostato a 1 indica che la connesione non è più valida;
-    \item \textit{\textbf{SYN}}: Se impostato a 1 indica che il mittente vuole stabilire una connesione TCP;
-    \item \textit{\textbf{FIN}}: Se impostato a 1 indica che il mittente vuole terminare la connessione TCP.
+    \item \textit{\textbf{SYN}}: Se impostato a 1 indica che il mittente vuole stabilire una connesione \emph{TCP};
+    \item \textit{\textbf{FIN}}: Se impostato a 1 indica che il mittente vuole terminare la connessione \emph{TCP}.
 \end{itemize}
 
 \item \textit{\textbf{Checksum}}: Valore utilizzato per verificare la validità del segmento. Si ottiene facendo il complemento a uno della somma complementare a uno a 16 bit dell'\emph{header}, del \emph{payload} e altri di valori.
@@ -85,17 +85,17 @@ Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra 
 \label{fig}
 \end{figure}
 
-\noindent È importante quindi notare che per costruzione il protocollo identifica univocamente una connesione TCP con una tupla composta da 4 elementi:
+\noindent È importante quindi notare che per costruzione il protocollo identifica univocamente una connesione \emph{TCP} con una tupla composta da 4 elementi:
 
 \begin{center}
     \small
     $[\text{Indirizzo IP sorgente}, \text{Porta sorgente}] \leftrightarrow [\text{Indirizzo IP destinazione}, \text{Porta destinazione}]$
 \end{center}
 
-\noindent Questa struttura offre diversi vantaggi. Permettere a un singolo \emph{host} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. 
+\noindent Questa struttura offre diversi vantaggi. Permettere a un singolo \emph{server} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. 
 Inoltre garantisce l'unicità di ogni connessione all'interno della rete.
 \\
-Tuttavia, questa rigida definzione comporta delle limitazioni significative. In quanto una qualsiasi modifica ad un elemento della tupla (ad esempio, un cambiamento di porta o una migrazione dell'indirizzo IP) comporta la terminazione della connesione esistente. Questo diventa ancora più limitativo nel contesto delle comunicazioni moderne dove i casi di \emph{multihoming \glsfirstoccur} e cambi frequenti di indirizzo IP sono sempre più comuni.
+Tuttavia, questa rigida definzione comporta delle limitazioni significative. In quanto una qualsiasi modifica ad un elemento della tupla (ad esempio, un cambiamento di porta o una migrazione dell'indirizzo IP) comporta la terminazione della connesione esistente. Questo diventa ancora più limitativo nel contesto delle comunicazioni moderne dove i casi di \emph{\gls{multihoming} \glsfirstoccur} e cambi frequenti di indirizzo IP sono sempre più comuni.
 \\
 \\
 Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzioni come \emph{MPTCP (Multipath TCP)} e viene affrontata in modo indiretto anche in \emph{QUIC (Quick Udp Internet Connection)}.
@@ -103,7 +103,7 @@ Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzi
 \paragraph{ Handshake }
 % https://it.wikipedia.org/wiki/Round_Trip_Time
 
-\noindent Come accennato in precedenza, uno dei punti cardine del \emph{TCP} è la necessità di stabilire una connessione prima di qualsiasi scambio di dati. Questo processo, noto come \emph{three-way handshake} (o più semplicemente "stretta di mano in tre passaggi"), richiede lo scambio di tre messaggi tra \emph{host} e \emph{client}. La Figura \ref{handshake} illustra questo processo.
+\noindent Come accennato in precedenza, uno dei punti cardine del \emph{TCP} è la necessità di stabilire una connessione prima di qualsiasi scambio di dati. Questo processo, noto come \emph{three-way handshake} (o più semplicemente "stretta di mano in tre passaggi"), richiede lo scambio di tre messaggi tra \emph{server} e \emph{client}. La Figura \ref{handshake} illustra questo processo.
 
 \begin{figure}[!h]
     \centering
@@ -131,26 +131,26 @@ Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzi
 \end{enumerate}
 
 \noindent Tutti i segmenti utilizzati in questa fase hanno il campo \emph{data} vuoto, ossia sono solamente degli \emph{header}. 
-Oltre a stabilire la connessione, l'\emph{handshake} riveste un ruolo fondamentale in vari aspetti della comunicazione TCP.
-Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche una base inziale per misurare il \emph{RTT (Round Trip Time)} \glsfirstoccur (Figura \ref{rtt}), che è essenziale per ottimizzare il controllo di flusso e la gestione della congestione della rete.
+Oltre a stabilire la connessione, l'\emph{handshake} riveste un ruolo fondamentale in vari aspetti della comunicazione \emph{TCP}.
+Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche una base inziale per misurare il \emph{\glslink{RTT}{RTT} (Round Trip Time)} \glsfirstoccur (Figura \ref{rtt}), che è essenziale per ottimizzare il controllo di flusso e la gestione della congestione della rete.
 
 \paragraph{ Ritrasmissioni }
 
 \noindent La gestione degli errori nel \emph{TCP} è un argomento estremamente complesso che necessiterebbe di uno studio dedicato. 
 Tuttavia, ciò va oltre allo scopo di questa tesi e per motivi di spazio non verrà discusso. Pertanto ci limiteremo a descrivere brevemente il meccanismo di ritrasmissione, necessario per comprendere alcuni concetti della tesi.
 \\\\
-\noindent Il \emph{TCP} è un protocollo progettato per garantire l'affidabilità nella trasmissione dei dati. La ritrasmissione dei segmenti persi o danneggiati è uno dei meccanismi chiave per raggiungere questo obbiettivo. Questo processo si basa sulla logica degli \emph{acknowledgements}. Quando un segmento viene inviato, il mittente attende una conferma di ricezione (\emph{ACK}) dal destinatario. Se questa conferma non viene ricevuta entro un determinato intervallo di tempo, chiamato \emph{RTO (Retransmission TimeOut) \glsfirstoccur}, il mittente assume che il segmento sia stato perso e lo ritrasmette.
+\noindent Il \emph{TCP} è un protocollo progettato per garantire l'affidabilità nella trasmissione dei dati. La ritrasmissione dei segmenti persi o danneggiati è uno dei meccanismi chiave per raggiungere questo obbiettivo. Questo processo si basa sulla logica degli \emph{acknowledgements}. Quando un segmento viene inviato, il mittente attende una conferma di ricezione (\emph{ACK}) dal destinatario. Se questa conferma non viene ricevuta entro un determinato intervallo di tempo, chiamato \emph{\glslink{RTO}{RTO} (Retransmission TimeOut) \glsfirstoccur}, il mittente assume che il segmento sia stato perso e lo ritrasmette.
 In particolare, è importante sapere che il calcolo del RTO è dinamico e dipende fortemente dal \emph{RTT} e da numerosi altri valori. 
 \\\\
 \noindent(Si puo' dedicare piu' spazio a questa sezione approndendo casistiche e meccanismi ulteriori)
 \\\\
 \noindent(Forse fuori tema e da rimuovere)(inerente nel caso si testasse sulle reti mobili)
 \\
-Sono numerose le cause che possono provocare la perdita di un pacchetto. Nel caso delle reti mobile ciò può accadere in punti diversi dell'infrasstruttura. Nel caso il segmento venga perso tra il client e la stazione base in \emph{RAN \glsfirstoccur} è compito del \emph{link layer} occuparsi della ritrasmissione. Questo significa che, se il pacchetto venisse perso un numero di volte ma poi venisse ricevuto, il TCP non rileverebbe alcun pacchetto perso ma solo un aumento del \emph{RTT}.
+Sono numerose le cause che possono provocare la perdita di un pacchetto. Nel caso delle reti mobile ciò può accadere in punti diversi dell'infrasstruttura. Nel caso il segmento venga perso tra il client e la stazione base in \emph{\glslink{RAN}{RAN} \glsfirstoccur} è compito del \emph{link layer} occuparsi della ritrasmissione. Questo significa che, se il pacchetto venisse perso un numero di volte ma poi venisse ricevuto, il TCP non rileverebbe alcun pacchetto perso ma solo un aumento del \emph{RTT}.
 \paragraph{ Sicurezza }
 
 \noindent Nella sua forma nativa, il protocollo \emph{TCP}, non offre meccanismi di sicurezza come autenticazione, integrità dei dati o confidenzialità. Infatti, \emph{TCP} non implementa alcuna funzionalità di crittografia o altri sistemi con lo scopo di proteggere i dati durante la trasmissione.
-Per colmare questa mancanza, vengono utlizzati protocolli aggiuntivi come il \emph{Transport Layer Security (TLS)} e il \emph{Secure Sockets Layer (SSL)} (suo predecessore). Questi protocolli crittografici operano al \emph{livello di presentazione \glsfirstoccur} dello schema \emph{ISO/OSI \glsfirstoccur} e di conseguenza ad un livello superiore rispetto al \emph{TCP}.
+Per colmare questa mancanza, vengono utlizzati protocolli aggiuntivi come il \emph{Transport Layer Security (TLS)} e il \emph{Secure Sockets Layer (SSL)} (suo predecessore). Questi protocolli crittografici operano al \emph{\gls{livello di presentazione} \glsfirstoccur} del modello \emph{\gls{ISO/OSIg} \glsfirstoccur} e di conseguenza ad un livello superiore rispetto al \emph{TCP}.
 Forniscono entrambi le funzionalità di sicurezza essenziali, garantendo una comunicazione protetta e affidabile.
 \\\\
 Nel contesto di questo studio, ci concentreremo in particolare sul protocollo \emph{TLS 1.3}, l'ultima versione di esso. Esamineremo brevemente la nuova procedura di handshake (Figura \ref{tlsHand}), essenziale per negoziare i parametri di sicurezza e stabilire una comunicazione cifrata.
@@ -202,7 +202,7 @@ In quanto questo è composto da soli quattro campi, i quali sono :
 
 \noindent La semplicità di questa struttura riflette a pieno i suoi casi d'uso, dove i punti di forza principali sono la velocità e l'efficienza.
 In particolare l'assenza di complessi meccanismi di controllo e gestione, invece presenti nel \emph{TCP}, rende l'\emph{UDP} particolarmente adatto per applicazioni che richiedono una trasmissione rapida e in cui la perdita di alcuni pacchetti non invalida totalmente il servizio.
-Ne sono un esempio i giochi online, lo streaming video e le chiamate \emph{voip}.
+Ne sono un esempio i giochi online, lo streaming video e le chiamate \emph{\glslink{VOIP}{VOIP}}.
 
 \subsection{QUIC}
 
