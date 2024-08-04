@@ -11,7 +11,7 @@ Quest'ultime costituiscono la base essenziale per la comprensione di questo stud
 
 \subsection{Protocolli di Trasporto Tradizionali}
 ~\\
-\indent Nel panorama dei \gls{protocolli di rete}\glsfirstoccur, i \gls{protocolli di trasporto}\glsfirstoccur \emph{TCP} (Transmission Control Protocol) e \emph{UDP} (User Datagram Protocol) hanno svolto e svolgono tutt'ora un ruolo fondamentale sin dalla nascita di Internet.
+\indent Nel panorama dei \gls{protocolli di rete}\glsfirstoccur, i \gls{protocolli di trasporto}\glsfirstoccur \emph{TCP (Transmission Control Protocol)}  e \emph{UDP (User Datagram Protocol)} hanno svolto e svolgono tutt'ora un ruolo fondamentale sin dalla nascita di Internet.
 Questi protocolli sono stati la spina dorsale delle comunicazioni per decenni, supportando una vasta gamma di servizi e applicazioni.\\
 In particolare \emph{TCP}, con la sua affidabilità e il suo controllo di flusso, ha svolto un ruolo fondamentale nelle comunicazioni che richiedevano l'integrità dei dati, mentre \emph{UDP} ha trovato il suo spazio nei servizi che privilegiavano la velocità rispetto all'affidabilità. 
 Tuttavia, con l'evoluzione delle nuove tecnologie e la creazione di nuovi protocolli, le limitazioni di questi protocolli sono diventate sempre più evidenti. Nella concezione di base di \emph{TCP} e \emph{UDP}, ideata agli inizi del 1970, non erano state previste le sfide delle reti moderne, 
@@ -21,13 +21,13 @@ caratterizzate da:
     
     \item Necessità di ridurre la latenza;
     
-    \item Proliferazione di dispositivi IOT;
+    \item Proliferazione di dispositivi \glslink{IoT}{IoT};
      
     \item Requisiti di sicurezza sempre più vincolanti.
 \end{itemize}
 
 \noindent Queste nuove sfide hanno evidenziato una serie di problematiche nei protocolli. La consapevolezza di questi limiti ha portato alla ricerca di nuove soluzioni, cercando di superare le inefficienze pur mantenendo tutti i punti di forza.
-Questi studi hanno portato alla creazione di nuovi protocolli come \emph{QUIC}\glsfirstoccur ed a estensioni come \emph{MPTCP}\glsfirstoccur, che cercano di far fronte alle sfide del mondo moderno offrendo prestazioni migliori, maggiore sicurezza e flessibilità.
+Questi studi hanno portato alla creazione di nuovi protocolli come \emph{QUIC} ed a estensioni come \emph{MPTCP}, che cercano di far fronte alle sfide del mondo moderno offrendo prestazioni migliori, maggiore sicurezza e flessibilità.
 \\
 \\
 Nelle sezioni successive esamineremo in dettaglio alcune parti di \emph{TCP} e \emph{UDP}, per poi esplorare come \emph{QUIC} e \emph{MPTCP} si propongono di risolvere e superare le inefficienze presenti e le possibili ripercussioni.
@@ -40,9 +40,9 @@ In particolare, esamineremo nel dettaglio :
 \begin{itemize}
     \item Caratteristiche principali di una connessione \emph{TCP};
     
-    \item Il processo di \emph{Handshake} \glsfirstoccur;
+    \item Il processo di \emph{\gls{Handshake}} \glsfirstoccur;
     
-    \item Il meccanismo di \emph{Ritrasmissione \glsfirstoccur};
+    \item Il meccanismo di \emph{Ritrasmissione};
     
     \item I metodi utilizzati per garantire la sicurezza dei dati.
 \end{itemize}
@@ -51,7 +51,7 @@ In particolare, esamineremo nel dettaglio :
 \noindent Il \emph{Transmission Control Protocol} si distingue come un protocollo orientato alla connessione. Questa sua caratteristica significa che, prima di qualsiasi scambio di dati, deve essere stabilita una connessione dedicata tra il \emph{client \glsfirstoccur} e l'\emph{host\glsfirstoccur}.
 Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra cui:
 \begin{description}
-    \item[Affidabilità] Viene utilizzato il meccanismo degli \emph{acknowledgements} \glsfirstoccur per garantire la corretta consegna dei segmenti;
+    \item[Affidabilità] Viene utilizzato il meccanismo degli \emph{acknowledgements}\glsfirstoccur per garantire la corretta consegna dei segmenti;
 
     \item[Controllo di Errore] Implementa un sistema di verifica della integrità dei dati tramite il meccanismo degli \emph{checksum} \glsfirstoccur;
     
@@ -200,7 +200,10 @@ In quanto questo è composto da soli quattro campi, i quali sono :
     \item \textit{\textbf{Checksum}}: Questo campo è opzionale e può essere usato per effettuare dei controli di errore sul datagramma.
 \end{itemize}
 
-Aggiungere che questo rispecchjia a pieno il suo campo di utilizzo in quanto un header senza overhead implica veloicita etc etc
+\noindent La semplicità di questa struttura riflette a pieno i suoi casi d'uso, dove i punti di forza principali sono la velocità e l'efficienza.
+In particolare l'assenza di complessi meccanismi di controllo e gestione, invece presenti nel \emph{TCP}, rende l'\emph{UDP} particolarmente adatto per applicazioni che richiedono una trasmissione rapida e in cui la perdita di alcuni pacchetti non invalida totalmente il servizio.
+Ne sono un esempio i giochi online, lo streaming video e le chiamate \emph{voip}.
+
 \subsection{QUIC}
 
 Qua c'è molto da dire

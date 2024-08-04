@@ -5,6 +5,18 @@
 \newacronym[description={\glslink{umlg}{Unified Modeling Language}}]
     {uml}{UML}{Unified Modeling Language}
 
+\newacronym[description={\glslink{ISO/OSI}{Open System Interconnection}}]
+    {ISO/OSI}{ISO/OSI}{Open System Interconnection}
+
+\newacronym[description={\glslink{TCP}{Transmission Control Protocol}}]
+    {TCP}{TCP}{Open System Interconnection}
+
+\newacronym[description={\glslink{IoTg}{Internet of Things}}]
+    {IoT}{IoT}{Internet of Things}
+
+\newacronym[description={\glslink{UDP}{User Datagram Protocol}}]
+    {UDP}{UDP}{User Datagram Protocol}
+
 % Glossary entries
 \newglossaryentry{apig} {
     name=\glslink{api}{API},
@@ -13,23 +25,30 @@
     description={in informatica con il termine \emph{Application Programming Interface API} (ing. interfaccia di programmazione di un'applicazione) si indica ogni insieme di procedure disponibili al programmatore, di solito raggruppate a formare un set di strumenti specifici per l'espletamento di un determinato compito all'interno di un certo programma. La finalità è ottenere un'astrazione, di solito tra l'hardware e il programmatore o tra software a basso e quello ad alto livello semplificando così il lavoro di programmazione}
 }
 
-\newglossaryentry{umlg} {
-    name=\glslink{uml}{UML},
-    text=UML,
-    sort=uml,
-    description={in ingegneria del software \emph{UML, Unified Modeling Language} (ing. linguaggio di modellazione unificato) è un linguaggio di modellazione e specifica basato sul paradigma object-oriented. L'\emph{UML} svolge un'importantissima funzione di ``lingua franca'' nella comunità della progettazione e programmazione a oggetti. Gran parte della letteratura di settore usa tale linguaggio per descrivere soluzioni analitiche e progettuali in modo sintetico e comprensibile a un vasto pubblico}
+\newglossaryentry{IoTg} {
+    name=\glslink{IoT}{IoT},
+    text=IoT,
+    sort=IoT,
+    description={Per IoT si intende l'internet delle cose, o meglio Internet degli oggetti. Con questo termine si fa riferimento all'estensione di Internet al mondo degli oggetti e dei luoghi concreti. }
 }
 
 \newglossaryentry{protocolli di rete} {
-    name=protocolli di rete,
-    text= protocolli di rete,
+    name=Protocolli di rete,
+    text=protocolli di rete,
     sort=protocolli di rete,
-    description={da scrivere}
+    description={Un protocollo di rete è l'insieme delle modalità o regole di relazione che due o più macchine collegate tra loro devono rispettare per stabilire una comunicazione corretta}
 }
 
 \newglossaryentry{protocolli di trasporto} {
-    name=protocolli di trasporto,
+    name=Protocolli di trasporto,
     text=protocolli di trasporto,
     sort=protocolli di trasporto,
-    description={protocolli di trasporto}
+    description={Sono definiti protocolli di trasporto tutti i protocolli che appartengono al quarto livello del modello \glslink{ISO/OSI}{ISO/OSI}. Ne fanno parte il \glslink{UDP}{UDP} e il \glslink{TCP}{TCP}. Hanno il compito di instaurare un collegamento logico tra le applicazioni residenti su macchine remote. }
+}
+
+\newglossaryentry{Handshake} {
+    name=Handshake,
+    text=Handshake,
+    sort=Handshake,
+    description={È il processo attraverso il quale due calcolatori negoziano e stabiliscono le regole comuni necessarie a stabilire una comunicazione}
 }
