@@ -73,7 +73,6 @@ Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra 
     \item \textit{\textbf{SYN}}: Se impostato a 1 indica che il mittente vuole stabilire una connesione \emph{TCP}.
     \item \textit{\textbf{FIN}}: Se impostato a 1 indica che il mittente vuole terminare la connessione \emph{TCP}.
 \end{itemize}
-
 \item \textit{\textbf{Checksum}}: Valore utilizzato per verificare la validità del segmento. Si ottiene facendo il complemento a uno della somma complementare a uno a 16 bit dell'\emph{header}, del \emph{payload} e altri di valori.
 \item \textit{\textbf{Data}}: Rappresenta il vero e proprio \emph{payload} da trasmettere.
 \end{itemize}
@@ -222,14 +221,37 @@ Vedremo in dettaglio questo aspetto nelle prossime sezione.
 \end{itemize}
 
 \subsubsection{Struttura del Protocollo}
+~\\ 
+\indent Il protocollo \emph{QUIC}, come suggerisce il nome, è costruito sopra al protocollo \emph{UDP} per diversi motivi strategici. Questa scelta mira principalmente a evitare l'\emph{ossification}\footnote{\gls{ossification}}, un problema comune nello sviluppo di nuovi protocolli.
+Questo perchè l'\emph{UDP} non solo è essenzialmente \emph{IP}(con l'aggiunta dei numeri di porta), ma anche perchè è ampiamente riconosciuto dalle \emph{middle box}\footnote{\gls{middle box}}, riducendo il rischio che un pacchetto \emph{QUIC} venga scartato.
+Inoltre, \emph{UDP} non introduce alcun \emph{overhead}\footnote{\gls{overhead}} significativo e oltre a ciò è già integrato nei vari \emph{sistemi operativi}, cosa che non sarebbe vera se \emph{QUIC} si basasse direttamente su \emph{IP}.
+\\
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{descrizione/quic/tcp-quic}
+    \caption{\emph{TCP/IP - QUIC/UDP (da modificare)}}
+    \label{tcp-quic}
+\end{figure}
 
-Qui si parla della struttura del protcollo 
+\noindent Come si può vedere in Figura \ref{tcp-quic} si può affermare che \emph{QUIC} si basa su \emph{UDP} in modo analogo a come \emph{TCP} si basa su \emph{IP}.
+Nonostante questa differenza strutturale, \emph{QUIC} implementa le stesse funzionalità chiave di \emph{TCP}, seppur in modo diverso:
+\begin{itemize}
+    \item Orientato alla connessione;
+    \item Recupero delle perdite;
+    \item Controllo del flusso;
+    \item Ritrasmissione;
+    \item Controllo della congestione.
+\end{itemize}
 
-http2 vs http3
+\noindent Un aspetto pratico importante è che, essendo costruito sopra \emph{UDP}, tutte le informazioni necessarie al funzionamento di QUIC sono contenute nel payload del datagramma UDP (Figura \ref{udp-datagram}).
+Long Header e Short Header (Relative Figure).
 
-problematiche e risoluzioni 
+Concetti chiave del suo funzionamento (Uso del connection id e side effect di questo)
 
-tipi di pacchetti
+
+\paragraph{http2 vs http3}
+\paragraph{tipi di pacchetti}
+
 
 \subsubsection{Handshake}
 
@@ -249,8 +271,7 @@ Dove viene usato, versioni e technologie etc.
 
 \subsection{MPTCP}
 
-Qua c'è molto da dire
-
+Qua c'è molto da
 Da pensare ai capitoli 
 
 \section{I problemi e l'Idea}
