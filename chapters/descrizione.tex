@@ -208,8 +208,8 @@ Ne sono un esempio i giochi online, lo streaming video e le chiamate \emph{VOIP}
 \indent Sviluppato inizialmente da \emph{Google} nel 2012, \emph{QUIC}\footnote{\gls{QUIC}} rappresenta un vero e proprio salto generazionale rispetto ai protocolli tradizionali, offrendo una soluzione che combina la velocità dell'\emph{UDP} alla sicurezza e affidabilità del \emph{TCP}. 
 Il suo sviluppo così recente ha permesso di progettarlo specificamente per affrontare le sfide che i protocolli tradizionali faticavano a gestire, come le performance sulle reti mobili, la sicurezza e la latenza ridotta. Questo nuovo protocollo si è rapidamente affermato nel mondo delle comunicazioni, tanto da essere standardizzato dall'\emph{IETF}\footnote{\gls{IETF}} nel 2021.
 \\\\
-In particolare, è importante sapere che si è deciso di chiamare \emph{HTTP/3}\footnote{\gls{HTTP/3}} il mapping di \emph{QUIC} su \emph{HTTP}\footnote{\gls{HTTP}}. Infatti questa nuovo standard utilizza QUIC come protocollo di trasporto al posto del TCP, impiegato nelle versioni precedenti di \emph{HTTP}, migliorando significativamente le prestazioni e la sicurezza delle comunicazioni web.
-Vedremo in dettaglio questo aspetto nelle prossime sezione.
+In particolare, è importante sapere che si è deciso di chiamare \emph{HTTP/3}\footnote{\gls{HTTP/3}} il mapping di \emph{QUIC} su \emph{HTTP}\footnote{\gls{HTTP}}. Infatti questa nuovo standard fa uso di \emph{QUIC} come protocollo di trasporto al posto del \emph{TCP}, impiegato nelle versioni precedenti di \emph{HTTP}, migliorando significativamente le prestazioni e la sicurezza delle comunicazioni web.
+Vedremo in dettaglio questo aspetto nelle prossime sezioni.
 \\\\
 \noindent Per motivi di spazio, analizzeremo solo gli elementi trattati durante il nostro studio, concentrandoci in particolare su questi argomenti:
 \begin{itemize}
@@ -244,10 +244,41 @@ Nonostante questa differenza strutturale, \emph{QUIC} implementa le stesse funzi
 \end{itemize}
 
 \noindent Un aspetto pratico importante è che, essendo costruito sopra \emph{UDP}, tutte le informazioni necessarie al funzionamento di \emph{QUIC} sono contenute nel payload del datagramma \emph{UDP} (Figura \ref{udp-datagram}).
-Long Header e Short Header (Relative Figure).
-
-Concetti chiave del suo funzionamento (Uso del connection id e side effect di questo)
-
+\paragraph{Identificatori di Connessione}
+\noindent A differenza di \emph{TCP}, \emph{QUIC} adotta un approccio diverso e allo stesso tempo innovativo per l'identificazione delle connessioni. Mentre in \emph{TCP}, come abbiamo già visto, le connessioni sono identificate tramite la tupla:
+\begin{center}
+\small
+$[\text{Indirizzo IP sorgente}, \text{Porta sorgente}] \leftrightarrow [\text{Indirizzo IP destinazione}, \text{Porta destinazione}]$
+\end{center}
+\emph{QUIC} introduce un concetto diverso: il \emph{Connection ID}\footnote{\gls{Connection ID}}. Questo identificatore consente di riconoscere la connessione in maniera indipendente dagli \emph{indirizzi IP} o dalle \emph{porte} utilizzate.
+Il vantaggio principale di questo approccio è la capacità di mantenere attiva una connessione anche in caso di cambiamento dell'\emph{indirizzo IP} o della \emph{porta}, situazione che nelle reti moderne è molto frequente.
+\\\\
+Un esempio concreto che illustra il significativo passo avanti di \emph{QUIC} rispetto alle technologie tradizionali si può osservare nel comportamento dei dispositivi mobili durante il passaggio tra diverse reti.
+Con una connessione \emph{TCP}, quando un dispositivo migra da una rete \emph{WiFi} a una \emph{rete mobile}, è richiesta una riconnessione completa (come si può vedere in Figura \ref{tcp-handoff}). 
+\\
+Al contrario,\emph{QUIC} gestisce questa transazione in modo più efficiente (come mostrato nella Figura \ref{quic-handoff}). Grazie al \emph{Connection ID}, \emph{QUIC} riesce a mantenere la connessione attiva nonostante il cambio di rete, eliminando la necessità di effettuare una riconnessione e garantendo un servizio costante.
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.90\columnwidth]{descrizione/quic/tcp-handoff}
+        \caption{\emph{TCP}}
+        \label{tcp-handoff}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.90\columnwidth]{descrizione/quic/quic-handoff}
+        \caption{\emph{QUIC}}
+        \label{quic-handoff}
+    \end{minipage}
+\end{figure}
+\\
+Oltre a questo vantaggio fondamentale, l'utilizzo del \emph{Connection ID} offre ulteriori benefici:
+\begin{itemize}
+\item \textbf{Load balancing}: Grazie al \emph{Connection ID} i server possono distribuire il carico in modo più dinamico senza avere interruzzioni nelle connessioni esistenti, migliorando le prestazioni e la scalabilità.
+\item \textbf{Maggiore privacy}: Il \emph{Connection ID} può essere cambiato frequentemente, aumentando la protezione della privacy e riducendo la tracciabilità delle connessioni.
+\end{itemize}
 
 \paragraph{http2 vs http3}
 \paragraph{tipi di pacchetti}
