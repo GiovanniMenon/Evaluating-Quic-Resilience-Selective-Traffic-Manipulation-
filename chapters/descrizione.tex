@@ -311,6 +311,8 @@ Oltre a questo vantaggio fondamentale, l'utilizzo del \emph{Connection ID} offre
 \item \textbf{Load balancing}: Grazie al \emph{Connection ID} i server possono distribuire il carico in modo più dinamico senza avere interruzzioni nelle connessioni esistenti, migliorando le prestazioni e la scalabilità.
 \item \textbf{Maggiore privacy}: Il \emph{Connection ID} può essere cambiato frequentemente, aumentando la protezione della privacy e riducendo la tracciabilità delle connessioni.
 \end{itemize}
+\paragraph{\textit{Packet Number}}
+Accennare cosa è
 
 \paragraph{\textit{Formato dei Pacchetti}}
 \noindent Un datagramma \emph{UDP} può contenere uno o più pacchetti \emph{QUIC}. Ciascun pacchetto \emph{QUIC} è composto da un \emph{header} e da \emph{N} \emph{frame}, come illustrato nella Figura \ref{quic-packet} \cite{site:Packet-Formats}.
@@ -370,7 +372,7 @@ Il \emph{long header} viene utilizzato principalmente durante l'inizializzazione
 
 \begin{itemize}
     \item \textit{\textbf{Header Form}}: 1 bit, indica il tipo di \emph{header}, dove 1 indica \emph{long header}.
-    \item \textit{\textbf{Fixed Bit}}: 1 bit, il valore fissato è 1 a meno che non sia un pacchetto di \emph{Negozazione di Versione}. I pacchetti che contengono 0 in questo campo devono venire scartati.
+    \item \textit{\textbf{Fixed Bit}}: 1 bit, il valore fissato è 1 a meno che non sia un pacchetto di \emph{Negoziazione di Versione}. I pacchetti che contengono 0 in questo campo devono venire scartati.
     \item \textit{\textbf{Long Packet Type}}: 2 bit, specifica il tipo di pacchetto. I tipi di pacchetti sono specificati nella Figura \ref{packet-type}
     \item \textit{\textbf{Type-Specific Bits}}: 4 bit, contiene bit specifici per il tipo di pacchetto.
     \item \textit{\textbf{Version}}: 32 bit, indica la versione di \emph{QUIC} in uso.
@@ -382,11 +384,55 @@ Il \emph{long header} viene utilizzato principalmente durante l'inizializzazione
 \end{itemize}
 
 \noindent Una discussione approfondità sui singoli tipi di pacchetto in Figura \ref{packet-type} sarebbe troppo onerosa e non inerente. Pertanto vedremo velocemente il ruolo di ogni tipo senza entrare nel dettaglio. 
+\\
+\indent \textbf{\emph{Initial Packet}} ha il compito di trasportare il primo \emph{Crypto Frame} mandato dal \emph{client} e dal \emph{server} per fare lo scambio delle chiavi di crittografia, e si occupa anche di trasporta l'\emph{acknowledge} in entrambe le direzioni.
+\\
+\indent \textbf{\emph{0-RTT}}  ha il compito di trasportare gli \emph{early data} (dati anticipati) che il \emph{client} invia al \emph{server} come parte della prima comunicazione, questo permette di ridurre la latenza. Vedremo meglio questo nella sezione dedicata all'\emph{handshake}.
+\\
+\indent \textbf{\emph{Handshake Packet}}  ha il compito di trasportare i messaggi crittografici necessari per il processo di handshake. Una volta che il \emph{client} ha ricevuto un \emph{Handshake packet} dal \emph{server}, , il \emph{client} utilizza pacchetti di \emph{handshake} per inviare i successivi messaggi criptografici di \emph{handshake} e riconoscimenti al \emph{server}.
+\\
+\indent \textbf{\emph{Retry Packet}}  ha il compito di trasportare un \emph{token} di validazione creato dal \emph{server}. Viene usato dal \emph{server} quando vuole effettuare un \emph{retry}, ovvero richiedere al \emph{client} di ripetere l'invio di una richiesta iniziale.
+\\\\
+Passiamo ora ad analizzare il \emph{short header}, utilizzato esclusivamente dopo che le chiavi sono state negoziate. Esiste un'unica variante di questo \emph{header}, noto come RTT-1 (illustrato nella Figura \ref{short-header}) \cite{site:Short-header}.
+\begin{figure}[!h]
+    \centering
+    \begin{small}
+    \begin{BVerbatim}
+1-RTT Packet {
+    Header Form (1) = 0,
+    Fixed Bit (1) = 1,
+    Spin Bit (1),
+    Reserved Bits (2),
+    Key Phase (1),
+    Packet Number Length (2),
+    Destination Connection ID (0..160),
+    Packet Number (8..32),
+    Packet Payload (8..),
+  }
+    \end{BVerbatim}
+\end{small}
+    \caption{\emph{QUIC Short header}}
+    \label{short-header}
+\end{figure}
+\begin{itemize}
+    \item \textit{\textbf{Header Form}}: 1 bit, indica il tipo di \emph{header}, dove 0 indica \emph{short header}.
+    \item \textit{\textbf{Fixed Bit}}: 1 bit, il valore fissato è 1. I pacchetti che contengono 0 in questo campo devono venire scartati.
+    \item \textit{\textbf{Spin Bit}}: 1 bit, viene utilizzato per il monitoraggio passivo della latenza, il \emph{server} riflette il valore dello \emph{spin bit} ricevuto mentre il \emph{client} lo inverte dopo ogni \emph{RTT}.
+    \item \textit{\textbf{Reserved Bits}}: ..
+    \item \textit{\textbf{Key Phase}}: ..
+    \item \textit{\textbf{Packet Number Lenght}}: 
+    \item \textit{\textbf{Destination Connection ID}}: 
+    \item \textit{\textbf{Packet Number}}: 
+    \item \textit{\textbf{Packet Payload}}: 
+    \end{itemize}
 
+    qua finito dopo aver fatto questo
 \subsubsection{Handshake}
 Qui si parla del processo di handshake
+domani 
 \subsubsection{Multiplexing}
 Qui si parla del processo di handshake
+domani 
 \subsubsection{Gestione degli Errori e di Ritrasmissione}
 
 Qui si parla della gestione degli Errori e di ritrasmissione
@@ -394,6 +440,7 @@ Qui si parla della gestione degli Errori e di ritrasmissione
 \subsubsection{Sicurezza del Protocollo}
 
 Gestione del lato di sicurezza del protocollo
+1 intero giorno 
 
 \subsubsection{Versione e Applicazioni }
 % https://quicwg.org/
