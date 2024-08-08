@@ -486,9 +486,17 @@ Questo approccio elimina il problema del \emph{HoL\footnote{\gls{HoL}} blocking}
 
 
 \subsubsection{Sicurezza del Protocollo}
-
-Gestione del lato di sicurezza del protocollo
-1 intero giorno 
+Uno degli aspetti fondamentali alla base di \emph{QUIC} è l'attenzione alla sicurezza. Fin dalla sua progettazione iniziale, è stato concepito per migliorare l'affidabilità e la sicurezza delle connessioni. 
+Sono diversi i meccanismi integrati all'interno di \emph{QUIC} per ottenere questo obbiettivo.
+\\\\
+In \emph{QUIC} l'integrazione della sicurezza tramite \emph{TLS 1.3} è parte integrante del protocollo. Il processo di stabilimento della connesione incorpora nello stesso \emph{handshake} la negozazione e l'instaurazione della sicurezza \emph{TLS}. 
+Al contrario di \emph{TCP}, dove \emph{TLS} è un protocollo aggiuntivo che viene usato per aggiungere un livello di sicurezza sopra alla connesione \emph{TCP}. Questo comporta diversi differenze e vantaggi.
+\\\\
+Prima di tutto, il fatto che il processo di stabilimento della connessione \emph{QUIC} incorpori già le fasi necessarie al \emph{TLS} nello stesso handshake permette di ridurre drasticamente il numero di round trip necessari.
+Un'atra grande differenza è che con \emph{QUIC} non solo gli \emph{user data} vengono crittografati, ma l'intero pacchetto (\emph{header} escluso) \cite{site:Explaining-QUIC}.
+\\\\
+Un ulteriore aspetto fondamentale nella sicurezza del protocollo è rappresentato dalla crittografia \emph{end-to-end}\footnote{\gls{end-to-end}}, che assicura che i dati trasmessi tra il \emph{client} e il \emph{server} siano protetti da intercettaazioni o manipolazioni da parte di terzi.
+Questo avviene tramite l'uso di algoritmi crittografici come \emph{Diffie-Hellman} nella prima fase e successivamente una chiave simmetrica condivisa. Inoltre viene utilizzato un rinnovamento periodico delle chiavi per garantire una maggiore sicurezza e una protezione continua \cite{site:quic-security}.
 
 \subsection{MPTCP}
 
