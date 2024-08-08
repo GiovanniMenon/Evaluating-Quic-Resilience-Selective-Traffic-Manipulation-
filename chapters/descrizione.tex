@@ -193,7 +193,6 @@ Nel contesto di questo studio, ci concentreremo in particolare sul protocollo \e
 \end{enumerate}
 
 \noindent È importante notare che con il \emph{TLS 1.3} si ha un \emph{2RTT}, ovvero vengono richiesti due \emph{Round Trip} prima dell'effettivo invio dei dati. 
-\footcite{womak:lean-thinking}
 \subsubsection{UDP (User Datagram Protocol)}
 % https://datatracker.ietf.org/doc/html/rfc768
 ~\\
@@ -312,7 +311,18 @@ Oltre a questo vantaggio fondamentale, l'utilizzo del \emph{Connection ID} offre
 \item \textbf{Maggiore privacy}: Il \emph{Connection ID} può essere cambiato frequentemente, aumentando la protezione della privacy e riducendo la tracciabilità delle connessioni.
 \end{itemize}
 \paragraph{\textit{Packet Number}}
-Accennare cosa è
+
+\noindent \emph{QUIC} introduce un nuovo meccanismo per la gestione dei numeri di sequenza, ogni pacchetto trasmesso in una connesione \emph{QUIC} viene indentificato tramite un \emph{Packet Number}, un numero univoco 
+compreso fra 0 e $2^{62}$-1. Questo numero viene utilizzato per identificare il \emph{nonce crittografico}\footnote{\gls{nonce crittografico}} per la protezione dei pacchetti. Per ogni \emph{endpoint}\footnote{\gls{endpoint}} il \emph{Packet Number} è diverso per il traffico in entrata e in uscita.
+\emph{QUIC}, inoltre, suddivide il \emph{Packet Number} in tre spazi distinti:
+\begin{enumerate}[label=\roman*]
+    \item \emph{Initial Space}, contiene tutti i pacchetti iniziali.
+    \item \emph{Handshake Space}, contiene tutti i pacchetti di \emph{handshake}.
+    \item \emph{Application Data Space}, contiene tutti i pacchetti \emph{0-RTT} e \emph{1-RTT}
+\end{enumerate}
+\noindent Concettualmente, un \emph{packet number space} è il contesto nel quale un pacchetto viene processato e confermato. Questo garantisce che i pacchetti nei \emph{number space} diversi siano crittograficamente separati.
+\\
+Ogni spazio inizia con un \emph{Packet Number} pari a 0, ogni pacchetto successivo incrementa il numero di 1 alla volta \cite{site:Packet-number}. 
 
 \paragraph{\textit{Formato dei Pacchetti}}
 \noindent Un datagramma \emph{UDP} può contenere uno o più pacchetti \emph{QUIC}. Ciascun pacchetto \emph{QUIC} è composto da un \emph{header} e da \emph{N} \emph{frame}, come illustrato nella Figura \ref{quic-packet} \cite{site:Packet-Formats}.
@@ -418,15 +428,13 @@ Passiamo ora ad analizzare il \emph{short header}, utilizzato esclusivamente dop
     \item \textit{\textbf{Header Form}}: 1 bit, indica il tipo di \emph{header}, dove 0 indica \emph{short header}.
     \item \textit{\textbf{Fixed Bit}}: 1 bit, il valore fissato è 1. I pacchetti che contengono 0 in questo campo devono venire scartati.
     \item \textit{\textbf{Spin Bit}}: 1 bit, viene utilizzato per il monitoraggio passivo della latenza, il \emph{server} riflette il valore dello \emph{spin bit} ricevuto mentre il \emph{client} lo inverte dopo ogni \emph{RTT}.
-    \item \textit{\textbf{Reserved Bits}}: ..
-    \item \textit{\textbf{Key Phase}}: ..
-    \item \textit{\textbf{Packet Number Lenght}}: 
-    \item \textit{\textbf{Destination Connection ID}}: 
-    \item \textit{\textbf{Packet Number}}: 
-    \item \textit{\textbf{Packet Payload}}: 
+    \item \textit{\textbf{Reserved Bits}}: 2 bit, sono dei bit riservati e protetti usando l'\emph{header protection}, il loro valore dopo aver rimosso la protezione deve essere 0, in caso contrario viene segnalato un errore di connessione.
+    \item \textit{\textbf{Key Phase}}: 1 bit, indica la fase della chiave, ovvero permette a chi riceve il pacchetto di identificare le chiavi usate per proteggere il pacchetto. Anche questo campo è protetto usando l'\emph{header protection}.
+    \item \textit{\textbf{Packet Number Lenght}}: 2 bit, indica la lunghezza effettiva del campo \emph{Packer Number}
+    \item \textit{\textbf{Destination Connection ID}}: 0 a 160 bit, indica il \emph{Connection ID} scelto da chi riceve il pacchetto.
+    \item \textit{\textbf{Packet Number}}: 8 a 32 bit, contiene il \emph{Packet Number}.
+    \item \textit{\textbf{Packet Payload}}: 8 a lunghezza variabile, contiene il \emph{payload} protetto. 
     \end{itemize}
-
-    qua finito dopo aver fatto questo
 \subsubsection{Handshake}
 Qui si parla del processo di handshake
 domani 
