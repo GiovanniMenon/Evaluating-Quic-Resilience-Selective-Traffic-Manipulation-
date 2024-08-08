@@ -286,7 +286,7 @@ Il vantaggio principale di questo approccio è la capacità di mantenere attiva 
 \\\\
 Un esempio concreto che illustra gli effetti di questo approccio si può osservare nel comportamento dei dispositivi mobili durante il passaggio tra diverse reti.
 Con una connessione \emph{TCP}, quando un dispositivo migra da una rete \emph{WiFi} a una \emph{rete mobile}, è richiesta una riconnessione completa (come si può vedere in Figura \ref{tcp-handoff}). 
-\\
+\\\\
 Al contrario,\emph{QUIC} gestisce questa transazione in modo più efficiente (come mostrato nella Figura \ref{quic-handoff}). Grazie al \emph{Connection ID}, \emph{QUIC} riesce a mantenere la connessione attiva nonostante il cambio di rete, eliminando la necessità di effettuare una riconnessione e garantendo un servizio costante.
 \begin{figure}[!h]
     \centering
@@ -394,7 +394,7 @@ Il \emph{long header} viene utilizzato principalmente durante l'inizializzazione
 \end{itemize}
 
 \noindent Una discussione approfondità sui singoli tipi di pacchetto in Figura \ref{packet-type} sarebbe troppo onerosa e non inerente. Pertanto vedremo velocemente il ruolo di ogni tipo senza entrare nel dettaglio. 
-\\
+\\\\
 \indent \textbf{\emph{Initial Packet}} ha il compito di trasportare il primo \emph{Crypto Frame} mandato dal \emph{client} e dal \emph{server} per fare lo scambio delle chiavi di crittografia, e si occupa anche di trasporta l'\emph{acknowledge} in entrambe le direzioni.
 \\
 \indent \textbf{\emph{0-RTT}}  ha il compito di trasportare gli \emph{early data} (dati anticipati) che il \emph{client} invia al \emph{server} come parte della prima comunicazione, questo permette di ridurre la latenza. Vedremo meglio questo nella sezione dedicata all'\emph{handshake}.
@@ -454,7 +454,7 @@ Procediamo ora con l'analisi del processo di \emph{handshake} in \emph{QUIC} (Fi
     \end{minipage}
 \end{figure}
 
-\emph{QUIC} permette di ridurre significativamente il numero di scambi necessari per l'inizializzazione della connessione. In particolare, si possono identificare due scenari:
+\noindent \emph{QUIC} permette di ridurre significativamente il numero di scambi necessari per l'inizializzazione della connessione. In particolare, si possono identificare due scenari:
 \begin{enumerate}
     \item \textit{\textbf{First-time Connection Establishment}}: Avviene quando il \emph{client} si connette per la prima volta al \emph{server}. Viene inviato un messaggio di \emph{CHLO}\footnote{\gls{CHLO}} a cui il \emph{server} risponde con un messaggio di \emph{REJ}\footnote{\gls{REJ}}. 
     Questo messaggio contiene : 
@@ -483,8 +483,6 @@ dove spesso vengono richiesti in contemporanea più componenti.
 \\\\
 Questo approccio elimina il problema del \emph{HoL\footnote{\gls{HoL}} blocking}, un fenomeno comune nel \emph{TCP} dove la perdita o il ritardo di un pacchetto obbliga l'intero flusso di dati a interrompersi  finché il pacchetto non viene ritrasmesso e ricevuto correttamente.
 
-
-
 \subsubsection{Sicurezza del Protocollo}
 Uno degli aspetti fondamentali alla base di \emph{QUIC} è l'attenzione alla sicurezza. Fin dalla sua progettazione iniziale, è stato concepito per migliorare l'affidabilità e la sicurezza delle connessioni. 
 Sono diversi i meccanismi integrati all'interno di \emph{QUIC} per ottenere questo obbiettivo.
@@ -497,7 +495,9 @@ Un'atra grande differenza è che con \emph{QUIC} non solo gli \emph{user data} v
 \\\\
 Un ulteriore aspetto fondamentale nella sicurezza del protocollo è rappresentato dalla crittografia \emph{end-to-end}\footnote{\gls{end-to-end}}, che assicura che i dati trasmessi tra il \emph{client} e il \emph{server} siano protetti da intercettaazioni o manipolazioni da parte di terzi.
 Questo avviene tramite l'uso di algoritmi crittografici come \emph{Diffie-Hellman} nella prima fase e successivamente una chiave simmetrica condivisa. Inoltre viene utilizzato un rinnovamento periodico delle chiavi per garantire una maggiore sicurezza e una protezione continua \cite{site:quic-security}.
-
+\\\\
+Un altro meccanismo utilizzato per garantire l'integrità dei dati è l'utilizzo di un \emph{checksum}, che consente di verificare che i dati non siano stati alterati durante la trasmissione. In caso il destinatario nota discrepanze tra il contenuto del campo \emph{checksum} e i dati stessi allora verranno rifiutati e scartati.
+In aggiunta \emph{QUIC} include nei pacchetti anche l'\emph{hash} crittografico dei dati stessi, quando il destinatario riceve il pacchetto e ricalcola l'\emph{hash} è in grado di rilevare se i dati sono corroti \cite{site:quic-security}.
 \subsection{MPTCP}
 
 Qua c'è molto da
