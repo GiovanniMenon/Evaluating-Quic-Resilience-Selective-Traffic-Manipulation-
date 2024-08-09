@@ -114,7 +114,7 @@ Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra 
 \noindent Questa struttura offre diversi vantaggi. Permettere a un singolo \emph{server} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. 
 Inoltre garantisce l'unicità di ogni connessione all'interno della rete.
 \\
-Tuttavia, questa rigida definzione comporta delle limitazioni significative. In quanto una qualsiasi modifica ad un elemento della tupla (ad esempio, un cambiamento di porta o una migrazione dell'indirizzo IP) comporta la terminazione della connessione esistente. Questo diventa ancora più limitativo nel contesto delle comunicazioni moderne dove i casi di \emph{multihoming}\footnote{\gls{multihoming}} e cambi frequenti di indirizzo IP sono sempre più comuni.
+Tuttavia, questa rigida definzione comporta delle limitazioni significative. In quanto una qualsiasi modifica ad un elemento della tupla (ad esempio, un cambiamento di porta o una migrazione dell'indirizzo IP) comporta la terminazione della connessione esistente. Questo diventa ancora più limitativo nel contesto delle comunicazioni moderne dove i casi di \emph{multihoming}\footnote{\gls{multihoming}} e cambi frequenti di indirizzo IP sono sempre più comuni\cite{site:tcp}. 
 \\
 \\
 Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzioni come \emph{MPTCP} e viene affrontata in modo indiretto anche in \emph{QUIC}.
@@ -151,7 +151,7 @@ Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzi
 
 \noindent Tutti i segmenti utilizzati in questa fase hanno il campo \emph{data} vuoto, ossia sono solamente degli \emph{header}. 
 Oltre a stabilire la connessione, l'\emph{handshake} riveste un ruolo fondamentale in vari aspetti della comunicazione \emph{TCP}.
-Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche una base inziale per misurare il \emph{RTT}\footnote{\gls{RTT}} (Figura \ref{rtt}), che è essenziale per ottimizzare il controllo di flusso e la gestione della congestione della rete.
+Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche una base inziale per misurare il \emph{RTT}\footnote{\gls{RTT}} (Figura \ref{rtt}), che è essenziale per ottimizzare il controllo di flusso e la gestione della congestione della rete \cite{site:tcp}.
 
 \paragraph{\textit{Ritrasmissioni}}
 
@@ -192,7 +192,7 @@ Nel contesto di questo studio, ci concentreremo in particolare sul protocollo \e
     \item \textbf{Client invia un messaggio Finished}: Il Client dopo aver ricevuto il messaggio \emph{Finished} dal Server possiede tutte le informazioni necessarie per confermare il completamento dell'\emph{handshake} e invia a sua volta un messaggio \emph{Finished} per confermare il termine di tale operazione.
 \end{enumerate}
 
-\noindent È importante notare che con il \emph{TLS 1.3} si ha un \emph{2RTT}, ovvero vengono richiesti due \emph{Round Trip} prima dell'effettivo invio dei dati. 
+\noindent È importante notare che con il \emph{TLS 1.3} si ha un \emph{2RTT}, ovvero vengono richiesti due \emph{Round Trip} prima dell'effettivo invio dei dati \cite{site:tls}. 
 \subsubsection{UDP (User Datagram Protocol)}
 % https://datatracker.ietf.org/doc/html/rfc768
 ~\\
@@ -230,7 +230,7 @@ In quanto questo è composto da soli quattro campi, i quali sono :
     \item \textit{\textbf{Checksum}}: Questo campo è opzionale e può essere usato per effettuare dei controli di errore sul datagramma.
 \end{itemize}
 
-\noindent La semplicità di questa struttura riflette a pieno i suoi casi d'uso, dove i punti di forza principali sono la velocità e l'efficienza.
+\noindent La semplicità di questa struttura riflette a pieno i suoi casi d'uso, dove i punti di forza principali sono la velocità e l'efficienza \cite{site:udp}.
 In particolare l'assenza di complessi meccanismi di controllo e gestione, invece presenti nel \emph{TCP}, rende l'\emph{UDP} particolarmente adatto per applicazioni che richiedono una trasmissione rapida e in cui la perdita di alcuni pacchetti non invalida totalmente il servizio.
 Ne sono un esempio i giochi online, lo streaming video e le chiamate \emph{VOIP}\footnote{\gls{VOIP}}.
 
@@ -541,8 +541,8 @@ Il sottolivello superiore di \emph{MPTCP} opera end-to-end ed è responsabile de
 \paragraph{\textit{Formato dei Pacchetti}}
 \noindent Essendo una estensione del \emph{TCP} tutte le operazioni del \emph{MPTCP} sono contenute all'interno dei campi opzionali dell'\emph{header TCP}. 
 Per identificare le opzioni specifiche di \emph{MPTCP}, il campo \emph{Kind} nell'\emph{header} \emph{TCP} è impostato al valore 30, come assegnato da \emph{IANA}\footnote{\gls{IANA}}.
-    \begin{figure}[!h]
-        \centering
+\begin{figure}[!h]
+    \centering
           \begin{BVerbatim}
  1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -552,13 +552,50 @@ Per identificare le opzioni specifiche di \emph{MPTCP}, il campo \emph{Kind} nel
 |                     Subtype-specific data                     |
 |                       (variable length)                       |
 +---------------------------------------------------------------+   
-           \end{BVerbatim}
-        \caption{\emph{MPTCP Option Format}}
-        \label{mptcp-option-format}
-    \end{figure}
+        \end{BVerbatim}
+    \caption{\emph{MPTCP Option Format}}
+    \label{mptcp-option-format}
+\end{figure}
+
+Qui si parla che per la gestione etc si usano i sottotipi etc 
+\begin{figure}[!h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Value} & \textbf{Symbol} & \textbf{Name} \\
+        \hline
+        0x0 & \emph{MP\_CAPABLE} & Multipath Capable \\
+        \hline
+        0x1 & \emph{MP\_JOIN} & Join Connection \\
+        \hline
+        0x2 & \emph{DSS} & Data Sequence Signal \\
+        \hline
+        0x3 & \emph{ADD\_ADDR} & Add Address \\
+        \hline
+        0x4 & \emph{REMOVE\_ADDR} & Remove Address \\
+        \hline
+        0x5 & \emph{MP\_PRIO} & Change Subflow Priority \\
+        \hline
+        0x6 & \emph{MP\_FAIL} & Fallback \\
+        \hline
+        0x7 & \emph{MP\_FASTCLOSE} & Fast Close \\
+        \hline
+        0x8 & \emph{MP\_TCPRST} & Subflow Reset \\
+        \hline
+    \end{tabular}
+    \caption{\emph{MPTCP Option Subtypess}}
+    \label{options-subtypes}
+\end{figure}
+veloce analisi dello scopo di ogni sottotipo 
+veloce analisi di come viene suddiviso il flusso 
+domani
+
+\paragraph{\textit{Handshake}}
+spiegazione dell'handshake
+domani
 
 \section{I problemi e l'Idea}
-
+domani o domenica
 I problemi di Quic e le nostre idee.
 
 
