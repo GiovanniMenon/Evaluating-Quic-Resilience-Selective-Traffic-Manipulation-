@@ -243,13 +243,12 @@ Il suo sviluppo così recente ha permesso di progettarlo specificamente per affr
 Inoltre \emph{QUIC} è stato progettato per collaborare con \emph{HTTP}\footnote{\gls{HTTP}}, il protocollo a \emph{livello applicativo}\footnote{\gls{livello applicativo}}. Chiamando \emph{HTTP/3}\footnote{\gls{HTTP/3}} la versione che utilizza \emph{QUIC} al posto di \emph{TCP} come protocollo di trasporto \cite{site:HTTP-over-QUIC}.
 \\\\
 \noindent Per motivi di spazio, analizzeremo solo gli elementi trattati durante il nostro studio, concentrandoci in particolare su questi argomenti:
-\begin{itemize}
+\begin{enumerate}
     \item La struttura del protocollo;
     \item Il processo di \emph{handshake};
     \item La gestione degli errori e le casistiche di Ritrasmissione;
     \item Sistemi di sicurezza;
-    \item Versioni e Applicazioni;
-\end{itemize}
+\end{enumerate}
 
 \subsubsection{Struttura del Protocollo}
 ~\\ 
@@ -498,10 +497,65 @@ Questo avviene tramite l'uso di algoritmi crittografici come \emph{Diffie-Hellma
 \\\\
 Un altro meccanismo utilizzato per garantire l'integrità dei dati è l'utilizzo di un \emph{checksum}, che consente di verificare che i dati non siano stati alterati durante la trasmissione. In caso il destinatario nota discrepanze tra il contenuto del campo \emph{checksum} e i dati stessi allora verranno rifiutati e scartati.
 In aggiunta \emph{QUIC} include nei pacchetti anche l'\emph{hash} crittografico dei dati stessi, quando il destinatario riceve il pacchetto e ricalcola l'\emph{hash} è in grado di rilevare se i dati sono corroti \cite{site:quic-security}.
-\subsection{MPTCP}
 
-Qua c'è molto da
-Da pensare ai capitoli 
+\subsection{MPTCP}
+~\\
+\indent \emph{MPTCP } rappresenta un'evoluzione significativa del protocollo \emph{TCP} tradizionale. 
+Si tratta di un insieme di estensioni progettate con lo scopo di ampliare le funzionalità del \emph{TCP} standard,
+introducendo il concetto di \emph{multipath}\footnote{\gls{multipath}}. Questa innovazione consente a una singola connessione di trasporto di operare simultaneamente su molteplici percorsi di rete.
+\\\\
+L'idea alla base di \emph{MPTCP} è quella di sfruttare al massimo le varie risorse di rete disponibili, permettendo a una connessione di utlizzare in contemporanea diverse interfacce o percorsi.
+\\\\
+In questa sezione esamineremo il funzionamento di \emph{MPTCP}, analizzando i suoi principi base, la struttura del protocollo e i vantaggi che offre rispetto al \emph{TCP} tradizionale. 
+
+\subsubsection{Struttura del Protocollo}
+~\\
+\indent \emph{MPTCP} introduce una struttura innovativa al livello di trasporto, suddividendolo in due sottolivelli distinti, come illustrato nella Figura \ref{comparison}.
+\\\\
+Il sottolivello superiore di \emph{MPTCP} opera end-to-end ed è responsabile della gestione complessiva dei vari \emph{subflows} sottostanti. Per fare questo, implementa le seguenti funzioni:
+\begin{enumerate}[label=\roman*]
+    \item \emph{Path Management} Breve Descrizione 
+    \item \emph{Packet Scheduling} Breve Descrizione 
+    \item \emph{Congestion Control} Breve Descrizione 
+    \item \emph{Subflow Interface} Breve Descrizione 
+\end{enumerate}
+\noindent Il sottolivello inferiore, invece, è responsabile dei singoli \emph{subflow}. Ogni \emph{subflow} viene trattato come un flusso \emph{TCP} indipendente. Questa struttura permette a \emph{MPTCP} di essere \emph{retro-compatibile} con le reti esistenti, evitando problemi come l'\emph{ossification}. Inoltre, consente al componente \emph{TCP} di operare segmento per segmento, garantendo le funzionalità essenziali del \emph{TCP} tradizionale.
+\begin{figure}[!h]
+  \centering
+    \begin{BVerbatim}
+                             +-------------------------------+
+                             |           Application         |
++---------------+            +-------------------------------+
+|  Application  |            |             MPTCP             |
++---------------+            + - - - - - - - + - - - - - - - +
+|      TCP      |            | Subflow (TCP) | Subflow (TCP) |
++---------------+            +-------------------------------+
+|      IP       |            |       IP      |      IP       |
++---------------+            +-------------------------------+
+               \end{BVerbatim}
+    \caption{\emph{Comparison of Standard TCP and MPTCP Protocol Stacks}}
+    \label{comparison}
+    \end{figure}
+\\\\
+\noindent Un aspetto fondamentale di questa architettura è la sua trasparenza. Dal punto di vista applicativo, \emph{MPTCP} risulta una singola connessione \emph{TCP} standard, nascondendo la complessità della gestione \emph{multipath} \cite{site:mptcp-design}.
+\paragraph{\textit{Formato dei Pacchetti}}
+\noindent Essendo una estensione del \emph{TCP} tutte le operazioni del \emph{MPTCP} sono contenute all'interno dei campi opzionali dell'\emph{header TCP}. 
+Per identificare le opzioni specifiche di \emph{MPTCP}, il campo \emph{Kind} nell'\emph{header} \emph{TCP} è impostato al valore 30, come assegnato da \emph{IANA}\footnote{\gls{IANA}}.
+    \begin{figure}[!h]
+        \centering
+          \begin{BVerbatim}
+ 1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++---------------+---------------+-------+-----------------------+
+|     Kind      |    Length     |Subtype|                       |
++---------------+---------------+-------+                       |
+|                     Subtype-specific data                     |
+|                       (variable length)                       |
++---------------------------------------------------------------+   
+           \end{BVerbatim}
+        \caption{\emph{MPTCP Option Format}}
+        \label{mptcp-option-format}
+    \end{figure}
 
 \section{I problemi e l'Idea}
 
