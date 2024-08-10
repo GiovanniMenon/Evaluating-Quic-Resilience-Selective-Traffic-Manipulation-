@@ -557,7 +557,8 @@ Per identificare le opzioni specifiche di \emph{MPTCP}, il campo \emph{Kind} nel
     \label{mptcp-option-format}
 \end{figure}
 
-Qui si parla che per la gestione etc si usano i sottotipi etc 
+\noindent Il campo \emph{Subtype} specifica la funzione dell'opzione \emph{MPTCP}. La Figura \ref{options-subtypes} presenta un elenco completo dei sottotipi disponibili. Segue una breve descrizione di ogni tipo.
+
 \begin{figure}[!h]
     \centering
     \begin{tabular}{|c|c|c|}
@@ -586,9 +587,26 @@ Qui si parla che per la gestione etc si usano i sottotipi etc
     \caption{\emph{MPTCP Option Subtypess}}
     \label{options-subtypes}
 \end{figure}
-veloce analisi dello scopo di ogni sottotipo 
-veloce analisi di come viene suddiviso il flusso 
-domani
+~\\
+\indent \textbf{\emph{Multipath Capable}} viene utilizzato durante il processo di avvio di una connessione, verifica che entrambi gli \emph{endpoint} supportano \emph{MPTCP} e contiene ulteriori informazioni per l'autenticazione di ulteriori \emph{subflow}.
+\\
+\indent \textbf{\emph{Join Connection}} viene utilizzato per stabilire nuovi \emph{subflow} all'interno di una connesione \emph{MPTCP} esistente, utilizza le informazioni condivise nel \emph{Multipath Capable} per autenticare il \emph{subflow} come parte della connessione principale.
+\\
+\indent \textbf{\emph{Data Sequence Signal}} gestisce la mappatura dei dati del livello applicativo sui \emph{subflow}, gestendo la riordinazione e la ritrasmissione dei segmenti. 
+Utilizza un \emph{Data Sequence Number} a 64 bit per numerare in modo univoco tutti i dati trasmessi attraverso la connessione \emph{MPTCP}.
+\\
+\indent \textbf{\emph{Add Address}} permette a un \emph{endpoint} di informare la disponibilità di un \emph{indirizzo IP} aggiuntivo disponibile per la connessione, senza stabilire un \emph{subflow}.
+\\
+\indent \textbf{\emph{Remove Address}} consente a un \emph{endpoint} di notificare che un \emph{indirizzo IP} precedentemente annunciato non è più disponibile.
+\\
+\indent \textbf{\emph{Change Subflow Priority}} consente di modificare la priorità di un \emph{subflow}, influenzando le decisioni di \emph{Scheduling} del traffico.
+\\
+\indent \textbf{\emph{Fallback}} segnala la presenza di un problema che richiede il \emph{fallback} al \emph{TCP} normale.
+\\
+\indent \textbf{\emph{Fast Close}} viene utilizzato per segnalare ad un \emph{endpoint} che la connessione verrà chiusa.
+\\
+\indent \textbf{\emph{Subflow Reset}} consente di resettare un singolo \emph{subflow} senza influenzare l'intera connessione \emph{MPTCP}.
+\\
 
 \paragraph{\textit{Handshake}}
 spiegazione dell'handshake
