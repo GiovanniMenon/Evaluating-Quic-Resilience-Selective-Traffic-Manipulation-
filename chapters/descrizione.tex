@@ -514,10 +514,10 @@ In questa sezione esamineremo il funzionamento di \emph{MPTCP}, analizzando i su
 \\\\
 Il sottolivello superiore di \emph{MPTCP} opera end-to-end ed è responsabile della gestione complessiva dei vari \emph{subflows} sottostanti. Per fare questo, implementa le seguenti funzioni:
 \begin{enumerate}[label=\roman*]
-    \item \emph{Path Management} Breve Descrizione 
-    \item \emph{Packet Scheduling} Breve Descrizione 
-    \item \emph{Congestion Control} Breve Descrizione 
-    \item \emph{Subflow Interface} Breve Descrizione 
+    \item \emph{Path Management}: Gestisce la scoperta, l'aggiunta e la rimozione di percorsi di rete disponibili.
+    \item \emph{Packet Scheduling}: Politica con cui si decide in che modo distribuire i pacchetti tra i vari \emph{subflow} attivi.
+    \item \emph{Congestion Control}: Implementa un controllo della congestione a livello \emph{MPTCP}, unendo i meccanismi di controllo della congestione dei singoli \emph{subflow}. 
+    \item \emph{Subflow Interface}: Si occupa di mappare i dati dell'applicativo sui \emph{subflow} appropriati, gestendo la riordinazione e presentando un flusso di dati coerente all'applicazione.
 \end{enumerate}
 \noindent Il sottolivello inferiore, invece, è responsabile dei singoli \emph{subflow}. Ogni \emph{subflow} viene trattato come un flusso \emph{TCP} indipendente. Questa struttura permette a \emph{MPTCP} di essere \emph{retro-compatibile} con le reti esistenti, evitando problemi come l'\emph{ossification}. Inoltre, consente al componente \emph{TCP} di operare segmento per segmento, garantendo le funzionalità essenziali del \emph{TCP} tradizionale.
 \begin{figure}[!h]
@@ -557,7 +557,7 @@ Per identificare le opzioni specifiche di \emph{MPTCP}, il campo \emph{Kind} nel
     \label{mptcp-option-format}
 \end{figure}
 
-\noindent Il campo \emph{Subtype} specifica la funzione dell'opzione \emph{MPTCP}. La Figura \ref{options-subtypes} presenta un elenco completo dei sottotipi disponibili. Segue una breve descrizione di ogni tipo.
+\noindent Il campo \emph{Subtype} specifica la funzione dell'opzione \emph{MPTCP}. La Figura \ref{options-subtypes} presenta un elenco completo dei sottotipi disponibili. Segue una breve descrizione di ogni tipo \cite{site:mptcp-packet}.
 
 \begin{figure}[!h]
     \centering
@@ -608,9 +608,12 @@ Utilizza un \emph{Data Sequence Number} a 64 bit per numerare in modo univoco tu
 \indent \textbf{\emph{Subflow Reset}} consente di resettare un singolo \emph{subflow} senza influenzare l'intera connessione \emph{MPTCP}.
 \\
 
-\paragraph{\textit{Handshake}}
-spiegazione dell'handshake
-domani
+\indent In conclusione, è importante sottolineare che \emph{MPTCP}, essendo un insieme di estensioni del protocollo \emph{TCP}, ne eredita molte caratteristiche di sicurezza. Questa continuità, come già anticipato, offre numerosi vantaggi in termini di compatibilità e robustezza, ma comporta anche alcune sfide specifiche.
+\\\\
+Da un lato, {MPTCP} utilizza tecniche di sicurezza consolidate come il \emph{three-way-handshake} (opportunamente modificato per gestire il \emph{multipath}) e i meccanismi per il controllo della gestione. 
+\\\\
+Dall'altra parte, questa stretta dipendenza con \emph{TCP} implica che \emph{MPTCP} sia soggetto a molte delle stesse problematiche e vulnerabilità del \emph{TCP}. 
+Inoltre la natura \emph{multipath} del protocollo introduce una nuova possibile superfice d'attacco, richiedendo l'implementazione di meccanismi specifici per autenticare e garantire l'integrità dei singoli \emph{subflow}.
 
 \section{I problemi e l'Idea}
 domani o domenica
