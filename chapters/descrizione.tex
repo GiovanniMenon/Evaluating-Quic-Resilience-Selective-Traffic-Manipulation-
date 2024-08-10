@@ -465,7 +465,7 @@ Procediamo ora con l'analisi del processo di \emph{handshake} in \emph{QUIC} (Fi
             \item Un \emph{Source Address Token}, ovvero un blocco di crittografia non autenticata che contiene l'\emph{indirizzo IP} pubblico del \emph{client}.
         \end{enumerate}
         
-    Questo token viene utilizzato per verificare l'identità del \emph{client} nelle comunicazioni future. Il \emph{client} usa queste informazioni per autenticare la configurazione del \emph{server} e invia un messaggio \emph{CHLO} completo (\emph{finished}), contenente il valore \emph{Diffie-Hellman} temporaneo del \emph{client} \cite{site:handshake}.
+    Questo token viene utilizzato per verificare l'identità del \emph{client} nelle comunicazioni future. Il \emph{client} usa queste informazioni per autenticare la configurazione del \emph{server} e invia un messaggio \emph{CHLO} completo (\emph{finished}), contenente il valore \emph{Diffie-Hellman} temporaneo del \emph{client} \cite{article:handshake}.
     \item \textit{\textbf{0-RTT Connection Establishment}}: Dopo il primo handshake, il client possiede già le chiavi iniziali per la connessione. Quindi procede già con l'invio del \emph{CHLO} completo e può iniziare a inviare dati applicativi al \emph{server}.
     Se l'\emph{handshake} ha successo viene restituito un messaggio \emph{SHLO}\footnote{\gls{SHLO}} cifrato con le chiavi iniziali e contenente il nuovo valore temporaneo di \emph{Diffie-Hellman} \cite{site:handshake}.
 \end{enumerate}
@@ -616,7 +616,18 @@ Dall'altra parte, questa stretta dipendenza con \emph{TCP} implica che \emph{MPT
 Inoltre la natura \emph{multipath} del protocollo introduce una nuova possibile superfice d'attacco, richiedendo l'implementazione di meccanismi specifici per autenticare e garantire l'integrità dei singoli \emph{subflow}.
 
 \section{I problemi e l'Idea}
-domani o domenica
-I problemi di Quic e le nostre idee.
+~\\
+(Da rivedere)\\
+\indent Il progetto nasce dall'idea di analizzare i protocolli emergenti nel contesto delle reti moderne, dove le connessioni mobili prevalgono. 
+L'attenzione si è concentrata in particolare sul protocollo \emph{QUIC}, progettato per estendere e potenzialmente sostituire \emph{TCP}.
+\\\\
+Nelle reti mobili, la tariffazione del traffico è spesso basata sul consumo. 
+Tuttavia, meccanismi come la ritrasmissione di segmenti persi possono portare a un consumo di traffico superiore alle aspettative. 
+Studi recenti hanno evidenziato differenze nel trattamento delle ritrasmissioni da parte di diversi operatori \cite{article:cellular}.
+L'obiettivo principale della ricerca è stato quello di esplorare eventuali vulnerabilità di \emph{QUIC} che potrebbero essere sfruttate per manipolare i sistemi di contabilizzazione del traffico mobile.
+\\\\
+La ricerca si è focalizzata su potenziali falle di sicurezza che permetterebbero l'alterazione dei dati di conteggio del traffico da parte di attori malevoli.
+Questo studio si inserisce in un contesto più ampio che include anche l'analisi di \emph{MPTCP}, sebbene per ragioni di tempo ci si sia concentrati principalmente su \emph{QUIC}. 
+
 
 
