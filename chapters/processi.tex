@@ -1,12 +1,65 @@
 \chapter{Processi e Metodi}
 \label{cap:processi-metodologie}
 
-\textit{\indent Questo capitolo illustra in dettaglio l'ambiente di lavoro adottato, le tecnologie impiegate e gli esperimenti condotti. 
+\textit{\indent Questo capitolo fronisce in dettaglio l'ambiente di ricerca adottato, le tecnologie impiegate e degli esperimenti condotti. 
 Fornisce inoltre tutte le informazioni necessarie per replicare gli esperimenti.}
 
 \section{Ambiente}
+~\\
+\indent Questa sezione offre una panoramica completa dell'ambiente di lavoro e delle tecnologie impiegate nello sviluppo degli esperimenti descritti successivamente. 
+Segue una descrizione degli strumenti utilizzati durante lo svolgimento del progetto (riassunte con le relative versioni nella Figura \ref{table-tecnologie}).
+\\\\
+Come premessa, la totalità del progetto è stata svolta su \textbf{\emph{Ubuntu 24.04 LTS}}. 
+Questa scelta di sistema operativo è dovuta al vasto supporto di strumenti per l'analisi e lo sviluppo.
+\\\\
+Per l'analisi del traffico di rete, è stato ampiamente utilizzato \textbf{\emph{Wireshark}}, 
+uno strumento molto diffuso nel panorama del traffico di rete e che ha permesso di esaminare nel dettaglio il comportamento dei protocolli oggetti dello studio.
+\\\\
+La sperimentazione ha coinvolto l'uso di diversi \emph{browser web}, in particolare \textbf{\emph{Google Chrome}} e \textbf{\emph{Firefox}}. 
+Questi due applicativi sono stati impiegati per testare e confrontare l'implementazione dei protocolli in diverse situazioni.
+\\\\
+L'ambiente di test è stato realizzato tramite \textbf{Oracle VM VirtualBox}, un diffuso ambiente di virtualizzazione. 
+Permettendo di creare e gestire macchine virtuali specifiche per la creazione di possibili scenari.
+\\\\
+Per la condivisione e mantenimento del codice si è usato \textbf{GitHub} e \textbf{Git}.
+In particolare si è rivelato vantaggioso in quanto ha permesso di lavorare efficientemente con \emph{fork}\footnote{\gls{fork}} di librerie pubbliche, consentendo una gestione dinamica delle modifiche e degli aggiornamenti del codice.
 
-Lista technolgie usate e di cosa si è fatto per ogni esperimento
+\subsection{Tecnologie Specifiche per QUIC}
+
+CIASOID
+\paragraph{Caddy}
+\paragraph{Quic-go}
+\subsection{Tecnologie Specifiche per MPTCP}
+\paragraph{Mptcpize}
+
+\begin{figure}[!h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Tipo} & \textbf{Nome} & \textbf{Versione} \\
+        \hline
+        Applicativo & \emph{Google Chrome} & Multipath Capable \\
+        \hline
+        Applicativo & \emph{Firefox} & Join Connection \\
+        \hline
+        Applicativo & \emph{Github} & Data Sequence Signal \\
+        \hline
+        Applicativo & \emph{Git} & Data Sequence Signal \\
+        \hline
+        Applicativo & \emph{Oracle VM VirtualBox} & Data Sequence Signal \\
+        \hline
+        Sistema Operativo & \emph{Ubuntu} & Change Subflow Priority \\
+        \hline
+        0x6 & \emph{MP\_FAIL} & Fallback \\
+        \hline
+        Linguaggio & \emph{Go} & Fast Close \\
+        \hline
+        Linguaggio & \emph{Python} & Subflow Reset \\
+        \hline
+    \end{tabular}
+    \caption{\emph{Tabella Tecnologie}}
+    \label{table-tecnologie}
+\end{figure}
 
 \section{Esperimenti}
 
