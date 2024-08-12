@@ -35,7 +35,7 @@ Nelle sezioni successive esamineremo in dettaglio alcune parti di \emph{TCP} e \
 \subsubsection{TCP (Transmission Control Protocol)}
 ~\\
 % Fonte https://www.ietf.org/rfc/rfc793.txt %
-\indent Il \emph{Transmission Control Protocol (TCP)}, come anticipato nella sezione precedente, è uno dei protocolli cardine su cui si basa la comunicazione su Internet. Dato il suo ruolo e la vasta gamma di funzioni che offre, un'analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi. Pertanto, in questa sezione, ci concentreremo solo su alcuni aspetti specifici del \emph{TCP} che sono fondamentali per la comprensione del nostro studio su \emph{QUIC}. 
+\indent Il \emph{Transmission Control Protocol (TCP)}, come anticipato nella sezione precedente, è uno dei protocolli cardine su cui si basa la comunicazione su Internet. Dato il suo ruolo e la vasta gamma di funzioni che offre, un'analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi. Pertanto, in questa sezione, ci concentreremo solo su alcuni aspetti specifici del \emph{TCP} che sono fondamentali per la comprensione dello studio su \emph{QUIC}. 
 In particolare, esamineremo nel dettaglio :
 \begin{itemize}
     \item Caratteristiche principali di una connessione \emph{TCP};
@@ -114,7 +114,7 @@ Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra 
 \noindent Questa struttura offre diversi vantaggi. Permettere a un singolo \emph{server} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. 
 Inoltre garantisce l'unicità di ogni connessione all'interno della rete.
 \\
-Tuttavia, questa rigida definzione comporta delle limitazioni significative. In quanto una qualsiasi modifica ad un elemento della tupla (ad esempio, un cambiamento di porta o una migrazione dell'indirizzo IP) comporta la terminazione della connessione esistente. Questo diventa ancora più limitativo nel contesto delle comunicazioni moderne dove i casi di \emph{multihoming}\footnote{\gls{multihoming}} e cambi frequenti di indirizzo IP sono sempre più comuni\cite{site:tcp}. 
+Tuttavia, questa rigida definzione comporta delle limitazioni significative. In quanto una qualsiasi modifica ad un elemento della tupla (ad esempio, un cambiamento di porta o una migrazione dell'indirizzo IP) comporta la terminazione della connessione esistente. Questo diventa ancora più limitativo nel contesto delle comunicazioni moderne dove i casi di \emph{multihoming}\footnote{\gls{multihoming}} e cambi frequenti di indirizzo IP sono sempre più comuni \cite{site:tcp}. 
 \\
 \\
 Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzioni come \emph{MPTCP} e viene affrontata in modo indiretto anche in \emph{QUIC}.
@@ -242,7 +242,7 @@ Il suo sviluppo così recente ha permesso di progettarlo specificamente per affr
 \\\\
 Inoltre \emph{QUIC} è stato progettato per collaborare con \emph{HTTP}\footnote{\gls{HTTP}}, il protocollo a \emph{livello applicativo}\footnote{\gls{livello applicativo}}. Chiamando \emph{HTTP/3}\footnote{\gls{HTTP/3}} la versione che utilizza \emph{QUIC} al posto di \emph{TCP} come protocollo di trasporto \cite{site:HTTP-over-QUIC}.
 \\\\
-\noindent Per motivi di spazio, analizzeremo solo gli elementi trattati durante il nostro studio, concentrandoci in particolare su questi argomenti:
+\noindent Per motivi di spazio, analizzeremo solo gli elementi trattati durante lo studio, concentrandoci in particolare su questi argomenti:
 \begin{enumerate}
     \item La struttura del protocollo;
     \item Il processo di \emph{handshake};
@@ -280,7 +280,7 @@ Nonostante questa differenza strutturale, \emph{QUIC} implementa le stesse funzi
 \small
 $[\text{Indirizzo IP sorgente}, \text{Porta sorgente}] \leftrightarrow [\text{Indirizzo IP destinazione}, \text{Porta destinazione}]$
 \end{center}
-\emph{QUIC} introduce un concetto diverso: il \emph{Connection ID}\footnote{\gls{Connection ID}}. Questo identificatore consente di riconoscere la connessione in maniera indipendente dagli \emph{indirizzi IP} o dalle \emph{porte} utilizzate.
+\emph{QUIC} introduce un concetto diverso: il \emph{Connection ID}. Questo identificatore consente di riconoscere la connessione in maniera indipendente dagli \emph{indirizzi IP} o dalle \emph{porte} utilizzate.
 Il vantaggio principale di questo approccio è la capacità di mantenere attiva una connessione anche in caso di cambiamento dell'\emph{indirizzo IP} o della \emph{porta}, situazione che nelle reti moderne è molto frequente \cite{site:Explaining-QUIC}.
 \\\\
 Un esempio concreto che illustra gli effetti di questo approccio si può osservare nel comportamento dei dispositivi mobili durante il passaggio tra diverse reti.
@@ -626,7 +626,8 @@ Tuttavia, meccanismi come la ritrasmissione di segmenti persi possono portare a 
 Studi recenti hanno evidenziato differenze nel trattamento delle ritrasmissioni da parte di diversi operatori \cite{article:cellular}.
 L'obiettivo principale della ricerca è stato quello di esplorare eventuali vulnerabilità di \emph{QUIC} che potrebbero essere sfruttate per manipolare i sistemi di contabilizzazione del traffico mobile.
 \\\\
-La ricerca si è focalizzata su potenziali falle di sicurezza che permetterebbero l'alterazione dei dati di conteggio del traffico da parte di attori malevoli.
+In particolare, lo studio si è concentrato sulla ricerca di possibili problematiche che causano un aumento della ritrasmissione o eventuali metodi per forzare ritrasmissioni, con lo scopo di aumentare artificialmente la contabilizzazione del traffico.
+\\\\
 Questo studio si inserisce in un contesto più ampio che include anche l'analisi di \emph{MPTCP}, sebbene per ragioni di tempo ci si sia concentrati principalmente su \emph{QUIC}. 
 
 

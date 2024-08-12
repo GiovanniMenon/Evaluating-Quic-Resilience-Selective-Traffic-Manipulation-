@@ -9,28 +9,96 @@ Fornisce inoltre tutte le informazioni necessarie per replicare gli esperimenti.
 \indent Questa sezione offre una panoramica completa dell'ambiente di lavoro e delle tecnologie impiegate nello sviluppo degli esperimenti descritti successivamente. 
 Segue una descrizione degli strumenti utilizzati durante lo svolgimento del progetto (riassunte con le relative versioni nella Figura \ref{table-tecnologie}).
 \\\\
-Come premessa, la totalità del progetto è stata svolta su \textbf{\emph{Ubuntu 24.04 LTS}}. 
+Come premessa, la totalità del progetto è stata svolta su \textbf{\emph{Ubuntu}}\footnote{\url{https://ubuntu.com/}}. 
 Questa scelta di sistema operativo è dovuta al vasto supporto di strumenti per l'analisi e lo sviluppo.
 \\\\
-Per l'analisi del traffico di rete, è stato ampiamente utilizzato \textbf{\emph{Wireshark}}, 
+Per l'analisi del traffico di rete, è stato ampiamente utilizzato \textbf{\emph{Wireshark}}\footnote{\url{https://www.wireshark.org/}}, 
 uno strumento molto diffuso nel panorama del traffico di rete e che ha permesso di esaminare nel dettaglio il comportamento dei protocolli oggetti dello studio.
 \\\\
-La sperimentazione ha coinvolto l'uso di diversi \emph{browser web}, in particolare \textbf{\emph{Google Chrome}} e \textbf{\emph{Firefox}}. 
+La sperimentazione ha coinvolto l'uso di diversi \emph{browser web}, in particolare \textbf{\emph{Google Chrome}}\footnote{\url{https://www.google.com/intl/it_it/chrome/}} e \textbf{\emph{Firefox}}\footnote{\url{https://www.mozilla.org/it/firefox/}}. 
 Questi due applicativi sono stati impiegati per testare e confrontare l'implementazione dei protocolli in diverse situazioni.
 \\\\
-L'ambiente di test è stato realizzato tramite \textbf{Oracle VM VirtualBox}, un diffuso ambiente di virtualizzazione. 
+L'ambiente di test è stato realizzato tramite \textbf{Oracle VM VirtualBox}\footnote{\url{https://www.virtualbox.org/}}, un diffuso ambiente di virtualizzazione. 
 Permettendo di creare e gestire macchine virtuali specifiche per la creazione di possibili scenari.
 \\\\
-Per la condivisione e mantenimento del codice si è usato \textbf{GitHub} e \textbf{Git}.
+Per la condivisione e mantenimento del codice si è usato \textbf{GitHub}\footnote{\url{https://github.com/}} e \textbf{Git}.
 In particolare si è rivelato vantaggioso in quanto ha permesso di lavorare efficientemente con \emph{fork}\footnote{\gls{fork}} di librerie pubbliche, consentendo una gestione dinamica delle modifiche e degli aggiornamenti del codice.
 
 \subsection{Tecnologie Specifiche per QUIC}
+~\\
+\indent Per lo studio si è utilizzato \textbf{Quic-go}\footnote{\url{https://github.com/quic-go/quic-go}}, un'implementazione sviluppata in \emph{Go}\footnote{\gls{Go}} del protocollo \emph{QUIC}.
+\emph{Quic-go} è un progetto \emph{open source} su \emph{GitHub} che aderisce rigorosamente alle specifiche del protocollo \emph{QUIC} 
+definite negli \emph{RFC}\footnote{\gls{RFC}} 9000, 9001 e 9002. 
+\\\\
+\emph{Quic-go} non è l'unica versione disponibile del protocollo \emph{QUIC}.
+Come illustrato nella Figura \ref{table-implementazioni-quic}, esistono numerose altre implementazioni, sia \emph{open source} che proprietarie, ciascuna cerca di rispettare rigorosamente le specifiche definite negli \emph{RFC}. 
+\\\\
+La scelta di utilizzare questa specifica implementazione di \emph{QUIC} è motivata dal suo utilizzo all'interno di \textbf{Caddy}\footnote{\url{https://caddyserver.com/}}, un \emph{web server} moderno e performante. \emph{Caddy} integra \emph{Quic-go} per offrire il supporto nativo del protocollo \emph{QUIC} e \emph{HTTP/3}.
+Inoltre, si è utilizzato \textbf{xCaddy}, un \emph{tool} che consente di creare build personalizzate di \emph{Caddy}, adattandolo alle specifiche esigenze del progetto.
 
-CIASOID
-\paragraph{Caddy}
-\paragraph{Quic-go}
+\begin{figure}[!h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{Linguaggio} & \textbf{Licenza} \\
+        \hline
+        Chromium & C++ & BSD License \\
+        \hline
+        MsQuic & C & MIT License \\
+        \hline
+        QUIC Library (mvfst) & C++ & MIT License \\
+        \hline
+        LiteSpeed QUIC Library (lsquic) & C & MIT License \\
+        \hline
+        ngtcp2 & C & MIT License \\
+        \hline
+        Quiche & Rust & BSD-2-Clause License \\
+        \hline
+        quicly & C & MIT License \\
+        \hline
+        \textbf{quic-go} & \textbf{Go} & \textbf{MIT License} \\
+        \hline
+        Quinn & Rust & Apache License 2.0 \\
+        \hline
+        Neqo & Rust & Apache License 2.0 \\
+        \hline
+        aioquic & Python & BSD-3-Clause License \\
+        \hline
+        picoquic & C & BSD-3-Clause License \\
+        \hline
+        pquic & C & MIT License \\
+        \hline
+        QUANT & C & BSD-2-Clause License \\
+        \hline
+        quic & Haskell & BSD-3-Clause License \\
+        \hline
+        netty-incubator-codec-quic & Java & Apache License 2.0 \\
+        \hline
+        nodejs-quic & NodeJs & MIT License \\
+        \hline
+        s2n-quic & Rust & Apache License 2.0 \\
+        \hline
+        swift-quic & Swift & Apache License 2.0 \\
+        \hline
+        TQUIC & Rust & Apache License 2.0 \\
+        \hline
+        nginx & C & BSD-2-Clause License \\
+        \hline
+        HAProxy & C & GNU General Public License version 2 \\
+        \hline
+        kwik & Java & GNU Lesser General Public License version 3 \\
+        \hline
+    \end{tabular}
+    \caption{\emph{Quic Source Code (da controllare)}}
+    \label{table-implementazioni-quic}
+\end{figure}
+
 \subsection{Tecnologie Specifiche per MPTCP}
-\paragraph{Mptcpize}
+~\\
+Per quanto riguarda \emph{MPTCP} si è fatto riferimento alla documentazione ufficiale \cite{site:mptcp-code} e si è usato \emph{Go} per sviluppare un \emph{web server} che implementa un \emph{socket MPTCP}.
+\\\\
+Per garantire che le applicazioni utilizzassero \emph{MPTCP} abbiamo usato \textbf{mptcpize}\footnote{\url{https://manpages.ubuntu.com/manpages/lunar/man8/mptcpize.8.html}}, un tool specifico che forza la creazione di \emph{socket MPTCP} al posto di quelli \emph{TCP}.
+
 
 \begin{figure}[!h]
     \centering
@@ -38,23 +106,29 @@ CIASOID
         \hline
         \textbf{Tipo} & \textbf{Nome} & \textbf{Versione} \\
         \hline
-        Applicativo & \emph{Google Chrome} & Multipath Capable \\
+        Applicativo & \emph{Google Chrome} & 126.0.6478.126 \\
         \hline
-        Applicativo & \emph{Firefox} & Join Connection \\
+        Applicativo & \emph{Firefox} & 127.0.2 \\
         \hline
-        Applicativo & \emph{Github} & Data Sequence Signal \\
+        Applicativo & \emph{Github} &  \\
         \hline
-        Applicativo & \emph{Git} & Data Sequence Signal \\
+        Applicativo & \emph{Git} & 2.43.0 \\
         \hline
-        Applicativo & \emph{Oracle VM VirtualBox} & Data Sequence Signal \\
+        Applicativo & \emph{Oracle VM VirtualBox} & 7.0.20 \\
         \hline
-        Sistema Operativo & \emph{Ubuntu} & Change Subflow Priority \\
+        Applicativo & \emph{Wireshark} & 4.2.6 \\
         \hline
-        0x6 & \emph{MP\_FAIL} & Fallback \\
+        Applicativo & \emph{Caddy} & 2.8.0 \\
         \hline
-        Linguaggio & \emph{Go} & Fast Close \\
+        Applicativo & \emph{xCaddy} & 0.4.2 \\
         \hline
-        Linguaggio & \emph{Python} & Subflow Reset \\
+        Applicativo & \emph{mptcpize} & 0.12 \\
+        \hline
+        Modulo & \emph{quic-go} &  0.43.1 \\
+        \hline
+        Sistema Operativo & \emph{Ubuntu} & 24.04 LTS \\
+        \hline
+        Linguaggio & \emph{Go} & 1.21 \\
         \hline
     \end{tabular}
     \caption{\emph{Tabella Tecnologie}}
