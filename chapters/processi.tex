@@ -145,23 +145,161 @@ L'obiettivo di questo capitolo è fornire una panoramica completa delle attivit�
 
 \subsection{Esperimenti QUIC}
 ~\\ 
-(Si potrebbe citare lo scopo degli esperimenti o la idea, da rivedere)
+(Si potrebbe citare lo scopo degli esperimenti o la idea, da rivedere perchè si va nel dettaglio poi in ogni esperimento)
 \\
 \indent Gli esperimenti relativi al protocollo \emph{QUIC} si articolano in due principali categorie. 
 La prima, che comprende il primo e secondo esperimento, avviene in uno scenario in cui uno degli attori della connessione, specificamente il server, assume un comportamento malevolo.
 \\
 Il terzo esperimento, invece, si svolge in una situazione in cui l'attaccante non controlla direttamente nessuna delle due parti coinvolte nella comunicazione, ma si suppone sia in grado di monitorare e manipolare il traffico di rete.
 \\\\
-\noindent I due scenari sono rappresentati nella \ref{}
+\noindent I due scenari sono rappresentati nella \ref{} (da vedere se lasciare o meno)
 \\\\
 Per la realizzazione degli esperimenti si è utilizzato un \emph{fork} appositamente modificato del progetto \emph{Quic-go} \cite{site:my-fork}, 
 con cui è stato possibile implementare il \emph{server} malevolo e condurre i vari test.
 La simulazione degli attori dello scenario è stata eseguita utilizzando macchine virtuali con all'interno \emph{Ubuntu}.
 
-\paragraph{Esperimento 1}
-Server malevolo ignora gli ack. 
-\paragraph{Esperimento 2}
-Inject in background. 
+\paragraph{Esperimento 1: Server Web con Comportamento Anomalo QUIC}
+\noindent L'idea alla base di questo esperimento è simulare un \emph{server web Quic} con un comportamento non convenzionale. 
+Questo \emph{server} è configurato per operare come se non ricevesse mai conferme \emph{(acknowledge)} per i pacchetti inviati, mantenendo al contempo un \emph{PTO} impostato a zero.
+\\\\
+Per implementare queste modifiche, si é utilizzato il seguente approccio : 
+\begin{enumerate}[label=\roman*]
+    \item \textbf{Modifiche del codice sorgente di \emph{quic-go}}
+    \begin{itemize}
+        \item Si è modificata la gestione degli \emph{ACK} e si è modificata la logica che gestisce il \emph{PTO}.
+    \end{itemize}
+    \item \textbf{Creazione di una build personalizzata di \emph{Caddy}}
+    \begin{itemize}
+        \item Si è utilizzato \emph{xCaddy} per la creazione di una versione modificata del \emph{server web Caddy} che usa il mio \emph{fork} di \emph{quic-go} con le modifiche apportate.
+    \end{itemize}
+\end{enumerate}
+In particolare, queste modifiche operano dopo la fase di \emph{handshake}, così da garantire l'inizializzazione della connessione. Successivamente, il \emph{server} agirà come modificato, continuando a ritrasmettere i vari dati.
+\\\\
+In questo scenario, ci si aspetta che il \emph{client} riconosca le ritrasmissioni e le segnali al \emph{server}. Eventuali segnali e richieste di chiusura della connessione sono per questo ignorate dal \emph{server}.
+\\\\
+Inoltre, data la natura \emph{end-to-end} delle connessioni \emph{QUIC}, eventuali nodi intermedi nella rete non sono in grado di valutare l'integrità o la correttezza di queste ritrasmissioni. Questa caratteristica implica che solo il \emph{client} ha la capacità di esaminare i pacchetti e scartarli e che quindi essi vengano contabilizzati nel suo traffico dati.
+\\\\
+Segue una descrizione di alcune delle modifiche effettuate al codice con le rispettive motivazioni.
+\begin{lstlisting}[language=Go]
+// internal/ackhandler/sent_packet_handler.go
+const (
+	// Maximum reordering in time space before time based loss detection considers a packet lost.
+	// Specified as an RTT multiplier.
+	timeThreshold = 9.0 / 8
+	// Maximum reordering in packets before packet threshold loss detection considers a packet lost.
+	packetThreshold = 3
+	// Before validating the client's address, the server won't send more than 3x bytes than it received.
+	amplificationFactor = 3
+	// We use Retry packets to derive an RTT estimate. Make sure we don't set the RTT to a super low value yet.
+	minRTTAfterRetry = 0 * time.Millisecond 
+	// The PTO duration uses exponential backoff, but is truncated to a maximum value, as allowed by RFC 8961, section 4.4.
+	maxPTODuration = 0 * time.Second 
+)
+
+func (h *sentPacketHandler) getScaledPTO(includeMaxAckDelay bool) time.Duration {
+	// pto := h.rttStats.PTO(includeMaxAckDelay) << h.ptoCount
+	pto := h.rttStats.PTO(includeMaxAckDelay)
+	if pto > maxPTODuration || pto <= 0 {
+		return maxPTODuration
+	}
+	return 0
+	// return pto
+}
+
+// internal/utils/rtt_stats.go
+func (r *RTTStats) PTO(includeMaxAckDelay bool) time.Duration {
+	// if r.SmoothedRTT() == 0 {
+	// 	return 2 * defaultInitialRTT
+	// }
+	// pto := r.SmoothedRTT() + max(4*r.MeanDeviation(), protocol.TimerGranularity)
+	// if includeMaxAckDelay {
+	// 	pto += r.MaxAckDelay()
+	// }
+	// return pto
+
+	return 0
+}
+\end{lstlisting}
+\noindent Il codice precedentemente illutrato elenca alcune modifiche effettuate per garantire che il \emph{PTO} rimanga costante a 0. 
+In particolare, sono state alterate le costanti : 
+\begin{itemize}
+    \item \textbf{maxPTODuration} impostato a 0 e indica il massimo valore che il \emph{PTO} può assumere. 
+    \item \textbf{minRTTAfterRetry} impostato a 0 e indica il valore minimo impostato dopo i pacchetti di \emph{retry}.
+\end{itemize}
+\noindent inoltre le funzioni che ricalcolano il \emph{PTO} sono state cambiate così che non lo modifichino.
+\\
+Segue ora il codice che impediscono al \emph{server} di riconoscere i gli \emph{ACK} dei pacchetti inviati. 
+Per ottenere questo risultato si è rimosso totalmente la logica che gestisce il ricevimento di un \emph{acknowledge} dalla funzione responsabile di questo e nel contempo la funzione ritorna sempre una tupla \emph{false|nil}, 
+segnalando che nessun pacchetto è stato confermato.
+\\
+\begin{lstlisting}[language=Go]
+// internal/ackhandler/sent_packet_handler.go
+func (h *sentPacketHandler) ReceivedAck(ack *wire.AckFrame, encLevel protocol.EncryptionLevel, rcvTime time.Time) (bool /* contained 1-RTT packet */, error) { 
+    pnSpace := h.getPacketNumberSpace(encLevel)
+    largestAcked := ack.LargestAcked()
+    if largestAcked > pnSpace.largestSent {
+        fmt.Println("received ACK for an unsent packet")
+        return false, &qerr.TransportError{
+            ErrorCode:    qerr.ProtocolViolation,
+            ErrorMessage: "received ACK for an unsent packet",
+        }
+    }
+    // Servers complete address validation when a protected packet is received.
+    if h.perspective == protocol.PerspectiveClient && !h.peerCompletedAddressValidation &&
+        (encLevel == protocol.EncryptionHandshake || encLevel == protocol.Encryption1RTT) {
+        h.peerCompletedAddressValidation = true
+        h.logger.Debugf("Peer doesn't await address validation any longer.")
+        // Make sure that the timer is reset, even if this ACK doesn't acknowledge any (ack-eliciting) packets.
+        h.setLossDetectionTimer()
+    }
+    pnSpace.largestAcked = max(pnSpace.largestAcked, largestAcked)
+    // Reset the pto_count unless the client is unsure if the server has validated the client's address.
+	if h.peerCompletedAddressValidation {
+		if h.tracer != nil && h.tracer.UpdatedPTOCount != nil && h.ptoCount != 0 {
+			h.tracer.UpdatedPTOCount(0)
+		}
+		h.ptoCount = 0
+	}
+	h.numProbesToSend = 0
+	if h.tracer != nil && h.tracer.UpdatedMetrics != nil {
+		h.tracer.UpdatedMetrics(h.rttStats, h.congestion.GetCongestionWindow(), h.bytesInFlight, h.packetsInFlight())
+	}
+	h.setLossDetectionTimer()
+	return false, nil
+}
+\end{lstlisting}
+\noindent Ulteriori modifiche secondarie apportate, come la rimozione delle richieste di chiusura della comunicazione, sono visibili nel codice completo dell'esperimento \footnote{\url{https://github.com/GiovanniMenon/quic-go/tree/retransmission-1}} \cite{site:my-fork}.
+\\\\
+Partendo dall'idea di base di questo esperimento, sono state sviluppate diverse varianti ottenute modificando alcuni valori e parametri chiave.
+Le più significative di esse sono catalogate nella tabella \ref{table-retransmission}.
+\begin{figure}[!h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{Connection Close} & \textbf{ACK Ignored} \\
+        \hline
+        retrasmission - 1  & Ignored & All \\
+        \hline
+        retrasmission - 2 & Not Ignored & All \\
+        \hline
+        retrasmission - 4 & Not Ignored & 1/2 \\
+        \hline
+        retrasmission - 5 & Ignored & 1/2 \\
+        \hline
+    \end{tabular}
+    \caption{\emph{Tabella varianti esperimento 1}}
+    \label{table-retransmission}
+\end{figure}
+
+\paragraph{Esperimento 2: Server Web con Iniezione di Pacchetti in Background}
+\indent L'idea alla base di questo secondo esperimento è quella di simulare un \emph{server web QUIC} che, 
+pur mantenendo un comportamento apparentemente normale durante la connessione, inietta in background pacchetti aggiuntivi non richiesti.
+\\\\
+In questo scenario, il \emph{server} inizializza e mantiene una connessione \emph{QUIC} standard con il \emph{client}, agendo normalmente. 
+Tuttavia, parallelamente a questo, il \emph{server} è stato modificato appositamente per inviare pacchetti addizionali non correlati alla comunicazione in corso.
+\\\\
+L'operazione di iniezione dei pacchetti inizia solo dopo la chiusura della fase di \emph{handshake}, questa scelta avviene per evitare rallentamenti o eventuali errori nella prima fase della connessione. 
+
 \paragraph{Esperimento 3}
 Si monitora la connessione.
 

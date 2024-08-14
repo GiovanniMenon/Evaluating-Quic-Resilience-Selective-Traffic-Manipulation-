@@ -246,7 +246,7 @@ Inoltre \emph{QUIC} è stato progettato per collaborare con \emph{HTTP}\footnote
 \begin{enumerate}
     \item La struttura del protocollo;
     \item Il processo di \emph{handshake};
-    \item La gestione degli errori e le casistiche di Ritrasmissione;
+    \item Multiplexing;
     \item Sistemi di sicurezza;
 \end{enumerate}
 
@@ -467,7 +467,7 @@ Procediamo ora con l'analisi del processo di \emph{handshake} in \emph{QUIC} (Fi
         
     Questo token viene utilizzato per verificare l'identità del \emph{client} nelle comunicazioni future. Il \emph{client} usa queste informazioni per autenticare la configurazione del \emph{server} e invia un messaggio \emph{CHLO} completo (\emph{finished}), contenente il valore \emph{Diffie-Hellman} temporaneo del \emph{client} \cite{article:handshake}.
     \item \textit{\textbf{0-RTT Connection Establishment}}: Dopo il primo handshake, il client possiede già le chiavi iniziali per la connessione. Quindi procede già con l'invio del \emph{CHLO} completo e può iniziare a inviare dati applicativi al \emph{server}.
-    Se l'\emph{handshake} ha successo viene restituito un messaggio \emph{SHLO}\footnote{\gls{SHLO}} cifrato con le chiavi iniziali e contenente il nuovo valore temporaneo di \emph{Diffie-Hellman} \cite{site:handshake}.
+    Se l'\emph{handshake} ha successo viene restituito un messaggio \emph{SHLO}\footnote{\gls{SHLO}} cifrato con le chiavi iniziali e contenente il nuovo valore temporaneo di \emph{Diffie-Hellman} \cite{article:handshake}.
 \end{enumerate}
 
 \noindent A differenza di \emph{TCP}, che richiede 2 \emph{round trip} per l'invio dei dati dopo l'inizializzazione della connessione, \emph{QUIC} nel caso migliore riesce a ridurre questo numero a 0.
@@ -497,7 +497,9 @@ Questo avviene tramite l'uso di algoritmi crittografici come \emph{Diffie-Hellma
 \\\\
 Un altro meccanismo utilizzato per garantire l'integrità dei dati è l'utilizzo di un \emph{checksum}, che consente di verificare che i dati non siano stati alterati durante la trasmissione. In caso il destinatario nota discrepanze tra il contenuto del campo \emph{checksum} e i dati stessi allora verranno rifiutati e scartati.
 In aggiunta \emph{QUIC} include nei pacchetti anche l'\emph{hash} crittografico dei dati stessi, quando il destinatario riceve il pacchetto e ricalcola l'\emph{hash} è in grado di rilevare se i dati sono corroti \cite{site:quic-security}.
-
+\\\\
+\paragraph{\textit{Ritrasmissione}}
+da fare spiegare l'uso del pbo a differenza del rto
 \subsection{MPTCP}
 ~\\
 \indent \emph{MPTCP } rappresenta un'evoluzione significativa del protocollo \emph{TCP} tradizionale. 
@@ -629,6 +631,61 @@ L'obiettivo principale della ricerca è stato quello di esplorare eventuali vuln
 In particolare, lo studio si è concentrato sulla ricerca di possibili problematiche che causano un aumento della ritrasmissione o eventuali metodi per forzare ritrasmissioni, con lo scopo di aumentare artificialmente la contabilizzazione del traffico.
 \\\\
 Questo studio si inserisce in un contesto più ampio che include anche l'analisi di \emph{MPTCP}, sebbene per ragioni di tempo ci si sia concentrati principalmente su \emph{QUIC}. 
-
+\begin{figure}[!h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{Linguaggio} & \textbf{Licenza} \\
+        \hline
+        Chromium & C++ & BSD License \\
+        \hline
+        MsQuic & C & MIT License \\
+        \hline
+        QUIC Library (mvfst) & C++ & MIT License \\
+        \hline
+        LiteSpeed QUIC Library (lsquic) & C & MIT License \\
+        \hline
+        ngtcp2 & C & MIT License \\
+        \hline
+        Quiche & Rust & BSD-2-Clause License \\
+        \hline
+        quicly & C & MIT License \\
+        \hline
+        \textbf{quic-go} & \textbf{Go} & \textbf{MIT License} \\
+        \hline
+        Quinn & Rust & Apache License 2.0 \\
+        \hline
+        Neqo & Rust & Apache License 2.0 \\
+        \hline
+        aioquic & Python & BSD-3-Clause License \\
+        \hline
+        picoquic & C & BSD-3-Clause License \\
+        \hline
+        pquic & C & MIT License \\
+        \hline
+        QUANT & C & BSD-2-Clause License \\
+        \hline
+        quic & Haskell & BSD-3-Clause License \\
+        \hline
+        netty-incubator-codec-quic & Java & Apache License 2.0 \\
+        \hline
+        nodejs-quic & NodeJs & MIT License \\
+        \hline
+        s2n-quic & Rust & Apache License 2.0 \\
+        \hline
+        swift-quic & Swift & Apache License 2.0 \\
+        \hline
+        TQUIC & Rust & Apache License 2.0 \\
+        \hline
+        nginx & C & BSD-2-Clause License \\
+        \hline
+        HAProxy & C & GNU General Public License version 2 \\
+        \hline
+        kwik & Java & GNU Lesser General Public License version 3 \\
+        \hline
+    \end{tabular}
+    \caption{\emph{Quic Source Code (da controllare)}}
+    \label{table-implementazioni-quic}
+\end{figure}
 
 

@@ -107,23 +107,23 @@
 \if \isprintable 1
     \hypersetup{draft}
 \fi
-
+\definecolor{vscodeGreen}{RGB}{76, 175, 80}
 % Listings setup
 \lstset{
     language=[LaTeX]Tex,%C++,
     keywordstyle=\color{RoyalBlue}, %\bfseries,
-    basicstyle=\small\ttfamily,
+    basicstyle=\scriptsize\ttfamily,
     %identifierstyle=\color{NavyBlue},
-    commentstyle=\color{Green}\ttfamily,
+    commentstyle=\color{vscodeGreen}\ttfamily,
     stringstyle=\rmfamily,
     numbers=none, %left,%
-    numberstyle=\scriptsize, %\tiny
+    numberstyle=\scriptsize
     stepnumber=5,
     numbersep=8pt,
     showstringspaces=false,
     breaklines=true,
-    frameround=ftff,
-    frame=single
+    frameround=false,
+    frame=false
 }
 
 \definecolor{webgreen}{rgb}{0,.5,0}
