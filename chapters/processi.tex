@@ -95,9 +95,9 @@ Inoltre, si è utilizzato \textbf{xCaddy}, un \emph{tool} che consente di creare
 
 \subsection{Tecnologie Specifiche per MPTCP}
 ~\\
-Per quanto riguarda \emph{MPTCP} si è fatto riferimento alla documentazione ufficiale \cite{site:mptcp-code} e si è usato \emph{Go} per sviluppare un \emph{web server} che implementa un \emph{socket MPTCP}.
+\indent Per quanto riguarda \emph{MPTCP} si è fatto riferimento alla documentazione ufficiale \cite{site:mptcp-code} e si è usato \emph{Go} per sviluppare un \emph{web server} che implementa un \emph{socket MPTCP}.
 \\\\
-Per garantire che le applicazioni utilizzassero \emph{MPTCP} abbiamo usato \textbf{mptcpize}\footnote{\url{https://manpages.ubuntu.com/manpages/lunar/man8/mptcpize.8.html}}, un tool specifico che forza la creazione di \emph{socket MPTCP} al posto di quelli \emph{TCP}.
+Per garantire che le applicazioni utilizzassero \emph{MPTCP} si è usato \textbf{mptcpize}\footnote{\url{https://manpages.ubuntu.com/manpages/lunar/man8/mptcpize.8.html}}, un tool specifico che forza la creazione di \emph{socket MPTCP} al posto di quelli \emph{TCP}.
 \hfill
 \begin{figure}[!h]
     \centering
@@ -228,8 +228,8 @@ In particolare, sono state alterate le costanti :
 \end{itemize}
 \noindent inoltre le funzioni che ricalcolano il \emph{PTO} sono state cambiate così che non lo modifichino.
 \\
-Segue il codice che impedisce al \emph{server} di riconoscere i gli \emph{ACK} dei pacchetti inviati. 
-Per ottenere questo risultato si è rimosso totalmente la logica che gestisce il ricevimento di un \emph{acknowledge} dalla funzione responsabile di questo e nel contempo la funzione ritorna sempre una tupla \emph{false|nil}, 
+Segue il codice che impedisce al \emph{server} di riconoscere gli \emph{ACK} dei pacchetti inviati. 
+Per ottenere questo risultato si è rimossa totalmente la logica che gestisce il ricevimento di un \emph{acknowledge} dalla funzione responsabile di questo e nel contempo ritorna sempre una tupla \emph{false|nil}, 
 segnalando che nessun pacchetto è stato confermato.
 \\
 \begin{lstlisting}[language=Go]
@@ -295,12 +295,12 @@ Le più significative di esse sono catalogate nella tabella \ref{table-retransmi
 \indent L'idea alla base di questo secondo esperimento è quella di simulare un \emph{server web QUIC} che, 
 pur mantenendo un comportamento apparentemente normale durante la connessione, inietta in background pacchetti aggiuntivi non richiesti.
 \\\\
-In questo scenario, il \emph{server} inizializza e mantiene una connessione \emph{QUIC} standard con il \emph{client}, agendo normalmente.Tuttavia, parallelamente a questo, il \emph{server} è stato modificato appositamente per inviare pacchetti addizionali non correlati alla comunicazione in corso.
+In questo scenario, il \emph{server} inizializza e mantiene una connessione \emph{QUIC} standard con il \emph{client}, agendo normalmente. Tuttavia, parallelamente a questo, il \emph{server} è stato modificato appositamente per inviare pacchetti aggiuntivi non correlati alla comunicazione.
 \\\\
 L'operazione di iniezione dei pacchetti avviene solo dopo la fase di \emph{handshake}, questa scelta è stata fatta per evitare potenziali interferenze, rallentamenti o errori nella prima fase della connessione. 
 \\\\
 Come nell'esperimento precedente, la natura \emph{end-to-end} della connessione \emph{QUIC} gioca un ruolo fondamentale. Si prevede che solo il \emph{client} sia in grado di verificare l'autenticità dei pacchetti ricevuti. 
-Di conseguenza, questi pacchetti iniettati verranno contabilizzati nel traffico del client, nonostante non facciano parte della comunicazione legittima.
+Di conseguenza, questi finti pacchetti verranno contabilizzati nel traffico del client, nonostante non facciano parte della comunicazione.
 \\\\
 Questo particolare esperimento può essere considerato una variante del \emph{UDP flooding}\footnote{\gls{udp flooding}}, che sfrutta la natura \emph{end-to-end} del protocollo \emph{QUIC}.
 \\\\
@@ -361,8 +361,20 @@ func (c *oobConn) WritePacket(b []byte, addr net.Addr, packetInfoOOB []byte, gso
         }
 }
 \end{lstlisting}
-Descrizione 
+Per ottenere il risultato voluto, sono state apportate delle modifiche alla funzione \emph{WritePacket}. Si è introdotto una nuova logica che gestisce l'invio dei pacchetti aggiuntivi, queste modifiche includo: 
+\begin{itemize}
+    \item \textbf{Worker} : Si sono implementati \emph{N} worker che operano in parallelo per l'invio di dati. 
+    \item \textbf{Limitatore}: È stato introdotto un meccanismo di limitazione per controllare il flusso di pacchetti iniettati (\emph{Packet/s}). 
+    \item \textbf{PacketSize} : Ad ogni iterazione viene calcolata una \emph{packetSize} diversa. 
+    \item \textbf{Packet} : La creazione del pacchetto si può dividere in un un processo specifico :
+    \begin{itemize}
+        \item Il payload è composto da una serie di \emph{frame} con dati fittizi.
+        \item L'\emph{header} del pacchetto viene copiato, per praticità, da un pacchetto \emph{RTT-1} esistente. Questo assicura che l'\emph{header} sia coerente con la connessione.
+    \end{itemize}
+\end{itemize}
+\noindent Infine si utilizza la funzione \emph{WriteMsgUDP} per costruire il pacchetto \emph{UDP} con il payload \emph{QUIC} ed inviarlo al destinatario.
 \\\\
+Come nel primo esperimento, anche in questo caso sono state sviluppate diverse varianti che si distinguono principalmente per il numero di \emph{worker} impiegati e per le impostazioni del limitatore. Le più significative sono elencate nella tabella \ref{table-inject}.
 \begin{figure}[!h]
     \centering
     \begin{tabular}{|c|c|c|}
@@ -371,7 +383,7 @@ Descrizione
         \hline
         inject - 1  & 6 & 1000 \\
         \hline
-        inject - 2 & 6 & 8000 \\
+        inject - 2 & 6 & 2000 \\
         \hline
         inject - 3 & 8 & 1000 \\
         \hline
@@ -381,6 +393,7 @@ Descrizione
     \caption{\emph{Tabella varianti esperimento 2}}
     \label{table-inject}
 \end{figure}
+\pagebreak
 \paragraph{Esperimento 3}
 Si monitora la connessione.
 
