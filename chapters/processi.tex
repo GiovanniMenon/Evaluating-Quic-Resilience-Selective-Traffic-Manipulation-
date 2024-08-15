@@ -228,7 +228,7 @@ In particolare, sono state alterate le costanti :
 \end{itemize}
 \noindent inoltre le funzioni che ricalcolano il \emph{PTO} sono state cambiate così che non lo modifichino.
 \\
-Segue ora il codice che impediscono al \emph{server} di riconoscere i gli \emph{ACK} dei pacchetti inviati. 
+Segue il codice che impedisce al \emph{server} di riconoscere i gli \emph{ACK} dei pacchetti inviati. 
 Per ottenere questo risultato si è rimosso totalmente la logica che gestisce il ricevimento di un \emph{acknowledge} dalla funzione responsabile di questo e nel contempo la funzione ritorna sempre una tupla \emph{false|nil}, 
 segnalando che nessun pacchetto è stato confermato.
 \\
@@ -295,11 +295,92 @@ Le più significative di esse sono catalogate nella tabella \ref{table-retransmi
 \indent L'idea alla base di questo secondo esperimento è quella di simulare un \emph{server web QUIC} che, 
 pur mantenendo un comportamento apparentemente normale durante la connessione, inietta in background pacchetti aggiuntivi non richiesti.
 \\\\
-In questo scenario, il \emph{server} inizializza e mantiene una connessione \emph{QUIC} standard con il \emph{client}, agendo normalmente. 
-Tuttavia, parallelamente a questo, il \emph{server} è stato modificato appositamente per inviare pacchetti addizionali non correlati alla comunicazione in corso.
+In questo scenario, il \emph{server} inizializza e mantiene una connessione \emph{QUIC} standard con il \emph{client}, agendo normalmente.Tuttavia, parallelamente a questo, il \emph{server} è stato modificato appositamente per inviare pacchetti addizionali non correlati alla comunicazione in corso.
 \\\\
-L'operazione di iniezione dei pacchetti inizia solo dopo la chiusura della fase di \emph{handshake}, questa scelta avviene per evitare rallentamenti o eventuali errori nella prima fase della connessione. 
+L'operazione di iniezione dei pacchetti avviene solo dopo la fase di \emph{handshake}, questa scelta è stata fatta per evitare potenziali interferenze, rallentamenti o errori nella prima fase della connessione. 
+\\\\
+Come nell'esperimento precedente, la natura \emph{end-to-end} della connessione \emph{QUIC} gioca un ruolo fondamentale. Si prevede che solo il \emph{client} sia in grado di verificare l'autenticità dei pacchetti ricevuti. 
+Di conseguenza, questi pacchetti iniettati verranno contabilizzati nel traffico del client, nonostante non facciano parte della comunicazione legittima.
+\\\\
+Questo particolare esperimento può essere considerato una variante del \emph{UDP flooding}\footnote{\gls{udp flooding}}, che sfrutta la natura \emph{end-to-end} del protocollo \emph{QUIC}.
+\\\\
+Segue ora una descrzione delle modifiche apportate al codice sorgente per ottenere questo risultato.
+\begin{lstlisting}[language=Go]
+// sys_conn_oob.go
+func (c *oobConn) WritePacket(b []byte, addr net.Addr, packetInfoOOB []byte, gsoSize uint16, ecn protocol.ECN) (int, error) {
+    
+    // ...
+    // ...
+    // ...
 
+    if startSending {
+            initBackgroundSender.Do(func() {
+                const numWorkers = 6        // # Worker
+                stop := make(chan struct{}) // Stop Channel
+
+                go func() {
+                    time.Sleep(backgroundInjectDuration)
+                    close(stop)
+                }()
+
+                for i := 0; i < numWorkers; i++ {
+                    go func(workerID int) {
+                        dataSent := 0
+                        packetCount := 0
+                        limiter := rate.NewLimiter(rate.Limit(backgroundRateLimit), backgroundRateLimit)
+                        for {
+                            select {
+                            case <-stop:
+                                fmt.Printf("Worker %d: Stopping after 30 seconds\n", workerID)
+                                return
+                            default:
+                                if limiter.Allow() {
+                                    packetSize := rand.Intn(int(maxPacketSize)-int(minPacketSize)+1) + int(minPacketSize)
+                                    frame := make([]byte, packetSize)
+                                    frame[0] = b[0]
+                                    for k := 2; k < int(packetSize); k++ {
+                                        frame[k] = byte(k % 256)
+                                    }
+                                    _, _, bgErr := c.OOBCapablePacketConn.WriteMsgUDP(frame, oob, addr.(*net.UDPAddr))
+                                    if bgErr != nil {
+                                        fmt.Printf("Worker %d: Error writing background frame: %v\n", workerID, bgErr)
+                                        return
+                                    }
+                                    packetCount++
+                                    dataSent += int(packetSize)
+
+                                    fmt.Printf("\r\tWorker %d: Frame %d sent, total data sent: %d bytes\n", workerID, packetCount, dataSent)
+                                } else {
+                                    time.Sleep(time.Millisecond * 100)
+                                }
+                            }
+                        }
+                    }(i)
+                }
+            })
+        }
+}
+\end{lstlisting}
+Descrizione 
+\\\\
+\begin{figure}[!h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{Worker} & \textbf{Packet/s} \\
+        \hline
+        inject - 1  & 6 & 1000 \\
+        \hline
+        inject - 2 & 6 & 8000 \\
+        \hline
+        inject - 3 & 8 & 1000 \\
+        \hline
+        inject - 4 & 8 & 2000 \\
+        \hline
+    \end{tabular}
+    \caption{\emph{Tabella varianti esperimento 2}}
+    \label{table-inject}
+\end{figure}
 \paragraph{Esperimento 3}
 Si monitora la connessione.
 
