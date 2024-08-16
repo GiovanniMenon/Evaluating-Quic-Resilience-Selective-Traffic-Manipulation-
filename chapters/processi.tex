@@ -145,14 +145,10 @@ L'obiettivo di questo capitolo è fornire una panoramica completa delle attivit�
 
 \subsection{Esperimenti QUIC}
 ~\\ 
-(Si potrebbe citare lo scopo degli esperimenti o la idea, da rivedere perchè si va nel dettaglio poi in ogni esperimento)
-\\
 \indent Gli esperimenti relativi al protocollo \emph{QUIC} si articolano in due principali categorie. 
 La prima, che comprende il primo e secondo esperimento, avviene in uno scenario in cui uno degli attori della connessione, specificamente il server, assume un comportamento malevolo.
 \\
 Il terzo esperimento, invece, si svolge in una situazione in cui l'attaccante non controlla direttamente nessuna delle due parti coinvolte nella comunicazione, ma si suppone sia in grado di monitorare e manipolare il traffico di rete.
-\\\\
-\noindent I due scenari sono rappresentati nella \ref{} (da vedere se lasciare o meno)
 \\\\
 Per la realizzazione degli esperimenti si è utilizzato un \emph{fork} appositamente modificato del progetto \emph{Quic-go} \cite{site:my-fork}, 
 con cui è stato possibile implementare il \emph{server} malevolo e condurre i vari test.
@@ -423,7 +419,6 @@ if len(p.data)+42 < 85 {
 	return p, nil
 }
 \end{lstlisting}
-
 Come negli esperimenti precedenti, sono state sviluppate diverse varianti che si differenziano per il numero di pacchetti che l'attaccante oscura.
 Le più rilevanti sono elencate nella tabella \ref{table-spurious}.
 \begin{figure}[!h]
@@ -444,6 +439,12 @@ Le più rilevanti sono elencate nella tabella \ref{table-spurious}.
     \caption{\emph{Tabella varianti esperimento 3}}
     \label{table-spurious}
 \end{figure}
+\pagebreak
 \subsection{Esperimenti MPTCP}
+~\\
+\indent Gli esperimenti relativi al protocollo \emph{MPTCP}, come precedentemente anticipato, sono stati condotti in misura ridotta e si sono focalizzati su un unico scenario sperimentale.
+In parte per la scelta di dedicare più tempo e attenzioni al protocollo \emph{QUIC} ed in parte per l'impossibilità di implementare ulteriori scenari.
+\\\\
+Per la realizzazione degli esperimenti si è creato un \emph{server web MPTCP} utilizzando i \emph{socket MPTCP} \cite{site:mptcp-code} e per la simulazione degli attori dello scenario sono state usate delle macchine virtuali con all'interno \emph{Ubuntu}.
 \paragraph{Esperimento 1}
-
+Unico esperimento 

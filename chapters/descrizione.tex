@@ -625,7 +625,6 @@ Inoltre la natura \emph{multipath} del protocollo introduce una nuova possibile 
 
 \section{I problemi e l'Idea}
 ~\\
-(Da rivedere)\\
 \indent Il progetto nasce dall'idea di analizzare i protocolli emergenti nel contesto delle reti moderne, dove le connessioni mobili prevalgono. 
 L'attenzione si è concentrata in particolare sul protocollo \emph{QUIC}, progettato per estendere e potenzialmente sostituire \emph{TCP}.
 \\\\
@@ -637,61 +636,5 @@ L'obiettivo principale della ricerca è stato quello di esplorare eventuali vuln
 In particolare, lo studio si è concentrato sulla ricerca di possibili problematiche che causano un aumento della ritrasmissione o eventuali metodi per forzare ritrasmissioni, con lo scopo di aumentare artificialmente la contabilizzazione del traffico.
 \\\\
 Questo studio si inserisce in un contesto più ampio che include anche l'analisi di \emph{MPTCP}, sebbene per ragioni di tempo ci si sia concentrati principalmente su \emph{QUIC}. 
-\begin{figure}[!h]
-    \centering
-    \begin{tabular}{|c|c|c|}
-        \hline
-        \textbf{Nome} & \textbf{Linguaggio} & \textbf{Licenza} \\
-        \hline
-        Chromium & C++ & BSD License \\
-        \hline
-        MsQuic & C & MIT License \\
-        \hline
-        QUIC Library (mvfst) & C++ & MIT License \\
-        \hline
-        LiteSpeed QUIC Library (lsquic) & C & MIT License \\
-        \hline
-        ngtcp2 & C & MIT License \\
-        \hline
-        Quiche & Rust & BSD-2-Clause License \\
-        \hline
-        quicly & C & MIT License \\
-        \hline
-        \textbf{quic-go} & \textbf{Go} & \textbf{MIT License} \\
-        \hline
-        Quinn & Rust & Apache License 2.0 \\
-        \hline
-        Neqo & Rust & Apache License 2.0 \\
-        \hline
-        aioquic & Python & BSD-3-Clause License \\
-        \hline
-        picoquic & C & BSD-3-Clause License \\
-        \hline
-        pquic & C & MIT License \\
-        \hline
-        QUANT & C & BSD-2-Clause License \\
-        \hline
-        quic & Haskell & BSD-3-Clause License \\
-        \hline
-        netty-incubator-codec-quic & Java & Apache License 2.0 \\
-        \hline
-        nodejs-quic & NodeJs & MIT License \\
-        \hline
-        s2n-quic & Rust & Apache License 2.0 \\
-        \hline
-        swift-quic & Swift & Apache License 2.0 \\
-        \hline
-        TQUIC & Rust & Apache License 2.0 \\
-        \hline
-        nginx & C & BSD-2-Clause License \\
-        \hline
-        HAProxy & C & GNU General Public License version 2 \\
-        \hline
-        kwik & Java & GNU Lesser General Public License version 3 \\
-        \hline
-    \end{tabular}
-    \caption{\emph{Quic Source Code (da controllare)}}
-    \label{table-implementazioni-quic}
-\end{figure}
 
 
