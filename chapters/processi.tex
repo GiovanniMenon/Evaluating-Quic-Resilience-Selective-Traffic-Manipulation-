@@ -302,7 +302,7 @@ L'operazione di iniezione dei pacchetti avviene solo dopo la fase di \emph{hands
 Come nell'esperimento precedente, la natura \emph{end-to-end} della connessione \emph{QUIC} gioca un ruolo fondamentale. Si prevede che solo il \emph{client} sia in grado di verificare l'autenticità dei pacchetti ricevuti. 
 Di conseguenza, questi finti pacchetti verranno contabilizzati nel traffico del client, nonostante non facciano parte della comunicazione.
 \\\\
-Questo particolare esperimento può essere considerato una variante del \emph{UDP flooding}\footnote{\gls{udp flooding}}, che sfrutta la natura \emph{end-to-end} del protocollo \emph{QUIC}.
+Questo particolare esperimento può essere considerato una variante del \emph{UDP flooding} \footnote{\gls{udp flooding}} \cite{site:udp-flood}, che sfrutta la natura \emph{end-to-end} del protocollo \emph{QUIC}.
 \\\\
 Segue ora una descrizione delle modifiche apportate al codice sorgente per ottenere il risultato voluto.
 \begin{lstlisting}[language=Go]
