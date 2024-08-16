@@ -497,9 +497,15 @@ Questo avviene tramite l'uso di algoritmi crittografici come \emph{Diffie-Hellma
 \\\\
 Un altro meccanismo utilizzato per garantire l'integrità dei dati è l'utilizzo di un \emph{checksum}, che consente di verificare che i dati non siano stati alterati durante la trasmissione. In caso il destinatario nota discrepanze tra il contenuto del campo \emph{checksum} e i dati stessi allora verranno rifiutati e scartati.
 In aggiunta \emph{QUIC} include nei pacchetti anche l'\emph{hash} crittografico dei dati stessi, quando il destinatario riceve il pacchetto e ricalcola l'\emph{hash} è in grado di rilevare se i dati sono corroti \cite{site:quic-security}.
+\paragraph{\textit{Ritrasmissioni}}
+\noindent Come per il protocollo \emph{TCP}, anche per \emph{QUIC} la gestione degli errori è un argomento estremamente grande e complesso che necessiterebbe a sua volta di uno studio. Tuttavia, ai fini dello studio, è importante sottolineare che anche \emph{QUIC} utilizza il meccanismo delle ritrasmissioni per assicurarsi che i pacchetti arrivino correttamente al destinatario. 
 \\\\
-\paragraph{\textit{Ritrasmissione}}
-da fare spiegare l'uso del pbo a differenza del rto
+In particolare, \emph{QUIC} fa uso di un \emph{PTO} \footnote{\gls{PTO}} a differenza del \emph{TCP} che invece utilizza il \emph{RTO} tradizionale.
+Il \emph{PTO} è un meccanismo progettato per essere più reattivo e flessibile nella gestione delle perdite di pacchetti e nei ritardi.
+Permette infatti di ritrasmettere i pacchetti con un tempo di attesa significativamente ridotto evitando , come nel \emph{RTO}, della crescita esponenziale del timeout \cite{site:pto-quic}.
+\\\\
+Viene inoltre usato per gestire separamente i \emph{packet number space} dando priorità ad una fase rispetto ad un'altra. 
+Questo garantisce a \emph{QUIC} una maggiore efficienza in reti con alta latenza e perdite di pacchetti.
 \subsection{MPTCP}
 ~\\
 \indent \emph{MPTCP } rappresenta un'evoluzione significativa del protocollo \emph{TCP} tradizionale. 
