@@ -158,7 +158,7 @@ Per la realizzazione degli esperimenti si è utilizzato un \emph{fork} appositam
 con cui è stato possibile implementare il \emph{server} malevolo e condurre i vari test.
 La simulazione degli attori dello scenario è stata eseguita utilizzando macchine virtuali con all'interno \emph{Ubuntu}.
 
-\paragraph{Esperimento 1: Server Web con Comportamento Anomalo QUIC}
+\paragraph{Esperimento 1: Server Web QUIC che ignora gli ACK}
 \noindent L'idea alla base di questo esperimento è simulare un \emph{server web Quic} con un comportamento non convenzionale. 
 Questo \emph{server} è configurato per operare come se non ricevesse mai conferme \emph{(acknowledge)} per i pacchetti inviati, mantenendo al contempo un \emph{PTO} impostato a zero.
 \\\\
@@ -292,7 +292,7 @@ Le più significative di esse sono catalogate nella tabella \ref{table-retransmi
 \end{figure}
 
 \paragraph{Esperimento 2: Server Web con Iniezione di Pacchetti in Background}
-\indent L'idea alla base di questo secondo esperimento è quella di simulare un \emph{server web QUIC} che, 
+\noindent L'idea alla base di questo secondo esperimento è quella di simulare un \emph{server web QUIC} che, 
 pur mantenendo un comportamento apparentemente normale durante la connessione, inietta in background pacchetti aggiuntivi non richiesti.
 \\\\
 In questo scenario, il \emph{server} inizializza e mantiene una connessione \emph{QUIC} standard con il \emph{client}, agendo normalmente. Tuttavia, parallelamente a questo, il \emph{server} è stato modificato appositamente per inviare pacchetti aggiuntivi non correlati alla comunicazione.
@@ -304,7 +304,7 @@ Di conseguenza, questi finti pacchetti verranno contabilizzati nel traffico del 
 \\\\
 Questo particolare esperimento può essere considerato una variante del \emph{UDP flooding}\footnote{\gls{udp flooding}}, che sfrutta la natura \emph{end-to-end} del protocollo \emph{QUIC}.
 \\\\
-Segue ora una descrzione delle modifiche apportate al codice sorgente per ottenere questo risultato.
+Segue ora una descrizione delle modifiche apportate al codice sorgente per ottenere il risultato voluto.
 \begin{lstlisting}[language=Go]
 // sys_conn_oob.go
 func (c *oobConn) WritePacket(b []byte, addr net.Addr, packetInfoOOB []byte, gsoSize uint16, ecn protocol.ECN) (int, error) {
@@ -372,7 +372,7 @@ Per ottenere il risultato voluto, sono state apportate delle modifiche alla funz
         \item L'\emph{header} del pacchetto viene copiato, per praticità, da un pacchetto \emph{RTT-1} esistente. Questo assicura che l'\emph{header} sia coerente con la connessione.
     \end{itemize}
 \end{itemize}
-\noindent Infine si utilizza la funzione \emph{WriteMsgUDP} per costruire il pacchetto \emph{UDP} con il payload \emph{QUIC} ed inviarlo al destinatario.
+\noindent Infine si utilizza la funzione \emph{WriteMsgUDP} per costruire il pacchetto \emph{UDP} con il payload \emph{QUIC} ed inviarlo al destinatario \footnote{\url{https://github.com/GiovanniMenon/quic-go/tree/inject-1}}.
 \\\\
 Come nel primo esperimento, anche in questo caso sono state sviluppate diverse varianti che si distinguono principalmente per il numero di \emph{worker} impiegati e per le impostazioni del limitatore. Le più significative sono elencate nella tabella \ref{table-inject}.
 \begin{figure}[!h]
@@ -394,9 +394,56 @@ Come nel primo esperimento, anche in questo caso sono state sviluppate diverse v
     \label{table-inject}
 \end{figure}
 \pagebreak
-\paragraph{Esperimento 3}
-Si monitora la connessione.
+\paragraph{Esperimento 3: Manipolazione del traffico QUIC }
+\noindent L'idea alla base di questo terzo esperimento si discosta da quelle precedenti, concentrandosi su uno scenario in cui non è presente un \emph{server} malevolo.
+Viene invece simulata la presenza di un attaccante esterno in grado di manipolare il traffico in una connessione legittima tra \emph{client} e \emph{server}.
+\\\\
+In particolare, l'attaccante si concentra sull'oscuramento di specifici pacchetti all'interno della comunicazione \emph{QUIC}. 
+L'obiettivo principale è quello di bloccare i pacchetti che con alta probabilità contengono un \emph{ACK}, facendo così credere al mittente che i suoi pacchetti non siano stati ricevuti.
+\\\\
+Tuttavia, è importante sottolineare che, a causa della natura \emph{end-to-end} e della crittografia di \emph{QUIC}, non è possibile determinare quali pacchetti contengano effettivamente un \emph{ACK}.
+\\\\
+Nonostante questa caratteristica, dopo una serie di esperimenti, simulazioni e un'analisi di diverse connessioni \emph{QUIC}, si è osservato un pattern interessante. I pacchetti contenenti un \emph{ACK frame} tendono ad avere una dimensione inferiore a \emph{85 bytes}.
+È importante sottolineare che questa euristica non garantisce una base del 100\%, ma offre comunque all'attaccante una base per selezionare euristicamente quali pacchetti oscurare.
+\\\\
+Per realizzare questo specifico scenario si è optato per una sua simulazione semplificata ma allo stesso modo efficace. 
+Invece di implementare un attaccante esterno separato, si è scelto di modificare il comportamento del \emph{server QUIC} per emulare il comportamento dell'attaccante.
+\\\\
+Questo avviene programmando il \emph{server} per scartare automaticamente tutti i pacchetti, sia in ingresso che in uscita, con dimensione inferiore a \emph{85 bytes}.
+Le modifiche sono state implementate aggiungendo il seguente codice sia alla funzione \emph{ReadPacket} che \emph{WritePacket} \footnote{\url{https://github.com/GiovanniMenon/quic-go/tree/spurious-1}}.
+\begin{lstlisting}[language=Go]
+// sys_conn_oob.go
+if len(p.data)+42 < 85 {
+	
+	if probAckReceived%numberAckOscured == 0 {
+		probAckReceived++
+		return receivedPacket{}, nil
+	}
+	probAckReceived++
+	return p, nil
+}
+\end{lstlisting}
 
+Come negli esperimenti precedenti, sono state sviluppate diverse varianti che si differenziano per il numero di pacchetti che l'attaccante oscura.
+Le più rilevanti sono elencate nella tabella \ref{table-spurious}.
+\begin{figure}[!h]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{ACK Packet} \\
+        \hline
+        spurious - 1  & All \\
+        \hline
+        spurious - 2 & 1/2 \\
+        \hline
+        spurious - 3 & 2/3 \\
+        \hline
+        spurious - 4 & 4/5 \\
+        \hline
+    \end{tabular}
+    \caption{\emph{Tabella varianti esperimento 3}}
+    \label{table-spurious}
+\end{figure}
 \subsection{Esperimenti MPTCP}
 \paragraph{Esperimento 1}
 
