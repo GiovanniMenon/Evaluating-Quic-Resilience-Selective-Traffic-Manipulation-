@@ -445,6 +445,15 @@ Le più rilevanti sono elencate nella tabella \ref{table-spurious}.
 \indent Gli esperimenti relativi al protocollo \emph{MPTCP}, come precedentemente anticipato, sono stati condotti in misura ridotta e si sono focalizzati su un unico scenario sperimentale.
 In parte per la scelta di dedicare più tempo e attenzioni al protocollo \emph{QUIC} ed in parte per l'impossibilità di implementare ulteriori scenari.
 \\\\
-Per la realizzazione degli esperimenti si è creato un \emph{server web MPTCP} utilizzando i \emph{socket MPTCP} \cite{site:mptcp-code} e per la simulazione degli attori dello scenario sono state usate delle macchine virtuali con all'interno \emph{Ubuntu}.
-\paragraph{Esperimento 1}
-Unico esperimento 
+Per la realizzazione degli esperimenti si è creato un \emph{server web MPTCP} utilizzando i \emph{socket MPTCP} \cite{site:mptcp-code} e per la simulazione degli attori dello scenario sono state usate delle macchine virtuali con all'interno \emph{Ubuntu} e che supportano \emph{MPTCP}.
+\paragraph{Esperimento 1: Server Web con Iniezione di Pacchetti in Background}
+L'idea alla base di questo esperimento è analoga a quella del secondo esperimento di \emph{QUIC}, ma applicata al protocollo \emph{MPTCP}. 
+L'obbiettivo è simulare un \emph{server web MPTCP} che, mantenendo all'apparenza un comportamento normale durante la connessione, inietta in background pacchetti aggiuntivi non richiesti.
+\\\\
+In questo scenario, il \emph{server} stabilisce e gestisce una connessione \emph{MPTCP} con il \emph{client}. Tuttavia, parallelamente utilizza un \emph{raw socket} per iniettare pacchetti aggiuntivi nella comunicazione.
+\\\\
+Una differenza significativa rispetto all'esperimento \emph{QUIC} è che \emph{MPTCP}, essendo un'estensione di \emph{TCP}, non include la crittografia \emph{end-to-end} integrata. 
+Questo potrebbe influenzare il modo in cui i pacchetti iniettati vengono gestiti e rilevati lungo il percorso di rete.
+\\\\
+(Questa parte non mi convince, sono indeciso se rimuoverla o meno perchè a tutti gli effetti ci siamo concentrati di più su QUIC,
+ e gli esperimenti di mptcp non sono molto rilevanti. Magari lasciamo un pezzo in cui spiego cosa si è fatto e perchè non si è andato oltre.)
