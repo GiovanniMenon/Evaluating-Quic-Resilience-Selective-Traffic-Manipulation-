@@ -1,7 +1,7 @@
 \chapter{Descrizione del Progetto}
 \label{cap:descrizione}
 
-Questo capitolo introduce i preliminari tecnici e illustra il problema affrontato. La sezione \ref{Scenario} è dedicata ..... mentre la sezione \ref{Problema} ... 
+Questo capitolo introduce i preliminari tecnici e illustra il problema affrontato. La sezione \ref{Scenario} è dedicata alla descrizione del contesto tecnologico mentre la sezione \ref{Problema} analizza le problematiche affrontate nello studio. 
 
 \section{Scenario Tecnico}
 \label{Scenario}
@@ -25,7 +25,7 @@ caratterizzate da:
 \end{itemize}
 
 \noindent Queste nuove sfide hanno evidenziato una serie di problematiche nei protocolli. La consapevolezza di questi limiti ha portato alla ricerca di nuove soluzioni, cercando di superare le inefficienze pur mantenendo i punti di forza dei protocolli tradizionali.
-Questi studi hanno portato alla creazione di nuovi protocolli come \emph{QUIC} ed a estensioni come \emph{MPTCP}, che cercano di superare le limitazioni di \emph{TCP} e \emph{UDP} per far fronte alle sfide del mondo moderno offrendo prestazioni migliori, maggiore sicurezza e flessibilità.
+Questi studi hanno portato alla creazione di nuovi protocolli come \emph{QUIC} ed a estensioni come \emph{MPTCP}, che cercano di superare le limitazioni di \emph{TCP} e \emph{UDP} per far fronte alle sfide del mondo moderno, offrendo prestazioni migliori, maggiore sicurezza e flessibilità.
 \subsubsection{TCP (Transmission Control Protocol)}
 ~\\
 % Fonte https://www.ietf.org/rfc/rfc793.txt %
@@ -229,13 +229,15 @@ Ne sono un esempio i giochi online, lo streaming video e le chiamate \emph{VOIP}
 
 \subsection{QUIC}
 ~\\
-\indent Dopo aver esaminato brevemente alcuni dettagli dei protocolli di trasporto tradizionali (\emph{TCP} e \emph{UDP}), in questa sezione procederemo con l'analisi del protocollo argomento principale di questo studio. \\
-Sviluppato inizialmente da \emph{Google} nel 2012, \emph{QUIC}\footnote{\gls{QUIC}} rappresenta un vero e proprio salto generazionale rispetto ai protocolli tradizionali, offrendo una soluzione che combina la velocità dell'\emph{UDP} alla sicurezza e affidabilità del \emph{TCP}. 
-Il suo sviluppo così recente ha permesso di progettarlo specificamente per affrontare le sfide che i protocolli tradizionali faticavano a gestire, come le performance sulle reti mobili, la sicurezza e la latenza ridotta. Questo nuovo protocollo si è rapidamente affermato nel mondo delle comunicazioni, tanto da essere standardizzato dall'\emph{IETF}\footnote{\gls{IETF}} nel 2021.
+\indent Dopo aver esaminato brevemente alcuni dettagli dei protocolli di trasporto tradizionali (\emph{TCP} e \emph{UDP}), in questa sezione procederemo con l'analisi del protocollo argomento principale di questo studio. 
+\\
+Sviluppato inizialmente da \emph{Google} nel 2012, \emph{Quic UDP Internet Connections (QUIC)}\footnote{\gls{QUIC}} è stato pensato per affrontare le sfide che i protocolli tradizionali faticavano a gestire, come le performance sulle reti mobili, la sicurezza e la latenza ridotta.
+Offrendo una soluzione che combina la velocità dell'\emph{UDP} alla sicurezza e affidabilità del \emph{TCP}. Questo nuovo protocollo si è rapidamente affermato nel mondo delle comunicazioni, tanto da essere standardizzato dall'\emph{IETF}\footnote{\gls{IETF}} nel 2021.
 \\\\
-Inoltre \emph{QUIC} è stato progettato per collaborare con \emph{HTTP}\footnote{\gls{HTTP}}, il protocollo a \emph{livello applicativo}\footnote{\gls{livello applicativo}}. Chiamando \emph{HTTP/3}\footnote{\gls{HTTP/3}} la versione che utilizza \emph{QUIC} al posto di \emph{TCP} come protocollo di trasporto \cite{site:HTTP-over-QUIC}.
+Inoltre \emph{QUIC} è stato sviluppato per integrarsi con \emph{HTTP}\footnote{\gls{HTTP}}, il protocollo appartenente alla famiglia dei protocolli \emph{applicativi}\footnote{\gls{livello applicativo}}. 
+La versione di \emph{HTTP} che utilizza \emph{QUIC} come protocollo di trasporto, anziché \emph{TCP}, è denominata \emph{HTTP/3}.
 \\\\
-\noindent Per motivi di spazio, analizzeremo solo gli elementi trattati durante lo studio, concentrandoci in particolare su questi argomenti:
+\noindent Introduciamo ora gli elementi di \emph{QUIC} che vengono affrontati in questo studio, concentrandoci in particolare su:
 \begin{enumerate}
     \item La struttura del protocollo;
     \item Il processo di \emph{handshake};
@@ -255,8 +257,7 @@ Inoltre, \emph{UDP} non introduce alcun \emph{overhead}\footnote{\gls{overhead}}
     \caption{\emph{TCP/IP - QUIC/UDP (da modificare)}}
     \label{tcp-quic}
 \end{figure}
-
-\noindent Come illutrato nella Figura \ref{tcp-quic} si può affermare che \emph{QUIC} si basa su \emph{UDP} in modo analogo a come \emph{TCP} si basa su \emph{IP}.
+\noindent Come illutrato nella Figura \ref{tcp-quic}, \emph{QUIC} si basa su \emph{UDP} in modo analogo a come \emph{TCP} si basa su \emph{IP}.
 Nonostante questa differenza strutturale, \emph{QUIC} implementa le stesse funzionalità chiave di \emph{TCP}, seppur in modo diverso:
 \begin{itemize}
     \item Orientato alla connessione;
@@ -268,18 +269,19 @@ Nonostante questa differenza strutturale, \emph{QUIC} implementa le stesse funzi
 
 \noindent Un aspetto pratico importante è che, essendo costruito sopra \emph{UDP}, tutte le informazioni necessarie al funzionamento di \emph{QUIC} sono contenute nel payload del datagramma \emph{UDP} (Figura \ref{udp-datagram}).
 \paragraph{\textit{Identificatori di Connessione}}
-\noindent A differenza di \emph{TCP}, \emph{QUIC} adotta un approccio diverso e allo stesso tempo innovativo per l'identificazione delle connessioni. Mentre in \emph{TCP}, come abbiamo già visto, le connessioni sono identificate tramite la tupla:
+\noindent A differenza di \emph{TCP}, \emph{QUIC} adotta un approccio diverso per l'identificazione delle connessioni. 
+Mentre in \emph{TCP} le connessioni sono identificate tramite la tupla:
 \begin{center}
 \small
 $[\text{Indirizzo IP sorgente}, \text{Porta sorgente}] \leftrightarrow [\text{Indirizzo IP destinazione}, \text{Porta destinazione}]$
 \end{center}
 \emph{QUIC} introduce un concetto diverso: il \emph{Connection ID}. Questo identificatore consente di riconoscere la connessione in maniera indipendente dagli \emph{indirizzi IP} o dalle \emph{porte} utilizzate.
-Il vantaggio principale di questo approccio è la capacità di mantenere attiva una connessione anche in caso di cambiamento dell'\emph{indirizzo IP} o della \emph{porta}, situazione che nelle reti moderne è molto frequente \cite{site:Explaining-QUIC}.
+Il vantaggio principale di questo approccio è la capacità di mantenere attiva una connessione anche in caso di cambiamento dell'\emph{indirizzo IP} o della \emph{porta}, situazione che nelle reti moderne è molto frequente.
 \\\\
-Un esempio concreto che illustra gli effetti di questo approccio si può osservare nel comportamento dei dispositivi mobili durante il passaggio tra diverse reti.
-Con una connessione \emph{TCP}, quando un dispositivo migra da una rete \emph{WiFi} a una \emph{rete mobile}, è richiesta una riconnessione completa (come si può vedere in Figura \ref{tcp-handoff}). 
+Un esempio concreto che illustra i vantaggi di questo approccio si può osservare nel comportamento dei dispositivi mobili durante il passaggio tra diverse reti.
+Con una connessione \emph{TCP}, quando un dispositivo migra da una rete \emph{WiFi} a una \emph{rete mobile}, è richiesta una riconnessione completa, come si può vedere in Figura \ref{tcp-handoff}. 
 \\\\
-Al contrario,\emph{QUIC} gestisce questa transazione in modo più efficiente (come mostrato nella Figura \ref{quic-handoff}). Grazie al \emph{Connection ID}, \emph{QUIC} riesce a mantenere la connessione attiva nonostante il cambio di rete, eliminando la necessità di effettuare una riconnessione e garantendo un servizio costante.
+Al contrario,\emph{QUIC} gestisce questa transazione in modo più efficiente come mostrato nella Figura \ref{quic-handoff}. Grazie al \emph{Connection ID}, \emph{QUIC} riesce a mantenere la connessione attiva nonostante il cambio di rete, eliminando la necessità di effettuare una riconnessione e garantendo un servizio costante \cite{site:Explaining-QUIC}.
 \begin{figure}[!h]
     \centering
     \begin{minipage}{0.48\textwidth}
@@ -299,8 +301,8 @@ Al contrario,\emph{QUIC} gestisce questa transazione in modo più efficiente (co
 \\
 Oltre a questo vantaggio fondamentale, l'utilizzo del \emph{Connection ID} offre ulteriori benefici:
 \begin{itemize}
-\item \textbf{Load balancing}: Grazie al \emph{Connection ID} i server possono distribuire il carico in modo più dinamico senza avere interruzzioni nelle connessioni esistenti, migliorando le prestazioni e la scalabilità.
-\item \textbf{Maggiore privacy}: Il \emph{Connection ID} può essere cambiato frequentemente, aumentando la protezione della privacy e riducendo la tracciabilità delle connessioni.
+\item \textbf{Load balancing}: Grazie al \emph{Connection ID} i server possono distribuire il carico in modo più dinamico senza avere interruzioni nelle connessioni esistenti, migliorando le prestazioni e la scalabilità \cite{quic}.
+\item \textbf{Maggiore privacy}: Il \emph{Connection ID} può essere cambiato frequentemente, aumentando la protezione della privacy e riducendo la tracciabilità delle connessioni \cite{site:quic-security}.
 \end{itemize}
 \paragraph{\textit{Packet Number}}
 
@@ -314,10 +316,10 @@ compreso fra 0 e $2^{62}$-1. Questo numero viene utilizzato per identificare il 
 \end{enumerate}
 \noindent Concettualmente, un \emph{packet number space} è il contesto nel quale un pacchetto viene processato e confermato. Questo garantisce che i pacchetti nei \emph{number space} diversi siano crittograficamente separati.
 \\
-Ogni spazio inizia con un \emph{Packet Number} pari a 0, ogni pacchetto successivo incrementa il numero di 1 alla volta \cite{site:Packet-number}. 
+Ogni spazio inizia con un \emph{Packet Number} pari a 0, ogni pacchetto successivo incrementa il numero di 1 alla volta \cite{site:rfc9000}. 
 
 \paragraph{\textit{Formato dei Pacchetti}}
-\noindent Un datagramma \emph{UDP} può contenere uno o più pacchetti \emph{QUIC}. Ciascun pacchetto \emph{QUIC} è composto da un \emph{header} e da \emph{N} \emph{frame}, come illustrato nella Figura \ref{quic-packet} \cite{site:Packet-Formats}.
+\noindent Un datagramma \emph{UDP} può contenere uno o più pacchetti \emph{QUIC}. Ciascun pacchetto \emph{QUIC} è composto da un \emph{header} e da \emph{N} \emph{frame}, come illustrato nella Figura \ref{quic-packet} \cite{site:rfc9000}.
 \begin{figure}[!h]
     \centering
     \includegraphics[width=1\columnwidth]{descrizione/quic/packet}
@@ -327,7 +329,7 @@ Ogni spazio inizia con un \emph{Packet Number} pari a 0, ogni pacchetto successi
 \\
 Gli \emph{header} si distinguono in due categorie, \emph{long header} e \emph{short header}. 
 \\\\
-Il \emph{long header} viene utilizzato principalmente durante l'inizializzazione della connessione. Contiene più informazioni ed è più dettagliato rispetto al \emph{short header}. Segue ora una breve descrizione dei campi presenti (Figura \ref{long-header}) \cite{site:Long-header}.
+Il \emph{long header} viene utilizzato principalmente durante l'inizializzazione della connessione. Contiene più informazioni ed è più dettagliato rispetto al \emph{short header}. Segue ora una breve descrizione dei campi presenti (Figura \ref{long-header}) \cite{site:rfc9000}.
 \begin{figure}[!h]
     \centering
     \begin{minipage}{0.48\textwidth}
@@ -395,7 +397,7 @@ Il \emph{long header} viene utilizzato principalmente durante l'inizializzazione
 \\
 \indent \textbf{\emph{Retry Packet}}  ha il compito di trasportare un \emph{token} di validazione creato dal \emph{server}. Viene usato dal \emph{server} quando vuole effettuare un \emph{retry}, ovvero richiedere al \emph{client} di ripetere l'invio di una richiesta iniziale.
 \\\\
-Passiamo ora ad analizzare il \emph{short header}, utilizzato esclusivamente dopo che le chiavi sono state negoziate. Esiste un'unica variante di questo \emph{header}, noto come \emph{RTT-1} (illustrato nella Figura \ref{short-header}) \cite{site:Short-header}.
+Passiamo ora ad analizzare il \emph{short header}, utilizzato esclusivamente dopo che le chiavi sono state negoziate. Esiste un'unica variante di questo \emph{header}, noto come \emph{RTT-1} (illustrato nella Figura \ref{short-header}) \cite{site:rfc9000}.
 \begin{figure}[!h]
     \centering
     \begin{small}

@@ -1,25 +1,24 @@
 \chapter{Processi e Metodi}
 \label{cap:processi-metodologie}
 
-\textit{\indent Questo capitolo fornisce in dettaglio l'ambiente di ricerca adottato, le tecnologie impiegate e degli esperimenti condotti. 
-Fornisce inoltre tutte le informazioni necessarie per replicare gli esperimenti.}
+Questo capitolo fornisce in dettaglio l'ambiente di ricerca utilizzato, le tecnologie impiegate e descrive gli esperimenti condotti. 
+Fornisce inoltre tutte le informazioni necessarie per replicare gli esperimenti.
 
 \section{Ambiente}
 ~\\
 \indent Questa sezione offre una panoramica completa dell'ambiente di lavoro e delle tecnologie impiegate nello sviluppo degli esperimenti descritti successivamente. 
-Segue una descrizione degli strumenti utilizzati durante lo svolgimento del progetto (riassunte con le relative versioni nella Figura \ref{table-tecnologie}).
+Di seguito, viene riportata una descrizione degli strumenti utilizzati durante lo svolgimento del progetto (riassunte con le relative versioni nella Figura \ref{table-tecnologie}).
 \\\\
-Come premessa, la totalità del progetto è stata svolta su \textbf{\emph{Ubuntu}}\footnote{\url{https://ubuntu.com/}}. 
+La totalità del progetto è stata svolta su \textbf{\emph{Ubuntu}}\footnote{\url{https://ubuntu.com/}}. 
 Questa scelta di sistema operativo è dovuta al vasto supporto di strumenti per l'analisi e lo sviluppo.
 \\\\
-Per l'analisi del traffico di rete, è stato ampiamente utilizzato \textbf{\emph{Wireshark}}\footnote{\url{https://www.wireshark.org/}}, 
+Per l'analisi del traffico di rete, è stato utilizzato \textbf{\emph{Wireshark}}\footnote{\url{https://www.wireshark.org/}}, 
 uno strumento molto diffuso nel panorama del traffico di rete e che ha permesso di esaminare nel dettaglio il comportamento dei protocolli oggetti dello studio.
 \\\\
 La sperimentazione ha coinvolto l'uso di diversi \emph{browser web}, in particolare \textbf{\emph{Google Chrome}}\footnote{\url{https://www.google.com/intl/it_it/chrome/}} e \textbf{\emph{Firefox}}\footnote{\url{https://www.mozilla.org/it/firefox/}}. 
 Questi due applicativi sono stati impiegati per testare e confrontare l'implementazione dei protocolli in diverse situazioni.
 \\\\
-L'ambiente di test è stato realizzato tramite \textbf{Oracle VM VirtualBox}\footnote{\url{https://www.virtualbox.org/}}, un diffuso ambiente di virtualizzazione. 
-Permettendo di creare e gestire macchine virtuali specifiche per la creazione di possibili scenari.
+L'ambiente di test è stato realizzato tramite \textbf{Oracle VM VirtualBox}\footnote{\url{https://www.virtualbox.org/}}, un diffuso ambiente di virtualizzazione, che consente di creare e gestire più macchine virtuali.
 \\\\
 Per la condivisione e mantenimento del codice si è usato \textbf{GitHub}\footnote{\url{https://github.com/}} e \textbf{Git}.
 In particolare si è rivelato vantaggioso in quanto ha permesso di lavorare efficientemente con \emph{fork}\footnote{\gls{fork}} di librerie pubbliche, consentendo una gestione dinamica delle modifiche e degli aggiornamenti del codice.
@@ -28,7 +27,7 @@ In particolare si è rivelato vantaggioso in quanto ha permesso di lavorare effi
 ~\\
 \indent Per lo studio si è utilizzato \textbf{Quic-go}\footnote{\url{https://github.com/quic-go/quic-go}}, un'implementazione sviluppata in \emph{Go}\footnote{\gls{Go}} del protocollo \emph{QUIC}.
 \emph{Quic-go} è un progetto \emph{open source} su \emph{GitHub} che aderisce rigorosamente alle specifiche del protocollo \emph{QUIC} 
-definite negli \emph{RFC}\footnote{\gls{RFC}} 9000, 9001 e 9002. 
+definite negli \emph{RFC}\footnote{\gls{RFC}} 9000, 9001 e 9002 \cite{site:rfc9000,site:rfc9001,site:rfc9002}. 
 \\\\
 \emph{Quic-go} non è l'unica versione disponibile del protocollo \emph{QUIC}.
 Come illustrato nella Figura \ref{table-implementazioni-quic}, esistono numerose altre implementazioni, sia \emph{open source} che proprietarie, ciascuna cerca di rispettare rigorosamente le specifiche definite negli \emph{RFC}. 
@@ -134,8 +133,6 @@ Per garantire che le applicazioni utilizzassero \emph{MPTCP} si è usato \textbf
     \label{table-tecnologie}
 \end{figure}
 
-\pagebreak
-
 \section{Esperimenti}
 ~\\
 \indent Questa sezione esamina in dettaglio gli esperimenti condotti nel corso dello studio, illustrando la logica sottostante e le procedure impiegate per la loro realizzazione. 
@@ -144,13 +141,12 @@ L'obiettivo di questo capitolo è fornire una panoramica completa delle attivit�
 Gli esperimenti sono stati creati con l'obiettivo di identificare e testare diversi metodi per aumentare il traffico dati e le ritrasmissioni.
 Tutte le prove sono state condotte in un ambiente locale, simulando possibili scenari di rete tramite la creazione di specifici attori.
 \\\\
-I relativi risultati e le conclusioni raggiunte di ogni esperimento verranno dibattute nel Capitolo \ref{cap:risultati}.
+I relativi risultati vengono analizzati nel Capitolo \ref{cap:risultati} mentre le conclusioni raggiunte sono discusse nel Capitolo \ref{cap:conclusioni}.
 
 \subsection{Esperimenti QUIC}
 ~\\ 
 \indent Gli esperimenti relativi al protocollo \emph{QUIC} si articolano in due principali categorie. 
 La prima, che comprende il primo e secondo esperimento, avviene in uno scenario in cui uno degli attori della connessione, specificamente il server, assume un comportamento malevolo.
-\\
 Il terzo esperimento, invece, si svolge in una situazione in cui l'attaccante non controlla direttamente nessuna delle due parti coinvolte nella comunicazione, ma si suppone sia in grado di monitorare e manipolare il traffico di rete.
 \\\\
 Per la realizzazione degli esperimenti si è utilizzato un \emph{fork} appositamente modificato del progetto \emph{Quic-go} \cite{site:my-fork}, 
@@ -178,10 +174,9 @@ Per implementare queste modifiche, si é utilizzato il seguente approccio :
 In particolare, queste modifiche operano dopo la fase di \emph{handshake}, così da garantire l'inizializzazione della connessione. Successivamente, il \emph{server} agirà come modificato, continuando a ritrasmettere i vari dati.
 \\\\
 In questo scenario, ci si aspetta che il \emph{client} riconosca le ritrasmissioni e le segnali al \emph{server}. Eventuali segnali e richieste di chiusura della connessione sono per questo ignorate dal \emph{server}.
-\\\\
 Inoltre, data la natura \emph{end-to-end} delle connessioni \emph{QUIC}, eventuali nodi intermedi nella rete non sono in grado di valutare l'integrità o la correttezza di queste ritrasmissioni. Questa caratteristica implica che solo il \emph{client} ha la capacità di esaminare i pacchetti e scartarli e che quindi essi vengano contabilizzati nel suo traffico dati.
 \\\\
-Segue una descrizione di alcune delle modifiche effettuate al codice con le rispettive motivazioni.
+Di seguito, viene riportata una descrizione di alcune delle modifiche effettuate al codice con le rispettive motivazioni.
 \begin{lstlisting}[language=Go]
 // internal/ackhandler/sent_packet_handler.go
 const (
@@ -222,7 +217,7 @@ func (r *RTTStats) PTO(includeMaxAckDelay bool) time.Duration {
 	return 0
 }
 \end{lstlisting}
-\noindent Il codice precedentemente illutrato elenca alcune modifiche effettuate per garantire che il \emph{PTO} rimanga costante a 0. 
+\noindent Il codice precedente elenca alcune modifiche effettuate per garantire che il \emph{PTO} rimanga costante a 0. 
 In particolare, sono state alterate le costanti : 
 \begin{itemize}
     \item \textbf{maxPTODuration} impostato a 0 e indica il massimo valore che il \emph{PTO} può assumere. 
@@ -230,7 +225,7 @@ In particolare, sono state alterate le costanti :
 \end{itemize}
 \noindent inoltre le funzioni che ricalcolano il \emph{PTO} sono state cambiate così che non lo modifichino.
 \\
-Segue il codice che impedisce al \emph{server} di riconoscere gli \emph{ACK} dei pacchetti inviati. 
+Di seguito,viene riportato il codice che impedisce al \emph{server} di riconoscere gli \emph{ACK} dei pacchetti inviati. 
 Per ottenere questo risultato si è rimossa totalmente la logica che gestisce il ricevimento di un \emph{acknowledge} dalla funzione responsabile di questo e nel contempo ritorna sempre una tupla \emph{false|nil}, 
 segnalando che nessun pacchetto è stato confermato.
 \\
@@ -308,7 +303,7 @@ Di conseguenza, questi finti pacchetti verranno contabilizzati nel traffico del 
 \\\\
 Questo particolare esperimento può essere considerato una variante del \emph{UDP flooding} \footnote{\gls{udp flooding}} \cite{site:udp-flood}, che sfrutta la natura \emph{end-to-end} del protocollo \emph{QUIC}.
 \\\\
-Segue ora una descrizione delle modifiche apportate al codice sorgente per ottenere il risultato voluto.
+Di seguito, è riportata una descrizione delle modifiche apportate al codice sorgente per ottenere il risultato voluto.
 \begin{lstlisting}[language=Go]
 // sys_conn_oob.go
 func (c *oobConn) WritePacket(b []byte, addr net.Addr, packetInfoOOB []byte, gsoSize uint16, ecn protocol.ECN) (int, error) {
@@ -366,7 +361,7 @@ func (c *oobConn) WritePacket(b []byte, addr net.Addr, packetInfoOOB []byte, gso
 }
 \end{lstlisting}
 Per ottenere il risultato voluto, sono state apportate delle modifiche alla funzione \emph{WritePacket}. Si è introdotto una nuova logica che gestisce l'invio dei pacchetti aggiuntivi, 
-queste modifiche includono: 
+tali modifiche includono: 
 \begin{itemize}
     \item \textbf{Worker} : Si sono implementati \emph{N} worker che operano in parallelo per l'invio di dati. 
     \item \textbf{Limitatore}: È stato introdotto un meccanismo di limitazione per controllare il flusso di pacchetti iniettati (\emph{Packet/s}). 
@@ -398,22 +393,19 @@ Come nel primo esperimento, anche in questo caso sono state sviluppate diverse v
     \caption{\emph{Tabella varianti esperimento 2}}
     \label{table-inject}
 \end{figure}
-\pagebreak
 \paragraph{Esperimento 3: Manipolazione del traffico QUIC }
 \noindent L'idea alla base di questo terzo esperimento si discosta da quelle precedenti, concentrandosi su uno scenario in cui non è presente un \emph{server} malevolo.
 Viene invece simulata la presenza di un attaccante esterno in grado di manipolare il traffico in una connessione legittima tra \emph{client} e \emph{server}.
 \\\\
 In particolare, l'attaccante si concentra sull'oscuramento di specifici pacchetti all'interno della comunicazione \emph{QUIC}. 
 L'obiettivo principale è quello di bloccare i pacchetti che con alta probabilità contengono un \emph{ACK}, facendo così credere al mittente che i suoi pacchetti non siano stati ricevuti.
-\\\\
 Tuttavia, è importante sottolineare che, a causa della natura \emph{end-to-end} e della crittografia di \emph{QUIC}, non è possibile determinare quali pacchetti contengano effettivamente un \emph{ACK}.
 \\\\
-Nonostante questa caratteristica, dopo una serie di esperimenti, simulazioni e un'analisi di diverse connessioni \emph{QUIC}, si è osservato un pattern interessante. I pacchetti contenenti un \emph{ACK frame} tendono ad avere una dimensione inferiore a \emph{85 bytes}.
-È importante sottolineare che questa euristica non garantisce una base del 100\%, ma offre comunque all'attaccante una base per selezionare euristicamente quali pacchetti oscurare.
+Nonostante questa caratteristica, dopo una serie di esperimenti, simulazioni e un'analisi di diverse connessioni \emph{QUIC}, si è osservato un pattern utile per fare inferenza sul contenuto dei pacchetti. Quelli contenenti un \emph{ACK frame} tendono ad avere una dimensione inferiore a \emph{85 bytes}.
+È importante sottolineare che questa osservazione, pur non essendo sempre valida, offre comunque all'attaccante una base per selezionare euristicamente quali pacchetti oscurare.
 \\\\
 Per realizzare questo specifico scenario si è optato per una sua simulazione semplificata ma allo stesso modo efficace. 
 Invece di implementare un attaccante esterno separato, si è scelto di modificare il comportamento del \emph{server QUIC} per emulare il comportamento dell'attaccante.
-\\\\
 Questo avviene programmando il \emph{server} per scartare automaticamente tutti i pacchetti, sia in ingresso che in uscita, con dimensione inferiore a \emph{85 bytes}.
 Le modifiche sono state implementate aggiungendo il seguente codice sia alla funzione \emph{ReadPacket} che \emph{WritePacket} \footnote{\url{https://github.com/GiovanniMenon/quic-go/tree/spurious-1}}.
 \begin{lstlisting}[language=Go]
@@ -451,16 +443,12 @@ Le più rilevanti sono elencate nella tabella \ref{table-spurious}.
 \pagebreak
 \subsection{Esperimenti MPTCP}
 ~\\
-\indent Gli esperimenti relativi al protocollo \emph{MPTCP}, come precedentemente anticipato, sono stati condotti in misura ridotta e si sono focalizzati su un unico scenario sperimentale.
-In parte per la scelta di dedicare più tempo e attenzioni al protocollo \emph{QUIC} ed in parte per l'impossibilità di implementare ulteriori scenari.
-\\\\
-Per la realizzazione degli esperimenti si è creato un \emph{server web MPTCP} utilizzando i \emph{socket MPTCP} \cite{site:mptcp-code} e per la simulazione degli attori dello scenario sono state usate delle macchine virtuali con all'interno \emph{Ubuntu} e che supportano \emph{MPTCP}.
+\indent Gli esperimenti relativi al protocollo \emph{MPTCP} sono stati condotti in misura ridotta e si sono focalizzati su un unico scenario sperimentale. Per la realizzazione degli esperimenti si è creato un \emph{server web MPTCP} utilizzando i \emph{socket MPTCP} \cite{site:mptcp-code} e per la simulazione degli attori dello scenario sono state usate delle macchine virtuali con all'interno \emph{Ubuntu} e che supportano \emph{MPTCP}.
 \paragraph{Esperimento 1: Server Web con Iniezione di Pacchetti in Background}
 L'idea alla base di questo esperimento è analoga a quella del secondo esperimento di \emph{QUIC}, ma applicata al protocollo \emph{MPTCP}. 
 L'obbiettivo è simulare un \emph{server web MPTCP} che, mantenendo all'apparenza un comportamento normale durante la connessione, inietta in background pacchetti aggiuntivi non richiesti.
 \\\\
 In questo scenario, il \emph{server} stabilisce e gestisce una connessione \emph{MPTCP} con il \emph{client}. Tuttavia, parallelamente utilizza un \emph{raw socket} per iniettare pacchetti aggiuntivi nella comunicazione.
-\\\\
 Una differenza significativa rispetto all'esperimento \emph{QUIC} è che \emph{MPTCP}, essendo un'estensione di \emph{TCP}, non include la crittografia \emph{end-to-end} integrata. 
 Questo potrebbe influenzare il modo in cui i pacchetti iniettati vengono gestiti e rilevati lungo il percorso di rete.
 \\\\
