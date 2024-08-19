@@ -1,18 +1,16 @@
 \chapter{Descrizione del Progetto}
 \label{cap:descrizione}
 
-\textit{\indent Questo capitolo fornisce il background tecnico essenziale per comprendere il progetto, analizza le problematiche delle tecnologie coinvolte e illustra l'idea fondamentale alla base del lavoro svolto.}
+Questo capitolo introduce i preliminari tecnici e illustra il problema affrontato. La sezione \ref{Scenario} è dedicata ..... mentre la sezione \ref{Problema} ... 
 
-\section{Background}
-
-~\\
-\indent Questa sezione illustra il funzionamento e i principi fondamentali delle tecnologie chiave del progetto.
-Quest'ultime costituiscono la base essenziale per la comprensione di questo studio. 
-
+\section{Scenario Tecnico}
+\label{Scenario}
 \subsection{Protocolli di Trasporto Tradizionali}
+
 ~\\
-\indent Nel panorama dei \emph{protocolli di rete}\footnote{\gls{protocolli di rete}}, i \emph{protocolli di trasporto}\footnote{\gls{protocolli di trasporto}} \emph{TCP (Transmission Control Protocol)}  e \emph{UDP (User Datagram Protocol)} hanno svolto e svolgono tutt'ora un ruolo fondamentale sin dalla nascita di Internet.
+\indent Nel panorama dei \emph{protocolli di rete}, i \emph{protocolli di trasporto} \emph{TCP (Transmission Control Protocol)}  e \emph{UDP (User Datagram Protocol)} hanno svolto e svolgono tutt'ora un ruolo fondamentale sin dalla nascita di Internet.
 Questi protocolli sono stati la spina dorsale delle comunicazioni per decenni, supportando una vasta gamma di servizi e applicazioni.\\
+Pur appartenendo alla stessa famiglia di protocolli, \emph{TCP} e\emph{UDP} sono stati concepiti con caratteristiche e obbiettivi distinti e vengono impiegati in base alle specifiche esigenze applicative.
 In particolare \emph{TCP}, con la sua affidabilità e il suo controllo di flusso, ha svolto un ruolo fondamentale nelle comunicazioni che richiedevano l'integrità dei dati, mentre \emph{UDP} ha trovato il suo spazio nei servizi che privilegiavano la velocità rispetto all'affidabilità. 
 Tuttavia, con l'evoluzione delle nuove tecnologie, le limitazioni di questi protocolli sono diventate sempre più evidenti. Nella concezione di base di \emph{TCP} e \emph{UDP}, ideata agli inizi del 1970, non erano state previste le sfide delle reti moderne, 
 caratterizzate da:  
@@ -26,16 +24,14 @@ caratterizzate da:
     \item Requisiti di sicurezza sempre più vincolanti.
 \end{itemize}
 
-\noindent Queste nuove sfide hanno evidenziato una serie di problematiche nei protocolli. La consapevolezza di questi limiti ha portato alla ricerca di nuove soluzioni, cercando di superare le inefficienze pur mantenendo tutti i punti di forza.
-Questi studi hanno portato alla creazione di nuovi protocolli come \emph{QUIC} ed a estensioni come \emph{MPTCP}, che cercano di far fronte alle sfide del mondo moderno offrendo prestazioni migliori, maggiore sicurezza e flessibilità.
-\\
-\\
-Nelle sezioni successive esamineremo in dettaglio alcune parti di \emph{TCP} e \emph{UDP}, per poi esplorare come \emph{QUIC} e \emph{MPTCP} si propongono di risolvere e superare le inefficienze presenti e le possibili ripercussioni.
-
+\noindent Queste nuove sfide hanno evidenziato una serie di problematiche nei protocolli. La consapevolezza di questi limiti ha portato alla ricerca di nuove soluzioni, cercando di superare le inefficienze pur mantenendo i punti di forza dei protocolli tradizionali.
+Questi studi hanno portato alla creazione di nuovi protocolli come \emph{QUIC} ed a estensioni come \emph{MPTCP}, che cercano di superare le limitazioni di \emph{TCP} e \emph{UDP} per far fronte alle sfide del mondo moderno offrendo prestazioni migliori, maggiore sicurezza e flessibilità.
 \subsubsection{TCP (Transmission Control Protocol)}
 ~\\
 % Fonte https://www.ietf.org/rfc/rfc793.txt %
-\indent Il \emph{Transmission Control Protocol (TCP)}, come anticipato nella sezione precedente, è uno dei protocolli cardine su cui si basa la comunicazione su Internet. Dato il suo ruolo e la vasta gamma di funzioni che offre, un'analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi. Pertanto, in questa sezione, ci concentreremo solo su alcuni aspetti specifici del \emph{TCP} che sono fondamentali per la comprensione dello studio su \emph{QUIC}. 
+\indent Il \emph{Transmission Control Protocol (TCP)} è uno dei protocolli cardine su cui si basa la comunicazione su Internet. 
+Dato il suo ruolo e la vasta gamma di funzioni che offre, un'analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi.
+Pertanto, in questa sezione, ci concentreremo solo su alcuni aspetti specifici del \emph{TCP} che sono fondamentali per la comprensione del problema affrontato in questa tesi. 
 In particolare, esamineremo nel dettaglio :
 \begin{itemize}
     \item Caratteristiche principali di una connessione \emph{TCP};
@@ -51,30 +47,31 @@ In particolare, esamineremo nel dettaglio :
 \noindent Il \emph{Transmission Control Protocol} si distingue come un protocollo orientato alla connessione. Questa sua caratteristica significa che, prima di qualsiasi scambio di dati, deve essere stabilita una connessione dedicata tra il \emph{client}\footnote{\gls{client}} e il \emph{server}\footnote{\gls{server}}.
 Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra cui:
 \begin{description}
-    \item[Affidabilità] Viene utilizzato il meccanismo degli \emph{acknowledgement}\footnote{\gls{acknowledgements}} per garantire la corretta consegna dei segmenti.
+    \item[Affidabilità] Garantisce che i dati trasmessi vengano ricevuti correttamente.
 
-    \item[Controllo di Errore] Implementa un sistema di verifica della integrità dei dati tramite il meccanismo degli \emph{checksum}\footnote{\gls{checksum}}.
+    \item[Controllo di Errore] Implementa un sistema di verifica della integrità dei dati tramite il meccanismo di \emph{checksum}\footnote{\gls{checksum}}.
     
     \item[Controllo di Flusso e Congestione] Utilizza il sistema delle \emph{sliding window}\footnote{\gls{sliding window}} per ottimizzare il flusso di dati e diminuire il numero di segmenti ritrasmessi in caso di situazione di congestione.
 \end{description}
 
-\noindent Queste funzionalità si riflettono sulla struttura stessa di un segmento \emph{TCP}, come si può vedere nella Figura \ref{fig}. Segue una breve descrizione di alcune delle sezioni a noi necessarie:
+\noindent Queste funzionalità si riflettono sulla struttura stessa di un segmento \emph{TCP}, come si può vedere nella Figura \ref{fig}. 
+Di seguito, è riportata la descrizione di alcune sezioni di interesse per il problema analizzato:
 
 \begin{itemize}
 \item \textit{\textbf{Source Port - Destination Port}}: Identificano rispettivamente il numero della porta di origine e destinazione.
-\item \textit{\textbf{Sequence Number}}: Definisce il \emph{sequence number}, che indica la posizione del primo segmento \emph{TCP} all'intenro del flusso. Inoltre se il \emph{control bits SYN} è presente allora il \emph{sequence number} rappresenta il \emph{ISN}\footnote{\gls{ISN}} e il primo otteto successivo avrà come \emph{sequence number ISN+1}.
+\item \textit{\textbf{Sequence Number}}: Indica la posizione del primo segmento \emph{TCP} all'interno del flusso a partire dall'\emph{ISN}\footnote{\gls{ISN}}, deciso durante la inizializzazione della connesione.
 \item \textit{\textbf{Acknowledgement Number}}: Se il \emph{control bits ACK} è presente questo campo contiene il valore del prossimo \emph{sequence number} che il ricevente del segmento si aspetta di ricevere.
 \item \textit{\textbf{Control Bits}}: Sono dei bit utilizzati per il controllo del protocollo. 
 \begin{itemize}
     \item \textit{\textbf{URG}}: Se impostato a 1 indica la presenza di dati urgenti.
-    \item \textit{\textbf{ACK}}: Se impostato a 1 indica che l'\emph{acknowledgement number} è valido.
+    \item \textit{\textbf{ACK}}: Se impostato a 1 indica che l'\emph{acknowledgement number}\footnote{\gls{acknowledgements}} è valido.
     \item \textit{\textbf{PSH}}: Se impostato a 1 indica che i dati devono essere elaborati dai livelli superiori.
     \item \textit{\textbf{RST}}: Se impostato a 1 indica che la connessione non è più valida.
     \item \textit{\textbf{SYN}}: Se impostato a 1 indica che il mittente vuole stabilire una connessione \emph{TCP}.
     \item \textit{\textbf{FIN}}: Se impostato a 1 indica che il mittente vuole terminare la connessione \emph{TCP}.
 \end{itemize}
-\item \textit{\textbf{Checksum}}: Valore utilizzato per verificare la validità del segmento. Si ottiene facendo il complemento a uno della somma complementare a uno a 16 bit dell'\emph{header}, del \emph{payload} e altri di valori.
-\item \textit{\textbf{Data}}: Rappresenta il vero e proprio \emph{payload} da trasmettere.
+\item \textit{\textbf{Checksum}}: Valore utilizzato per verificare la validità del segmento. Si ottiene facendo il complemento a uno della somma complementare a uno a 16 bit dell'\emph{header} e del \emph{payload}.
+\item \textit{\textbf{Data}}: Contiene l'informazione da trasmettere.
 \end{itemize}
 
 \begin{figure}[!h]
@@ -104,17 +101,18 @@ Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra 
 \label{fig}
 \end{figure}
 
-\noindent È importante quindi notare che per costruzione il protocollo identifica univocamente una connessione \emph{TCP} con una tupla composta da 4 elementi:
+\noindent Una connessione \emph{TCP} è dunque identificata univocamente da quattro elementi:
 
 \begin{center}
     \small
     $[\text{Indirizzo IP sorgente}, \text{Porta sorgente}] \leftrightarrow [\text{Indirizzo IP destinazione}, \text{Porta destinazione}]$
 \end{center}
 
-\noindent Questa struttura offre diversi vantaggi. Permettere a un singolo \emph{server} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. 
+\noindent Questa struttura offre diversi vantaggi. Ad esempio, permette ad un singolo \emph{server} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. 
 Inoltre garantisce l'unicità di ogni connessione all'interno della rete.
 \\
-Tuttavia, questa rigida definzione comporta delle limitazioni significative. In quanto una qualsiasi modifica ad un elemento della tupla (ad esempio, un cambiamento di porta o una migrazione dell'indirizzo IP) comporta la terminazione della connessione esistente. Questo diventa ancora più limitativo nel contesto delle comunicazioni moderne dove i casi di \emph{multihoming}\footnote{\gls{multihoming}} e cambi frequenti di indirizzo IP sono sempre più comuni \cite{site:tcp}. 
+Tuttavia, questa rigida definzione di una connessione presenta delle limitazioni significative. Ad esempio, qualsiasi modifica a uno dei quattro elementi, come un cambio di porta o una migrazione dell'indirizzo IP, comporta la chiusura della connessione esistente.
+Questa limitazione diventa ancora più rilevante nel contesto delle comunicazioni moderne, dove situazioni di \emph{multihoming}\footnote{\gls{multihoming}} e cambi frequenti di indirizzo IP sono sempre più comuni \cite{site:tcp}. 
 \\
 \\
 Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzioni come \emph{MPTCP} e viene affrontata in modo indiretto anche in \emph{QUIC}.
@@ -141,38 +139,31 @@ Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzi
     \end{minipage}
 \end{figure}
 
-\noindent Segue ora una breve spiegazione dei passaggi che avvengono in questo processo : 
+\noindent I passaggi coinvolti in questo processo sono i seguenti: 
 
 \begin{enumerate}
-    \item \textbf{Client invia un segmento SYN al Server}: Il segmento ha il campo \emph{SYN} impostato a 1 e il suo \emph{sequence number} contiene il \emph{ISN (Initial Sequence Number)} del Client.
-    \item \textbf{Server invia un segmento SYN/ACK al Client}: Il Server risponde con un segmento i cui campi \emph{SYN} e \emph{ACK} sono impostati a 1. Il suo \emph{sequence number} contiene un nuovo valore y mentre l'\emph{Acknowledgement number} contiene il valore \emph{ISN+1}.
-    \item \textbf{Client invia un segmento ACK al Server}: Il Client risponde inviando un segmento il cui campo \emph{ACK} è impostato a 1 e l'\emph{acknowledgement number} è dato da \emph{y+1}.
+    \item \textbf{Client invia un segmento SYN al Server}: Il segmento ha il campo \emph{SYN} impostato a 1 e il suo \emph{sequence number} contiene il valore x che rappresenta l'\emph{ISN (Initial Sequence Number)} del \emph{Client}.
+    \item \textbf{Server invia un segmento SYN/ACK al Client}: Il \emph{server} risponde con un segmento i cui campi \emph{SYN} e \emph{ACK} sono impostati a 1. Il suo \emph{sequence number} contiene un nuovo valore y che specifica l'\emph{ISN} del \emph{server} e il campo \emph{Acknowledgement number} contiene il valore \emph{x+1} del \emph{client}.
+    \item \textbf{Client invia un segmento ACK al Server}: Il \emph{client} risponde inviando un segmento il cui campo \emph{ACK} è impostato a 1 e l'\emph{acknowledgement number} è dato da \emph{y+1}.
 \end{enumerate}
 
-\noindent Tutti i segmenti utilizzati in questa fase hanno il campo \emph{data} vuoto, ossia sono solamente degli \emph{header}. 
-Oltre a stabilire la connessione, l'\emph{handshake} riveste un ruolo fondamentale in vari aspetti della comunicazione \emph{TCP}.
-Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche una base inziale per misurare il \emph{RTT}\footnote{\gls{RTT}} (Figura \ref{rtt}), che è essenziale per ottimizzare il controllo di flusso e la gestione della congestione della rete \cite{site:tcp}.
+\noindent Oltre a stabilire la connessione, l'\emph{handshake} riveste un ruolo fondamentale in vari aspetti della comunicazione \emph{TCP}.
+Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche una base inziale per misurare il \emph{Round Trip Time (RTT)}\footnote{\gls{RTT}} (Figura \ref{rtt}), che rappresenta il tempo totale necessario per un pacchetto di dati per viaggiare dal mittente al destinatario e ritorno. La misurazione di questo valore è essenziale per ottimizzare il controllo di flusso e la gestione della congestione della rete \cite{site:tcp}.
 
 \paragraph{\textit{Ritrasmissioni}}
 
-\noindent La gestione degli errori nel \emph{TCP} è un argomento estremamente complesso che necessiterebbe di uno studio dedicato. 
-Tuttavia, ciò va oltre allo scopo di questa tesi e per motivi di spazio non verrà discusso. Pertanto ci limiteremo a descrivere brevemente il meccanismo di ritrasmissione, necessario per comprendere alcuni concetti della tesi.
+\noindent In seguito descriviamo brevemente il meccanismo di ritrasmissione utilizzato da \emph{TCP}, che risulta necessario per comprendere alcuni concetti della tesi.
 \\\\
-\noindent Il \emph{TCP} è un protocollo progettato per garantire l'affidabilità nella trasmissione dei dati. La ritrasmissione dei segmenti persi o danneggiati è uno dei meccanismi chiave per raggiungere questo obbiettivo. Questo processo si basa sulla logica degli \emph{acknowledgements}. Quando un segmento viene inviato, il mittente attende una conferma di ricezione (\emph{ACK}) dal destinatario. Se questa conferma non viene ricevuta entro un determinato intervallo di tempo, chiamato \emph{RTO}\footnote{\gls{RTO}}, il mittente assume che il segmento sia stato perso e lo ritrasmette.
-In particolare, è importante sapere che il calcolo del RTO è dinamico e dipende fortemente dal \emph{RTT} e da numerosi altri valori. 
-\\\\
-\noindent(Si puo' dedicare piu' spazio a questa sezione approndendo casistiche e meccanismi ulteriori)
-\\\\
-\noindent(Forse fuori tema e da rimuovere)(inerente nel caso si testasse sulle reti mobili)
-\\
-Sono numerose le cause che possono provocare la perdita di un pacchetto. Nel caso delle reti mobile ciò può accadere in punti diversi dell'infrasstruttura. Nel caso il segmento venga perso tra il client e la stazione base in \emph{RAN}\footnote{\gls{RAN}} è compito del \emph{link layer} occuparsi della ritrasmissione. Questo significa che, se il pacchetto venisse perso un numero di volte ma poi venisse ricevuto, il \emph{TCP} non rileverebbe alcun pacchetto perso ma solo un aumento del \emph{RTT}.
+\noindent Il \emph{TCP} è un protocollo progettato per garantire l'affidabilità nella comunicazione dei dati. Durante la trasmissione, i pacchetti possono venire persi o essere danneggiati a causa di vari fattori, come congestione della rete, interferenze o errori \emph{hardware}.
+La ritrasmissione dei questi segmenti è uno dei meccanismi chiave per garantire l'integrità dei dati. Questo processo si basa sulla logica degli \emph{acknowledgements}. Quando un segmento viene inviato, il mittente attende una conferma di ricezione (\emph{ACK}) dal destinatario. Se questa conferma non viene ricevuta entro un determinato intervallo di tempo, chiamato \emph{Retransmission Time Out (RTO)}\footnote{\gls{RTO}}, il mittente assume che il segmento sia stato perso e lo ritrasmette.
+Il calcolo del RTO è dinamico e dipende fortemente dal \emph{RTT} e da numerosi altri valori. 
 \paragraph{\textit{Sicurezza}}
 
 \noindent Nella sua forma nativa, il protocollo \emph{TCP}, non offre meccanismi di sicurezza come autenticazione, integrità dei dati o confidenzialità. Infatti, \emph{TCP} non implementa alcuna funzionalità di crittografia o altri sistemi con lo scopo di proteggere i dati durante la trasmissione.
 Per colmare questa mancanza, vengono utlizzati protocolli aggiuntivi come il \emph{TLS}\footnote{\gls{TLS}} e il \emph{SSL}\footnote{\gls{SSL}} (suo predecessore). Questi protocolli crittografici operano al \emph{livello di presentazione}\footnote{\gls{livello di presentazione}} del modello \emph{ISO/OSI}\footnote{\gls{ISO/OSI}} e di conseguenza ad un livello superiore rispetto al \emph{TCP}.
 Forniscono entrambi le funzionalità di sicurezza essenziali, garantendo una comunicazione protetta e affidabile.
 \\\\
-Nel contesto di questo studio, ci concentreremo in particolare sul protocollo \emph{TLS 1.3}, l'ultima versione di esso. Esamineremo brevemente la nuova procedura di handshake (Figura \ref{tlsHand}), essenziale per negoziare i parametri di sicurezza e stabilire una comunicazione cifrata.
+Nel contesto di questo studio, ci concentreremo in particolare su \emph{TLS 1.3}, l'ultima versione di questo protocollo. In Figura \ref{tlsHand} è riportata la nuova procedura di \emph{handshake}, essenziale per negoziare i parametri di sicurezza e stabilire una comunicazione cifrata.
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.7\columnwidth]{descrizione/tcp/tls-handshake}
@@ -180,7 +171,7 @@ Nel contesto di questo studio, ci concentreremo in particolare sul protocollo \e
     \label{tlsHand}
 \end{figure}
 
-\noindent Segue ora una breve spiegazione dei nuovi passaggi che avvengono in questo processo:
+\noindent I passaggi coinvolti in questo processo sono i seguenti: 
 \begin{enumerate}
     \item \textbf{Client invia un messaggio ClientHello al Server}: Il messaggio contiene una lista dei cifrari supportati dal client;
     \item \textbf{Server risponde con un messaggio ServerHello al Client}: Il Server risponde con un messaggio che contiene: 
@@ -198,7 +189,9 @@ Nel contesto di questo studio, ci concentreremo in particolare sul protocollo \e
 ~\\
 \indent Dopo aver esaminato brevemente il \emph{Transmission Control Protocol (TCP)},
 procediamo ora all'analisi del \emph{User Datagram Protocol (UDP)}. 
-Diversamente dal \emph{TCP}, questo protocollo si distingue per la sua semplicità e la minor complessità, offrendo un approccio più diretto alla trasmissione dei dati.
+Diversamente dal \emph{TCP}, questo protocollo si distingue come un protocollo senza connessione. 
+Questa sua caratteristica significa che non è necessario stabilire una connesione dedicata tra \emph{client} e \emph{server} prima di iniziare lo scambio di dati. 
+Questa caratteristica, unita a un \emph{header} di soli 8 \emph{byte} e alla mancanza di un controllo sia di Flusso che di Errore, consente a \emph{UDP} di essere più veloce e leggero rispetto a \emph{TCP}.
 \\
 Nonostante la sua relativa semplicità, una trattazione esaustiva dell'UDP andrebbe comunque oltre gli scopi di questa tesi. 
 Di conseguenza ci concentreremo sulla struttura di un \emph{datagramma {UDP}} descritto in Figura \ref{udp-datagram}.
@@ -624,6 +617,7 @@ Dall'altra parte, questa stretta dipendenza con \emph{TCP} implica che \emph{MPT
 Inoltre la natura \emph{multipath} del protocollo introduce una nuova possibile superfice d'attacco, richiedendo l'implementazione di meccanismi specifici per autenticare e garantire l'integrità dei singoli \emph{subflow}.
 
 \section{I problemi e l'Idea}
+\label{Problema}
 ~\\
 \indent Il progetto nasce dall'idea di analizzare i protocolli emergenti nel contesto delle reti moderne, dove le connessioni mobili prevalgono. 
 L'attenzione si è concentrata in particolare sul protocollo \emph{QUIC}, progettato per estendere e potenzialmente sostituire \emph{TCP}.
