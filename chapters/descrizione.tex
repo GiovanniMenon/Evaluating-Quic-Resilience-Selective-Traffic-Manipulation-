@@ -31,7 +31,7 @@ Questi studi hanno portato alla creazione di nuovi protocolli come \emph{QUIC} e
 % Fonte https://www.ietf.org/rfc/rfc793.txt %
 \indent Il \emph{Transmission Control Protocol (TCP)} è uno dei protocolli cardine su cui si basa la comunicazione su Internet. 
 Dato il suo ruolo e la vasta gamma di funzioni che offre, un'analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi.
-Pertanto, in questa sezione, ci concentreremo solo su alcuni aspetti specifici del \emph{TCP} che sono fondamentali per la comprensione del problema affrontato in questa tesi. 
+Pertanto, in questa sezione, ci si concentrerà solo su alcuni aspetti specifici del \emph{TCP} che sono fondamentali per la comprensione del problema affrontato in questa tesi. 
 In particolare, esamineremo nel dettaglio :
 \begin{itemize}
     \item Caratteristiche principali di una connessione \emph{TCP};
@@ -45,7 +45,7 @@ In particolare, esamineremo nel dettaglio :
 
 \paragraph{\textit{Caratteristiche principali}}
 \noindent Il \emph{Transmission Control Protocol} si distingue come un protocollo orientato alla connessione. Questa sua caratteristica significa che, prima di qualsiasi scambio di dati, deve essere stabilita una connessione dedicata tra il \emph{client}\footnote{\gls{client}} e il \emph{server}\footnote{\gls{server}}.
-Questa peculiarità è alla base di molte delle sue funzionalità avanzate, tra cui:
+Tale peculiarità è alla base di molte delle sue funzionalità avanzate, tra cui:
 \begin{description}
     \item[Affidabilità] Garantisce che i dati trasmessi vengano ricevuti correttamente.
 
@@ -111,16 +111,16 @@ Di seguito, è riportata la descrizione di alcune sezioni di interesse per il pr
 \noindent Questa struttura offre diversi vantaggi. Ad esempio, permette ad un singolo \emph{server} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. 
 Inoltre garantisce l'unicità di ogni connessione all'interno della rete.
 \\
-Tuttavia, questa rigida definzione di una connessione presenta delle limitazioni significative. Ad esempio, qualsiasi modifica a uno dei quattro elementi, come un cambio di porta o una migrazione dell'indirizzo IP, comporta la chiusura della connessione esistente.
+Ciononostante, questa rigida definzione di una connessione presenta delle limitazioni significative. Ad esempio, qualsiasi modifica a uno dei quattro elementi, come un cambio di porta o una migrazione dell'indirizzo IP, comporta la chiusura della connessione esistente.
 Questa limitazione diventa ancora più rilevante nel contesto delle comunicazioni moderne, dove situazioni di \emph{multihoming}\footnote{\gls{multihoming}} e cambi frequenti di indirizzo IP sono sempre più comuni \cite{site:tcp}. 
 \\
 \\
-Questa problematica, come vedremo nelle prossime sezioni, è alla base di soluzioni come \emph{MPTCP} e viene affrontata in modo indiretto anche in \emph{QUIC}.
+Questa problematica, come verrà sottolineato nelle prossime sezioni, è alla base di soluzioni come \emph{MPTCP} e viene affrontata in modo indiretto anche in \emph{QUIC}.
 
 \paragraph{\textit{Handshake}}
 % https://it.wikipedia.org/wiki/Round_Trip_Time
 
-\noindent Come accennato in precedenza, uno dei punti cardine del \emph{TCP} è la necessità di stabilire una connessione prima di qualsiasi scambio di dati. Questo processo, noto come \emph{three-way handshake} ("stretta di mano in tre passaggi"), richiede lo scambio di tre messaggi tra \emph{server} e \emph{client}. La Figura \ref{handshake} illustra questo processo.
+\noindent Uno dei punti cardine del \emph{TCP} è la necessità di stabilire una connessione prima di qualsiasi scambio di dati. Questo processo, noto come \emph{three-way handshake} ("stretta di mano in tre passaggi"), richiede lo scambio di tre messaggi tra \emph{server} e \emph{client}. La Figura \ref{handshake} illustra questo procedimento.
 
 \begin{figure}[!h]
     \centering
@@ -152,7 +152,7 @@ Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche u
 
 \paragraph{\textit{Ritrasmissioni}}
 
-\noindent In seguito descriviamo brevemente il meccanismo di ritrasmissione utilizzato da \emph{TCP}, che risulta necessario per comprendere alcuni concetti della tesi.
+\noindent In seguito verrà descritto brevemente il meccanismo di ritrasmissione utilizzato da \emph{TCP}, che risulta necessario per comprendere alcuni concetti della tesi.
 \\\\
 \noindent Il \emph{TCP} è un protocollo progettato per garantire l'affidabilità nella comunicazione dei dati. Durante la trasmissione, i pacchetti possono venire persi o essere danneggiati a causa di vari fattori, come congestione della rete, interferenze o errori \emph{hardware}.
 La ritrasmissione dei questi segmenti è uno dei meccanismi chiave per garantire l'integrità dei dati. Questo processo si basa sulla logica degli \emph{acknowledgements}. Quando un segmento viene inviato, il mittente attende una conferma di ricezione (\emph{ACK}) dal destinatario. Se questa conferma non viene ricevuta entro un determinato intervallo di tempo, chiamato \emph{Retransmission Time Out (RTO)}\footnote{\gls{RTO}}, il mittente assume che il segmento sia stato perso e lo ritrasmette.
@@ -163,7 +163,8 @@ Il calcolo del RTO è dinamico e dipende fortemente dal \emph{RTT} e da numerosi
 Per colmare questa mancanza, vengono utlizzati protocolli aggiuntivi come il \emph{TLS}\footnote{\gls{TLS}} e il \emph{SSL}\footnote{\gls{SSL}} (suo predecessore). Questi protocolli crittografici operano al \emph{livello di presentazione}\footnote{\gls{livello di presentazione}} del modello \emph{ISO/OSI}\footnote{\gls{ISO/OSI}} e di conseguenza ad un livello superiore rispetto al \emph{TCP}.
 Forniscono entrambi le funzionalità di sicurezza essenziali, garantendo una comunicazione protetta e affidabile.
 \\\\
-Nel contesto di questo studio, ci concentreremo in particolare su \emph{TLS 1.3}, l'ultima versione di questo protocollo. In Figura \ref{tlsHand} è riportata la nuova procedura di \emph{handshake}, essenziale per negoziare i parametri di sicurezza e stabilire una comunicazione cifrata.
+Nel contesto di questo studio, ci si soffermerà in particolare su \emph{TLS 1.3}, l'ultima versione di questo protocollo. 
+In Figura \ref{tlsHand} è riportata la nuova procedura di \emph{handshake}, essenziale per negoziare i parametri di sicurezza e stabilire una comunicazione cifrata.
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.7\columnwidth]{descrizione/tcp/tls-handshake}
@@ -187,14 +188,14 @@ Nel contesto di questo studio, ci concentreremo in particolare su \emph{TLS 1.3}
 \subsubsection{UDP (User Datagram Protocol)}
 % https://datatracker.ietf.org/doc/html/rfc768
 ~\\
-\indent Dopo aver esaminato brevemente il \emph{Transmission Control Protocol (TCP)},
-procediamo ora all'analisi del \emph{User Datagram Protocol (UDP)}. 
+\indent Dopo aver esaminato il \emph{Transmission Control Protocol (TCP)},
+si procede ora all'analisi del \emph{User Datagram Protocol (UDP)}. 
 Diversamente dal \emph{TCP}, questo protocollo si distingue come un protocollo senza connessione. 
 Questa sua caratteristica significa che non è necessario stabilire una connesione dedicata tra \emph{client} e \emph{server} prima di iniziare lo scambio di dati. 
 Questa caratteristica, unita a un \emph{header} di soli 8 \emph{byte} e alla mancanza di un controllo sia di Flusso che di Errore, consente a \emph{UDP} di essere più veloce e leggero rispetto a \emph{TCP}.
 \\
 Nonostante la sua relativa semplicità, una trattazione esaustiva dell'UDP andrebbe comunque oltre gli scopi di questa tesi. 
-Di conseguenza ci concentreremo sulla struttura di un \emph{datagramma {UDP}} descritto in Figura \ref{udp-datagram}.
+Di conseguenza ci si concentrerà sulla struttura di un \emph{datagramma {UDP}} descritto in Figura \ref{udp-datagram}.
 \\
 \begin{figure}[!h]
     \centering
@@ -229,7 +230,7 @@ Ne sono un esempio i giochi online, lo streaming video e le chiamate \emph{VOIP}
 
 \subsection{QUIC}
 ~\\
-\indent Dopo aver esaminato brevemente alcuni dettagli dei protocolli di trasporto tradizionali (\emph{TCP} e \emph{UDP}), in questa sezione procederemo con l'analisi del protocollo argomento principale di questo studio. 
+\indent Dopo aver esaminato brevemente alcuni dettagli dei protocolli di trasporto tradizionali (\emph{TCP} e \emph{UDP}), in questa sezione si proseguirà con l'analisi del protocollo argomento principale di questo studio. 
 \\
 Sviluppato inizialmente da \emph{Google} nel 2012, \emph{Quic UDP Internet Connections (QUIC)}\footnote{\gls{QUIC}} è stato pensato per affrontare le sfide che i protocolli tradizionali faticavano a gestire, come le performance sulle reti mobili, la sicurezza e la latenza ridotta.
 Offrendo una soluzione che combina la velocità dell'\emph{UDP} alla sicurezza e affidabilità del \emph{TCP}. Questo nuovo protocollo si è rapidamente affermato nel mondo delle comunicazioni, tanto da essere standardizzato dall'\emph{IETF}\footnote{\gls{IETF}} nel 2021.
