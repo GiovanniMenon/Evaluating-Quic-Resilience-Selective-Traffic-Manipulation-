@@ -32,7 +32,7 @@ Questi studi hanno portato alla creazione di nuovi protocolli come \emph{QUIC} e
 \indent Il \emph{Transmission Control Protocol (TCP)} è uno dei protocolli cardine su cui si basa la comunicazione su Internet. 
 Dato il suo ruolo e la vasta gamma di funzioni che offre, un'analisi completa del suo funzionamento e della sua costituzione richiederebbe un'analisi approfondità che va oltre lo scopo di questa tesi.
 Pertanto, in questa sezione, ci si concentrerà solo su alcuni aspetti specifici del \emph{TCP} che sono fondamentali per la comprensione del problema affrontato in questa tesi. 
-In particolare, esamineremo nel dettaglio :
+In particolare, verranno esaminate nel dettaglio :
 \begin{itemize}
     \item Caratteristiche principali di una connessione \emph{TCP};
     
@@ -111,7 +111,7 @@ Di seguito, è riportata la descrizione di alcune sezioni di interesse per il pr
 \noindent Questa struttura offre diversi vantaggi. Ad esempio, permette ad un singolo \emph{server} di accettare più connessioni contemporaneamente da diversi \emph{client}, e viceversa. 
 Inoltre garantisce l'unicità di ogni connessione all'interno della rete.
 \\
-Ciononostante, questa rigida definzione di una connessione presenta delle limitazioni significative. Ad esempio, qualsiasi modifica a uno dei quattro elementi, come un cambio di porta o una migrazione dell'indirizzo IP, comporta la chiusura della connessione esistente.
+Ciononostante, questa rigida definzione di una connessione presenta delle limitazioni significative, in quanto qualsiasi modifica a uno dei quattro elementi, come un cambio di porta o una migrazione dell'indirizzo IP, comporta la chiusura della connessione esistente.
 Questa limitazione diventa ancora più rilevante nel contesto delle comunicazioni moderne, dove situazioni di \emph{multihoming}\footnote{\gls{multihoming}} e cambi frequenti di indirizzo IP sono sempre più comuni \cite{site:tcp}. 
 \\
 \\
@@ -152,7 +152,7 @@ Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche u
 
 \paragraph{\textit{Ritrasmissioni}}
 
-\noindent In seguito verrà descritto brevemente il meccanismo di ritrasmissione utilizzato da \emph{TCP}, che risulta necessario per comprendere alcuni concetti della tesi.
+\noindent In seguito viene descritto brevemente il meccanismo di ritrasmissione utilizzato da \emph{TCP}, che risulta necessario per comprendere alcuni concetti della tesi.
 \\\\
 \noindent Il \emph{TCP} è un protocollo progettato per garantire l'affidabilità nella comunicazione dei dati. Durante la trasmissione, i pacchetti possono venire persi o essere danneggiati a causa di vari fattori, come congestione della rete, interferenze o errori \emph{hardware}.
 La ritrasmissione dei questi segmenti è uno dei meccanismi chiave per garantire l'integrità dei dati. Questo processo si basa sulla logica degli \emph{acknowledgements}. Quando un segmento viene inviato, il mittente attende una conferma di ricezione (\emph{ACK}) dal destinatario. Se questa conferma non viene ricevuta entro un determinato intervallo di tempo, chiamato \emph{Retransmission Time Out (RTO)}\footnote{\gls{RTO}}, il mittente assume che il segmento sia stato perso e lo ritrasmette.
@@ -230,14 +230,15 @@ Ne sono un esempio i giochi online, lo streaming video e le chiamate \emph{VOIP}
 
 \subsection{QUIC}
 ~\\
-\indent Dopo aver esaminato brevemente alcuni dettagli dei protocolli di trasporto tradizionali (\emph{TCP} e \emph{UDP}), in questa sezione si proseguirà con l'analisi del protocollo argomento principale di questo studio. 
+\indent I protocolli di trasporto tradizionali come \emph{TCP} e \emph{UDP} hanno servito Internet per decenni, ma nell'era delle comunicazioni moderne, dove le comunicazioni mobili e le applicazioni ad alta velocità dominano le trasmissioni, mostrano alcuni limiti significativi.
+\emph{TCP}, nonostante la sua affidabilità, soffre di latenza elevata a causa dell'\emph{overhead} dovuto alla gestione del Flusso. 
+Dall'altra parte, \emph{UDP}, pur essendo veloce, manca di meccanismi che ne garantiscono sicurezza e affidabilità.
 \\
 Sviluppato inizialmente da \emph{Google} nel 2012, \emph{Quic UDP Internet Connections (QUIC)}\footnote{\gls{QUIC}} è stato pensato per affrontare le sfide che i protocolli tradizionali faticavano a gestire, come le performance sulle reti mobili, la sicurezza e la latenza ridotta.
 Offrendo una soluzione che combina la velocità dell'\emph{UDP} alla sicurezza e affidabilità del \emph{TCP}. Questo nuovo protocollo si è rapidamente affermato nel mondo delle comunicazioni, tanto da essere standardizzato dall'\emph{IETF}\footnote{\gls{IETF}} nel 2021.
 \\\\
-Inoltre \emph{QUIC} è stato sviluppato per integrarsi con \emph{HTTP}\footnote{\gls{HTTP}}, il protocollo appartenente alla famiglia dei protocolli \emph{applicativi}\footnote{\gls{livello applicativo}}. 
-La versione di \emph{HTTP} che utilizza \emph{QUIC} come protocollo di trasporto, anziché \emph{TCP}, è denominata \emph{HTTP/3}.
-\\\\
+Inoltre \emph{QUIC} è stato sviluppato per integrarsi con \emph{HTTP}\footnote{\gls{HTTP}}, chiamando \emph{HTTP/3} la versione che utilizza \emph{QUIC} al posto di
+\emph{TCP} come protocollo di trasporto \cite{site:HTTP-over-QUIC} \\\\
 \noindent Introduciamo ora gli elementi di \emph{QUIC} che vengono affrontati in questo studio, concentrandoci in particolare su:
 \begin{enumerate}
     \item La struttura del protocollo;
@@ -248,10 +249,13 @@ La versione di \emph{HTTP} che utilizza \emph{QUIC} come protocollo di trasporto
 
 \subsubsection{Struttura del Protocollo}
 ~\\ 
-\indent Il protocollo \emph{QUIC}, come suggerisce il nome, è costruito sopra al protocollo \emph{UDP} per diversi motivi strategici. Questa scelta mira principalmente a evitare l'\emph{ossification}\footnote{\gls{ossification}}, un problema comune nello sviluppo di nuovi protocolli.
-Questo perchè l'\emph{UDP} non solo è essenzialmente \emph{IP}(con l'aggiunta dei numeri di porta), ma anche perchè è ampiamente riconosciuto dalle \emph{middle box}\footnote{\gls{middle box}}, riducendo il rischio che un pacchetto \emph{QUIC} venga scartato.
-Inoltre, \emph{UDP} non introduce alcun \emph{overhead}\footnote{\gls{overhead}} significativo e oltre a ciò è già integrato nei vari \emph{sistemi operativi}, cosa che non sarebbe vera se \emph{QUIC} si basasse direttamente su \emph{IP}.
+\indent Il protocollo \emph{QUIC}, come suggerisce il nome, è costruito sopra al protocollo \emph{UDP}, ovvero tutte le informazioni necessarie al funzionamento di \emph{QUIC} sono contenute nel payload del datagramma \emph{UDP} (Figura \ref{udp-datagram}). 
+Questa scelta mira principalmente a evitare l'\emph{ossification}\footnote{\gls{ossification}}, un problema comune nello sviluppo di nuovi protocolli.
+L'\emph{ossification} si riferisce alla difficoltà di introdurre nuovi protocolli o modificare quelli esistenti a causa della presenza di dispositivi di rete che si aspettano dei comportamenti specifici dai protocolli conosciuti. Tali dispositivi, noti anche come \emph{middle box}\footnote{\gls{middle box}}, sono gli elementi di rete in cui i pacchetti transitano. 
+Costruendo \emph{QUIC} sopra \emph{UDP}, si sfrutta il fatto che l'\emph{UDP} è ampiamente riconosciuto dalle \emph{middle box}, riducendo il rischio che un pacchetto \emph{QUIC} venga scartato. 
+Questo approccio permette a \emph{QUIC} di implementare le proprie funzionalità all'interno del payload \emph{UDP}, mantenendo la compatibilità con l'infrastruttura di rete esistente.
 \\
+Inoltre, l'utilizzo di \emph{UDP} non introduce alcun \emph{overhead}\footnote{\gls{overhead}} significativo e oltre a ciò è già integrato nei vari \emph{sistemi operativi}, cosa che non sarebbe vera se \emph{QUIC} si basasse direttamente su \emph{IP}.
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.7\columnwidth]{descrizione/quic/tcp-quic}
@@ -267,8 +271,6 @@ Nonostante questa differenza strutturale, \emph{QUIC} implementa le stesse funzi
     \item Ritrasmissione;
     \item Controllo della congestione.
 \end{itemize}
-
-\noindent Un aspetto pratico importante è che, essendo costruito sopra \emph{UDP}, tutte le informazioni necessarie al funzionamento di \emph{QUIC} sono contenute nel payload del datagramma \emph{UDP} (Figura \ref{udp-datagram}).
 \paragraph{\textit{Identificatori di Connessione}}
 \noindent A differenza di \emph{TCP}, \emph{QUIC} adotta un approccio diverso per l'identificazione delle connessioni. 
 Mentre in \emph{TCP} le connessioni sono identificate tramite la tupla:
@@ -308,7 +310,9 @@ Oltre a questo vantaggio fondamentale, l'utilizzo del \emph{Connection ID} offre
 \paragraph{\textit{Packet Number}}
 
 \noindent \emph{QUIC} introduce un nuovo meccanismo per la gestione dei numeri di sequenza, ogni pacchetto trasmesso in una connessione \emph{QUIC} viene indentificato tramite un \emph{Packet Number}, un numero univoco 
-compreso fra 0 e $2^{62}$-1. Questo numero viene utilizzato per identificare il \emph{nonce crittografico}\footnote{\gls{nonce crittografico}} per la protezione dei pacchetti. Per ogni \emph{endpoint}\footnote{\gls{endpoint}} il \emph{Packet Number} è diverso per il traffico in entrata e in uscita.
+compreso fra 0 e $2^{62}$-1. Questo numero viene utilizzato per identificare il \emph{nonce crittografico}\footnote{\gls{nonce crittografico}} per la protezione dei pacchetti. 
+Per ogni \emph{endpoint}\footnote{\gls{endpoint}} il \emph{Packet Number} è diverso per il traffico in entrata e in uscita. 
+Tale dettaglio permette a ciascun \emph{endpoint} di gestire i propri flussi di dati in maniera indipendente, permettendo maggiore flessibilità e sicurezza.
 \emph{QUIC}, inoltre, suddivide il \emph{Packet Number} in tre spazi distinti:
 \begin{enumerate}[label=\roman*]
     \item \emph{Initial Space}, contiene tutti i pacchetti iniziali.
@@ -320,7 +324,7 @@ compreso fra 0 e $2^{62}$-1. Questo numero viene utilizzato per identificare il 
 Ogni spazio inizia con un \emph{Packet Number} pari a 0, ogni pacchetto successivo incrementa il numero di 1 alla volta \cite{site:rfc9000}. 
 
 \paragraph{\textit{Formato dei Pacchetti}}
-\noindent Un datagramma \emph{UDP} può contenere uno o più pacchetti \emph{QUIC}. Ciascun pacchetto \emph{QUIC} è composto da un \emph{header} e da \emph{N} \emph{frame}, come illustrato nella Figura \ref{quic-packet} \cite{site:rfc9000}.
+\noindent Un datagramma \emph{UDP} può contenere uno o più pacchetti \emph{QUIC}. Ciascun pacchetto \emph{QUIC} è composto da un \emph{header} e da \emph{N} \emph{frame}, come illustrato nella Figura \ref{quic-packet} secondo le specifiche definite nel RFC 9000 \cite{site:rfc9000}.
 \begin{figure}[!h]
     \centering
     \includegraphics[width=1\columnwidth]{descrizione/quic/packet}
@@ -388,13 +392,13 @@ Il \emph{long header} viene utilizzato principalmente durante l'inizializzazione
     \item \textit{\textbf{Type-Specific Payload}}: lunghezza variabile, contiene il payload specifico per il tipo di pacchetto.
 \end{itemize}
 
-\noindent Una discussione approfondità sui singoli tipi di pacchetto in Figura \ref{packet-type} sarebbe troppo onerosa e non inerente. Pertanto vedremo velocemente il ruolo di ogni tipo senza entrare nel dettaglio. 
+\noindent Una discussione approfondita sui singoli tipi di pacchetto presenti in Figura \ref{packet-type} sarebbe poco inerente motivo per cui si descriverà il ruolo di ogni tipo senza entrare nel dettaglio. 
 \\\\
-\indent \textbf{\emph{Initial Packet}} ha il compito di trasportare il primo \emph{Crypto Frame} mandato dal \emph{client} e dal \emph{server} per fare lo scambio delle chiavi di crittografia, e si occupa anche di trasporta l'\emph{acknowledge} in entrambe le direzioni.
+\indent \textbf{\emph{Initial Packet}} ha il compito di trasportare il primo \emph{Crypto Frame} mandato dal \emph{client} e dal \emph{server} per fare lo scambio delle chiavi di crittografia, e si occupa anche di trasportare l'\emph{acknowledge} in entrambe le direzioni.
 \\
 \indent \textbf{\emph{0-RTT}}  ha il compito di trasportare gli \emph{early data} (dati anticipati) che il \emph{client} invia al \emph{server} come parte della prima comunicazione, questo permette di ridurre la latenza. Vedremo meglio questo nella sezione dedicata all'\emph{handshake}.
 \\
-\indent \textbf{\emph{Handshake Packet}}  ha il compito di trasportare i messaggi crittografici necessari per il processo di handshake. Una volta che il \emph{client} ha ricevuto un \emph{Handshake packet} dal \emph{server}, , il \emph{client} utilizza pacchetti di \emph{handshake} per inviare i successivi messaggi criptografici di \emph{handshake} e riconoscimenti al \emph{server}.
+\indent \textbf{\emph{Handshake Packet}}  ha il compito di trasportare i messaggi crittografici necessari per il processo di handshake. Una volta che il \emph{client} ha ricevuto un \emph{Handshake packet} dal \emph{server}, il \emph{client} utilizza pacchetti di \emph{handshake} per inviare i successivi messaggi criptografici di \emph{handshake} e riconoscimenti al \emph{server}.
 \\
 \indent \textbf{\emph{Retry Packet}}  ha il compito di trasportare un \emph{token} di validazione creato dal \emph{server}. Viene usato dal \emph{server} quando vuole effettuare un \emph{retry}, ovvero richiedere al \emph{client} di ripetere l'invio di una richiesta iniziale.
 \\\\
@@ -449,7 +453,7 @@ Procediamo ora con l'analisi del processo di \emph{handshake} in \emph{QUIC} (Fi
     \end{minipage}
 \end{figure}
 
-\noindent \emph{QUIC} permette di ridurre significativamente il numero di scambi necessari per l'inizializzazione della connessione. In particolare, si possono identificare due scenari:
+\noindent \emph{QUIC} permette di ridurre significativamente il numero di scambi necessari per l'inizializzazione della connessione rispetto a \emph{TCP}. In particolare, si possono identificare due scenari:
 \begin{enumerate}
     \item \textit{\textbf{First-time Connection Establishment}}: Avviene quando il \emph{client} si connette per la prima volta al \emph{server}. Viene inviato un messaggio di \emph{CHLO}\footnote{\gls{CHLO}} a cui il \emph{server} risponde con un messaggio di \emph{REJ}\footnote{\gls{REJ}}. 
     Questo messaggio contiene : 
@@ -462,7 +466,7 @@ Procediamo ora con l'analisi del processo di \emph{handshake} in \emph{QUIC} (Fi
         \end{enumerate}
         
     Questo token viene utilizzato per verificare l'identità del \emph{client} nelle comunicazioni future. Il \emph{client} usa queste informazioni per autenticare la configurazione del \emph{server} e invia un messaggio \emph{CHLO} completo (\emph{finished}), contenente il valore \emph{Diffie-Hellman} temporaneo del \emph{client} \cite{article:handshake}.
-    \item \textit{\textbf{0-RTT Connection Establishment}}: Dopo il primo handshake, il client possiede già le chiavi iniziali per la connessione. Quindi procede già con l'invio del \emph{CHLO} completo e può iniziare a inviare dati applicativi al \emph{server}.
+    \item \textit{\textbf{0-RTT Connection Establishment}}: Dopo il primo handshake, il client possiede già le chiavi iniziali per la connessione. Quindi procede con l'invio del \emph{CHLO} completo e può iniziare a inviare dati applicativi al \emph{server}.
     Se l'\emph{handshake} ha successo viene restituito un messaggio \emph{SHLO}\footnote{\gls{SHLO}} cifrato con le chiavi iniziali e contenente il nuovo valore temporaneo di \emph{Diffie-Hellman} \cite{article:handshake}.
 \end{enumerate}
 
@@ -476,7 +480,7 @@ Ogni \emph{stream} (flusso di dati) è una sequenza ordinata e affidabile di dat
 Un esempio in cui questo meccanismo risulta particolarmente utile è nelle applicazioni web moderne,
 dove spesso vengono richiesti in contemporanea più componenti. 
 \\\\
-Questo approccio elimina il problema del \emph{HoL\footnote{\gls{HoL}} blocking}, un fenomeno comune nel \emph{TCP} dove la perdita o il ritardo di un pacchetto obbliga l'intero flusso di dati a interrompersi  finché il pacchetto non viene ritrasmesso e ricevuto correttamente.
+Questo approccio elimina il problema del \emph{Head of Line blocking (HoL)\footnote{\gls{HoL}}}, un fenomeno comune nel \emph{TCP} dove la perdita o il ritardo di un pacchetto obbliga l'intero flusso di dati a interrompersi  finché il pacchetto non viene ritrasmesso e ricevuto correttamente.
 
 \subsubsection{Sicurezza del Protocollo}
 Uno degli aspetti fondamentali alla base di \emph{QUIC} è l'attenzione alla sicurezza. Fin dalla sua progettazione iniziale, è stato concepito per migliorare l'affidabilità e la sicurezza delle connessioni. 
@@ -504,13 +508,13 @@ Viene inoltre usato per gestire separamente i \emph{packet number space} dando p
 Questo garantisce a \emph{QUIC} una maggiore efficienza in reti con alta latenza e perdite di pacchetti.
 \subsection{MPTCP}
 ~\\
-\indent \emph{MPTCP } rappresenta un'evoluzione significativa del protocollo \emph{TCP} tradizionale. 
+\indent \emph{MPTCP} rappresenta un'evoluzione del protocollo \emph{TCP} tradizionale. 
 Si tratta di un insieme di estensioni progettate con lo scopo di ampliare le funzionalità del \emph{TCP} standard,
 introducendo il concetto di \emph{multipath}\footnote{\gls{multipath}}. Questa innovazione consente a una singola connessione di trasporto di operare simultaneamente su molteplici percorsi di rete.
 \\\\
 L'idea alla base di \emph{MPTCP} è quella di sfruttare al massimo le varie risorse di rete disponibili, permettendo a una connessione di utlizzare in contemporanea diverse interfacce o percorsi.
 \\\\
-In questa sezione esamineremo il funzionamento di \emph{MPTCP}, analizzando i suoi principi base, la struttura del protocollo e i vantaggi che offre rispetto al \emph{TCP} tradizionale. 
+Questa sezione si focalizzerà primariamente sul funzionamento di \emph{MPTCP}, analizzando i suoi principi base, la struttura del protocollo e i vantaggi che offre rispetto al \emph{TCP} tradizionale. 
 
 \subsubsection{Struttura del Protocollo}
 ~\\
@@ -523,7 +527,7 @@ Il sottolivello superiore di \emph{MPTCP} opera end-to-end ed è responsabile de
     \item \emph{Congestion Control}: Implementa un controllo della congestione a livello \emph{MPTCP}, unendo i meccanismi di controllo della congestione dei singoli \emph{subflow}. 
     \item \emph{Subflow Interface}: Si occupa di mappare i dati dell'applicativo sui \emph{subflow} appropriati, gestendo la riordinazione e presentando un flusso di dati coerente all'applicazione.
 \end{enumerate}
-\noindent Il sottolivello inferiore, invece, è responsabile dei singoli \emph{subflow}. Ogni \emph{subflow} viene trattato come un flusso \emph{TCP} indipendente. Questa struttura permette a \emph{MPTCP} di essere \emph{retro-compatibile} con le reti esistenti, evitando problemi come l'\emph{ossification}. Inoltre, consente al componente \emph{TCP} di operare segmento per segmento, garantendo le funzionalità essenziali del \emph{TCP} tradizionale.
+\noindent Il sottolivello inferiore, è responsabile dei singoli \emph{subflow}. Ogni \emph{subflow} viene trattato come un flusso \emph{TCP} indipendente. Questa struttura permette a \emph{MPTCP} di essere \emph{retro-compatibile} con le reti esistenti, evitando problemi come l'\emph{ossification}. Inoltre, consente al componente \emph{TCP} di operare segmento per segmento, garantendo le funzionalità essenziali del \emph{TCP} tradizionale.
 \begin{figure}[!h]
   \centering
     \begin{BVerbatim}
@@ -561,7 +565,7 @@ Per identificare le opzioni specifiche di \emph{MPTCP}, il campo \emph{Kind} nel
     \label{mptcp-option-format}
 \end{figure}
 
-\noindent Il campo \emph{Subtype} specifica la funzione dell'opzione \emph{MPTCP}. La Figura \ref{options-subtypes} presenta un elenco completo dei sottotipi disponibili. Segue una breve descrizione di ogni tipo \cite{site:mptcp-packet}.
+\noindent Il campo \emph{Subtype} specifica la funzione dell'opzione \emph{MPTCP}. La Figura \ref{options-subtypes} presenta un elenco completo dei sottotipi disponibili come definito nel RFC 8684 \cite{site:mptcp-packet}. Di seguito, viene riportata una breve descrizione di ogni tipo.
 
 \begin{figure}[!h]
     \centering
@@ -612,7 +616,7 @@ Utilizza un \emph{Data Sequence Number} a 64 bit per numerare in modo univoco tu
 \indent \textbf{\emph{Subflow Reset}} consente di resettare un singolo \emph{subflow} senza influenzare l'intera connessione \emph{MPTCP}.
 \\
 
-\indent In conclusione, è importante sottolineare che \emph{MPTCP}, essendo un insieme di estensioni del protocollo \emph{TCP}, ne eredita molte caratteristiche di sicurezza. Questa continuità, come già anticipato, offre numerosi vantaggi in termini di compatibilità e robustezza, ma comporta anche alcune sfide specifiche.
+\indent In conclusione, \emph{MPTCP}, essendo un insieme di estensioni del protocollo \emph{TCP}, ne eredita molte caratteristiche di sicurezza. Questa continuità, offre numerosi vantaggi in termini di compatibilità e robustezza, ma comporta anche alcune problematiche.
 \\\\
 Da un lato, {MPTCP} utilizza tecniche di sicurezza consolidate come il \emph{three-way-handshake} (opportunamente modificato per gestire il \emph{multipath}) e i meccanismi per il controllo della gestione. 
 \\\\
