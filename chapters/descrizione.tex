@@ -5,8 +5,32 @@ Questo capitolo introduce i preliminari tecnici e illustra il problema affrontat
 
 \section{Scenario Tecnico}
 \label{Scenario}
-\subsection{Protocolli di Trasporto Tradizionali}
+\subsection{Modello ISO/OSI e Protocolli di Rete}
+~\\
+\indent I protocolli di rete sono una componente essenziale per la comunicazione tra dispositivi su una rete. 
+Definiscono le regole e gli standard per il trasferimento dei dati, assicurando che le informazioni vengano trasmesse e comprese correttamente.
+Per facilitare la comprensione e l'organizzazione di questi protocolli, è utile fare riferimento al modello \emph{ISO/OSI (Open Systems Interconnection)}.
+Questo standard architetturale suddivide i protocolli in sette livelli distinti elencati in Figura \ref{iso-osi}, ognuno con un compito specifico.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{descrizione/tcp/iso}
+    \caption{\emph{Raffigurazione del modello ISO/OSI}}
+    \label{iso-osi}
+\end{figure}
+Di seguito, viene riportata una descrizione del ruolo di ogni livello: 
+\begin{enumerate}
+    \item \textbf{Livello Fisico}: Il livello fisico si occupa della trasmissione effettiva dei bit attraverso il mezzo fisico della rete, in questo livello lavorano i \emph{modem} e gli \emph{hub}. 
+    \item \textbf{Livello Data Link}: Il livello \emph{data link} gestisce la comunicazione tra dispositivi sulla stessa rete fisica. Si occupa di garantire che il trasferimento mediante il livello fisico sia affidabile effettuando un controllo degli errori. A questo livello operano \emph{switch} e i \emph{bridge}.
+    \item \textbf{Livello Rete}: Il livello di rete gestisce l'instradamento ottimale dei pacchetti di dati tra reti diverse. Il protocollo principale che opera a questo livello è l'\emph{Internet Protocol (IP)}. 
+    \item \textbf{Livello Trasporto}: Il livello di trasporto controlla il flusso di dati e gestisce la segmentazione dei pacchetti. Garantisce la corretta trasmissione delle informazioni. I protocolli principali includono \emph{TCP} e \emph{UDP}.
+    \item \textbf{Livello Sessione}: Il livello di sessione gestisce l'apertura, il controllo e la chiusura delle sessioni di comunicazione. 
+    \item \textbf{Livello Presentazione}: Il livello di presentazione è responsabile della traduzione e della formattazione dei dati tra il formato utilizzato dalle applicazioni a quello della rete. Protocolli come \emph{Secure Sockets Layer (SSL)} e \emph{Transport Layer Security (TLS)} ne fanno parte.
+    \item \textbf{Livello Applicazione}: Il livello di applicazione fornisce un insieme di protocolli che operano a stretto contatto con le applicazioni. Protocolli come \emph{HTTP},\emph{FTP} e \emph{SMTP} ne fanno parte.
 
+\end{enumerate}
+
+
+\subsection{Protocolli di Trasporto Tradizionali}
 ~\\
 \indent Nel panorama dei \emph{protocolli di rete}, i \emph{protocolli di trasporto} \emph{TCP (Transmission Control Protocol)}  e \emph{UDP (User Datagram Protocol)} hanno svolto e svolgono tutt'ora un ruolo fondamentale sin dalla nascita di Internet.
 Questi protocolli sono stati la spina dorsale delle comunicazioni per decenni, supportando una vasta gamma di servizi e applicazioni.\\
@@ -155,7 +179,7 @@ Non solo permette di sincronizzare i \emph{sequence number}, ma fornisce anche u
 \noindent In seguito viene descritto brevemente il meccanismo di ritrasmissione utilizzato da \emph{TCP}, che risulta necessario per comprendere alcuni concetti della tesi.
 \\\\
 \noindent Il \emph{TCP} è un protocollo progettato per garantire l'affidabilità nella comunicazione dei dati. Durante la trasmissione, i pacchetti possono venire persi o essere danneggiati a causa di vari fattori, come congestione della rete, interferenze o errori \emph{hardware}.
-La ritrasmissione dei questi segmenti è uno dei meccanismi chiave per garantire l'integrità dei dati. Questo processo si basa sulla logica degli \emph{acknowledgements}. Quando un segmento viene inviato, il mittente attende una conferma di ricezione (\emph{ACK}) dal destinatario. Se questa conferma non viene ricevuta entro un determinato intervallo di tempo, chiamato \emph{Retransmission Time Out (RTO)}\footnote{\gls{RTO}}, il mittente assume che il segmento sia stato perso e lo ritrasmette.
+La ritrasmissione dei questi segmenti è uno dei meccanismi chiave per garantire l'integrità dei dati. Questo processo si basa sulla logica degli \emph{acknowledgements}. Quando un segmento viene inviato, il mittente attende una conferma di ricezione (\emph{ACK}) dal destinatario. Se questa conferma non viene ricevuta entro un determinato intervallo di tempo, chiamato \emph{Retransmission TimeOut (RTO)}\footnote{\gls{RTO}}, il mittente assume che il segmento sia stato perso e lo ritrasmette.
 Il calcolo del RTO è dinamico e dipende fortemente dal \emph{RTT} e da numerosi altri valori. 
 \paragraph{\textit{Sicurezza}}
 
@@ -334,7 +358,8 @@ Ogni spazio inizia con un \emph{Packet Number} pari a 0, ogni pacchetto successi
 \\
 Gli \emph{header} si distinguono in due categorie, \emph{long header} e \emph{short header}. 
 \\\\
-Il \emph{long header} viene utilizzato principalmente durante l'inizializzazione della connessione. Contiene più informazioni ed è più dettagliato rispetto al \emph{short header}. Segue ora una breve descrizione dei campi presenti (Figura \ref{long-header}) \cite{site:rfc9000}.
+Il \emph{long header} viene utilizzato principalmente durante la fase di inizializzazione della connessione. 
+Di seguito, viene riportata una breve descrizione dei campi presenti (Figura \ref{long-header}) \cite{site:rfc9000}.
 \begin{figure}[!h]
     \centering
     \begin{minipage}{0.48\textwidth}
@@ -396,7 +421,7 @@ Il \emph{long header} viene utilizzato principalmente durante l'inizializzazione
 \\\\
 \indent \textbf{\emph{Initial Packet}} ha il compito di trasportare il primo \emph{Crypto Frame} mandato dal \emph{client} e dal \emph{server} per fare lo scambio delle chiavi di crittografia, e si occupa anche di trasportare l'\emph{acknowledge} in entrambe le direzioni.
 \\
-\indent \textbf{\emph{0-RTT}}  ha il compito di trasportare gli \emph{early data} (dati anticipati) che il \emph{client} invia al \emph{server} come parte della prima comunicazione, questo permette di ridurre la latenza. Vedremo meglio questo nella sezione dedicata all'\emph{handshake}.
+\indent \textbf{\emph{0-RTT}}  ha il compito di trasportare gli \emph{early data} (dati anticipati) che il \emph{client} invia al \emph{server} come parte della prima comunicazione, questo permette di ridurre la latenza. Si osserverà meglio questo nella sezione dedicata all'\emph{handshake}.
 \\
 \indent \textbf{\emph{Handshake Packet}}  ha il compito di trasportare i messaggi crittografici necessari per il processo di handshake. Una volta che il \emph{client} ha ricevuto un \emph{Handshake packet} dal \emph{server}, il \emph{client} utilizza pacchetti di \emph{handshake} per inviare i successivi messaggi criptografici di \emph{handshake} e riconoscimenti al \emph{server}.
 \\
@@ -473,12 +498,15 @@ Procediamo ora con l'analisi del processo di \emph{handshake} in \emph{QUIC} (Fi
 \noindent A differenza di \emph{TCP}, che richiede 2 \emph{round trip} per l'invio dei dati dopo l'inizializzazione della connessione, \emph{QUIC} nel caso migliore riesce a ridurre questo numero a 0.
 
 \subsubsection{Multiplexing}
-Il \emph{multiplexing}\footnote{\gls{multiplexing}} su \emph{QUIC} rappresenta un significativo cambiamento rispetto ai protocolli tradizionali. In \emph{QUIC}, il \emph{multiplexing} è gestito a livello di \emph{stream}\footnote{\gls{stream}}, permettendo a ogni connessione di ospitare un numero potenzialmente illimitato di \emph{stream} indipendenti.
+Il \emph{multiplexing} è una tecnica utilizzata nei sistemi di comunicazione per trasmettere più flussi di dati attraverso un singolo canale di comunicazione. 
+Tale meccanismo consente di ottimizzare l'uso delle risorse, permettendo a più flussi di dati di condividere la stessa connessione.
+\\
+In \emph{QUIC}, il \emph{multiplexing} è gestito a livello di \emph{stream}\footnote{\gls{stream}}, permettendo a ogni connessione di ospitare un numero potenzialmente illimitato di \emph{stream} indipendenti.
 \\
 Ogni \emph{stream} (flusso di dati) è una sequenza ordinata e affidabile di dati che coesiste in parallelo all'interno della stessa connessione. Grazie a questo, la perdita di pacchetti in uno \emph{stream} non interrompe il flusso degli altri, permettendo un utlizzo più efficiente della connessione e migliorando notevolemente le prestazioni in termini di latenza e throughput. Ciò è in contrasto con \emph{TCP}, in cui viene gestita una singola sequenza di dati per connessione.
 \\
-Un esempio in cui questo meccanismo risulta particolarmente utile è nelle applicazioni web moderne,
-dove spesso vengono richiesti in contemporanea più componenti. 
+Un esempio nel quale questo meccanismo risulta particolarmente utile è nelle applicazioni web moderne,
+dove spesso vengono richiesti simultaneamente più componenti. 
 \\\\
 Questo approccio elimina il problema del \emph{Head of Line blocking (HoL)\footnote{\gls{HoL}}}, un fenomeno comune nel \emph{TCP} dove la perdita o il ritardo di un pacchetto obbliga l'intero flusso di dati a interrompersi  finché il pacchetto non viene ritrasmesso e ricevuto correttamente.
 
@@ -487,22 +515,24 @@ Uno degli aspetti fondamentali alla base di \emph{QUIC} è l'attenzione alla sic
 Sono diversi i meccanismi integrati all'interno di \emph{QUIC} per ottenere questo obbiettivo.
 \\\\
 In \emph{QUIC} l'integrazione della sicurezza tramite \emph{TLS 1.3} è parte integrante del protocollo. Il processo di stabilimento della connesione incorpora nello stesso \emph{handshake} la negozazione e l'instaurazione della sicurezza \emph{TLS}. 
-Al contrario di \emph{TCP}, dove \emph{TLS} è un protocollo aggiuntivo che viene usato per aggiungere un livello di sicurezza sopra alla connesione \emph{TCP}. Questo comporta diversi differenze e vantaggi.
+Al contrario di \emph{TCP}, dove \emph{TLS} è un protocollo aggiuntivo che viene usato per aggiungere un livello di sicurezza sopra alla connesione \emph{TCP}. Questo comporta molteplici differenze e vantaggi.
 \\\\
-Prima di tutto, il fatto che il processo di stabilimento della connessione \emph{QUIC} incorpori già le fasi necessarie al \emph{TLS} nello stesso handshake permette di ridurre drasticamente il numero di round trip necessari.
-Un'atra grande differenza è che con \emph{QUIC} non solo gli \emph{user data} vengono crittografati, ma l'intero pacchetto (\emph{header} escluso) \cite{site:Explaining-QUIC}.
+L'integrazione delle fasi necessarie al \emph{TLS} nel processo di stabilimento della connessione \emph{QUIC} permette di ridurre il numero di round trip necessari.
+Inoltre, con \emph{QUIC}, non solo gli \emph{user data} vengono crittografati, ma l'intero pacchetto (\emph{header} escluso) \cite{site:Explaining-QUIC}.
 \\\\
-Un ulteriore aspetto fondamentale nella sicurezza del protocollo è rappresentato dalla crittografia \emph{end-to-end}\footnote{\gls{end-to-end}}, che assicura che i dati trasmessi tra il \emph{client} e il \emph{server} siano protetti da intercettaazioni o manipolazioni da parte di terzi.
+Un ulteriore aspetto fondamentale nella sicurezza del protocollo è rappresentato dalla crittografia \emph{end-to-end}\footnote{\gls{end-to-end}}, ciò assicura che i dati trasmessi tra il \emph{client} e il \emph{server} siano protetti da intercettaazioni o manipolazioni da parte di terzi.
 Questo avviene tramite l'uso di algoritmi crittografici come \emph{Diffie-Hellman} nella prima fase e successivamente una chiave simmetrica condivisa. Inoltre viene utilizzato un rinnovamento periodico delle chiavi per garantire una maggiore sicurezza e una protezione continua \cite{site:quic-security}.
 \\\\
-Un altro meccanismo utilizzato per garantire l'integrità dei dati è l'utilizzo di un \emph{checksum}, che consente di verificare che i dati non siano stati alterati durante la trasmissione. In caso il destinatario nota discrepanze tra il contenuto del campo \emph{checksum} e i dati stessi allora verranno rifiutati e scartati.
-In aggiunta \emph{QUIC} include nei pacchetti anche l'\emph{hash} crittografico dei dati stessi, quando il destinatario riceve il pacchetto e ricalcola l'\emph{hash} è in grado di rilevare se i dati sono corroti \cite{site:quic-security}.
+Un altro meccanismo impiegato per garantire l'integrità dei dati è l'utilizzo di un \emph{checksum}, che consente di verificare che i dati non siano stati alterati durante la trasmissione.
+Se il destinatario riscotra discrepanze tra il valore del campo \emph{checksum} e i dati stessi, questi verranno rifiutati e scartati.
+Inoltre, \emph{QUIC} include nei pacchetti un \emph{hash} crittografico dei dati, che il destinatario può ricalcolare per verificare la presenza di eventuali corruzioni nei dati \cite{site:quic-security}.
 \paragraph{\textit{Ritrasmissioni}}
-\noindent Come per il protocollo \emph{TCP}, anche per \emph{QUIC} la gestione degli errori è un argomento estremamente grande e complesso che necessiterebbe a sua volta di uno studio. Tuttavia, ai fini dello studio, è importante sottolineare che anche \emph{QUIC} utilizza il meccanismo delle ritrasmissioni per assicurarsi che i pacchetti arrivino correttamente al destinatario. 
+\noindent In seguito viene descritto brevemente il meccanismo di ritrasmissione utilizzato da \emph{QUIC}, che risulta necessario per comprendere alcuni concetti della tesi.
 \\\\
-In particolare, \emph{QUIC} fa uso di un \emph{PTO} \footnote{\gls{PTO}} a differenza del \emph{TCP} che invece utilizza il \emph{RTO} tradizionale.
+In particolare, \emph{QUIC} fa uso di un \emph{Probe TimeOut (PTO)}\footnote{\gls{PTO}} a differenza del \emph{TCP} che invece utilizza il \emph{RTO} tradizionale.
 Il \emph{PTO} è un meccanismo progettato per essere più reattivo e flessibile nella gestione delle perdite di pacchetti e nei ritardi.
-Permette infatti di ritrasmettere i pacchetti con un tempo di attesa significativamente ridotto evitando , come nel \emph{RTO}, della crescita esponenziale del timeout \cite{site:pto-quic}.
+Questo meccanismo consente di ritrasmettere i pacchetti con un tempo di attesa significativamente ridotto rispetto all'\emph{RTO} tradizionale.
+A differenza di quest'ultimo, che aumenta il timeout in modo esponenziale con ogni ritrasmissione fallita, il \emph{PTO} mantiene un intervallo di attesa limitato da una costante massima, migliorando così la reattività e riducendo il tempo per recuperare i pacchetti persi \cite{site:pto-quic}.
 \\\\
 Viene inoltre usato per gestire separamente i \emph{packet number space} dando priorità ad una fase rispetto ad un'altra. 
 Questo garantisce a \emph{QUIC} una maggiore efficienza in reti con alta latenza e perdite di pacchetti.
@@ -518,7 +548,7 @@ Questa sezione si focalizzerà primariamente sul funzionamento di \emph{MPTCP}, 
 
 \subsubsection{Struttura del Protocollo}
 ~\\
-\indent \emph{MPTCP} introduce una struttura innovativa al livello di trasporto, suddividendolo in due sottolivelli distinti, come illustrato nella Figura \ref{comparison}.
+\indent \emph{Multipath TCP (MPTCP)} introduce una struttura innovativa al livello di trasporto, suddividendolo in due sottolivelli distinti, come illustrato nella Figura \ref{comparison}.
 \\\\
 Il sottolivello superiore di \emph{MPTCP} opera end-to-end ed è responsabile della gestione complessiva dei vari \emph{subflows} sottostanti. Per fare questo, implementa le seguenti funzioni:
 \begin{enumerate}[label=\roman*]
@@ -623,19 +653,22 @@ Da un lato, {MPTCP} utilizza tecniche di sicurezza consolidate come il \emph{thr
 Dall'altra parte, questa stretta dipendenza con \emph{TCP} implica che \emph{MPTCP} sia soggetto a molte delle stesse problematiche e vulnerabilità del \emph{TCP}. 
 Inoltre la natura \emph{multipath} del protocollo introduce una nuova possibile superfice d'attacco, richiedendo l'implementazione di meccanismi specifici per autenticare e garantire l'integrità dei singoli \emph{subflow}.
 
-\section{I problemi e l'Idea}
+\section{Problematiche Attuali}
 \label{Problema}
 ~\\
-\indent Il progetto nasce dall'idea di analizzare i protocolli emergenti nel contesto delle reti moderne, dove le connessioni mobili prevalgono. 
-L'attenzione si è concentrata in particolare sul protocollo \emph{QUIC}, progettato per estendere e potenzialmente sostituire \emph{TCP}.
+\indent Nel contesto delle reti moderne le comunicazioni su reti mobili stanno assumendo un'importanza sempre maggiore, con un numero crescente di dispositivi connessi e un volume di dati in crescita continua. 
+La diffusione di smartphone e dispositivi \emph{IoT} ha alimentato un incremento esponenziale del traffico dati, rendendo le reti mobili fondamentali per la la vita quotidiana e per molteplici attività economiche.
+In questo contesto, garantire l'efficienza, la sicurezza e la correttezza del traffico dati su queste reti è diventato sempre più una priorità.
 \\\\
-Nelle reti mobili, la tariffazione del traffico è spesso basata sul consumo. 
-Tuttavia, meccanismi come la ritrasmissione di segmenti persi possono portare a un consumo di traffico superiore alle aspettative. 
-Studi recenti hanno evidenziato differenze nel trattamento delle ritrasmissioni da parte di diversi operatori \cite{article:cellular}.
-L'obiettivo principale della ricerca è stato quello di esplorare eventuali vulnerabilità di \emph{QUIC} che potrebbero essere sfruttate per manipolare i sistemi di contabilizzazione del traffico mobile.
+Un aspetto critico delle reti mobili è la tariffazione del traffico, che spesso si basa sul volume consumato dall'utente. 
+Meccanismi di rete come la ritrasmissione dei pacchetti persi possono influenzare questo valore, rendendo complesso il calcolo del consumo. 
+Questo comporta che i diversi operatori del traffico cellulare devono decidere che politica adottare per i pacchetti ritrasmessi.
+Un primo approccio è quello di addebitare ogni pacchetto per l'utilizzo dell'architettura delle reti mobili. 
+Tuttavia, questa politica espone gli utenti a un possibile \emph{Usage-Inflation Attack}, dove un avversario potrebbe aumentare artificialmente il traffico dati ritrasmettendo pacchetti.
+Un secondo approccio è quello di escludere i pacchetti ritrasmessi dalla contabilizzazione. Questo scenario, nonostante eviti lo \emph{Usage-Inflation Attack}, aumenta notevolemente la complessità dell'implementazione, richiedendo metodi per il monitoraggio accurato del traffico.
+Inoltre, potrebbe essere vulnerabile a \emph{free-riding Attack}, dove gli attaccanti mascherano il proprio traffico all'interno di finti pacchetti ritrasmessi, evadendo così la tariffazione \cite{article:cellular}.
 \\\\
-In particolare, lo studio si è concentrato sulla ricerca di possibili problematiche che causano un aumento della ritrasmissione o eventuali metodi per forzare ritrasmissioni, con lo scopo di aumentare artificialmente la contabilizzazione del traffico.
-\\\\
-Questo studio si inserisce in un contesto più ampio che include anche l'analisi di \emph{MPTCP}, sebbene per ragioni di tempo ci si sia concentrati principalmente su \emph{QUIC}. 
+Il problema specifico affrontato in questo studio riguarda lo scenario presentato nel primo approccio. L'obiettivo principale della ricerca è stato quello di esplorare eventuali vulnerabilità di \emph{QUIC} che potrebbero essere sfruttate per manipolare i sistemi di contabilizzazione del traffico mobile.
+In particolare, lo studio si è concentrato sulle possibili problematiche che causano un aumento della ritrasmissione o eventuali metodi per forzare ritrasmissioni, con lo scopo di aumentare artificialmente la contabilizzazione del traffico.
 
 
