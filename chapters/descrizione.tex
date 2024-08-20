@@ -83,7 +83,7 @@ Di seguito, è riportata la descrizione di alcune sezioni di interesse per il pr
 
 \begin{itemize}
 \item \textit{\textbf{Source Port - Destination Port}}: Identificano rispettivamente il numero della porta di origine e destinazione.
-\item \textit{\textbf{Sequence Number}}: Indica la posizione del primo segmento \emph{TCP} all'interno del flusso a partire dall'\emph{ISN}\footnote{\gls{ISN}}, deciso durante la inizializzazione della connesione.
+\item \textit{\textbf{Sequence Number}}: Indica la posizione del primo segmento \emph{TCP} all'interno del flusso a partire dall'\emph{ISN}\footnote{\gls{ISN}}, deciso durante la inizializzazione della connessione.
 \item \textit{\textbf{Acknowledgement Number}}: Se il \emph{control bits ACK} è presente questo campo contiene il valore del prossimo \emph{sequence number} che il ricevente del segmento si aspetta di ricevere.
 \item \textit{\textbf{Control Bits}}: Sono dei bit utilizzati per il controllo del protocollo. 
 \begin{itemize}
@@ -121,7 +121,7 @@ Di seguito, è riportata la descrizione di alcune sezioni di interesse per il pr
 |                             data                              |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
            \end{BVerbatim}
-\caption{Segmento TCP}
+\caption{\textit{Composizione di un segmento TCP}}
 \label{fig}
 \end{figure}
 
@@ -151,14 +151,14 @@ Questa problematica, come verrà sottolineato nelle prossime sezioni, è alla ba
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=0.75\columnwidth]{descrizione/tcp/three-way-handshake}
-        \caption{\emph{three-way handshake}}
+        \caption{\emph{Processo three-way handshake in TCP}}
         \label{handshake}
     \end{minipage}
     \hfill
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=0.90\columnwidth]{descrizione/tcp/rtt-handshake}
-        \caption{\emph{RTT (Round Trip Time)}}
+        \caption{\emph{Definizione di RTT (Round Trip Time)}}
         \label{rtt}
     \end{minipage}
 \end{figure}
@@ -192,7 +192,7 @@ In Figura \ref{tlsHand} è riportata la nuova procedura di \emph{handshake}, ess
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.7\columnwidth]{descrizione/tcp/tls-handshake}
-    \caption{Nuovo Handshake (da modificare)}
+    \caption{\emph{Processo three-way handshake in TCP con TLS 1.3}}
     \label{tlsHand}
 \end{figure}
 
@@ -215,7 +215,7 @@ In Figura \ref{tlsHand} è riportata la nuova procedura di \emph{handshake}, ess
 \indent Dopo aver esaminato il \emph{Transmission Control Protocol (TCP)},
 si procede ora all'analisi del \emph{User Datagram Protocol (UDP)}. 
 Diversamente dal \emph{TCP}, questo protocollo si distingue come un protocollo senza connessione. 
-Questa sua caratteristica significa che non è necessario stabilire una connesione dedicata tra \emph{client} e \emph{server} prima di iniziare lo scambio di dati. 
+Questa sua caratteristica significa che non è necessario stabilire una connessione dedicata tra \emph{client} e \emph{server} prima di iniziare lo scambio di dati. 
 Questa caratteristica, unita a un \emph{header} di soli 8 \emph{byte} e alla mancanza di un controllo sia di Flusso che di Errore, consente a \emph{UDP} di essere più veloce e leggero rispetto a \emph{TCP}.
 \\
 Nonostante la sua relativa semplicità, una trattazione esaustiva dell'UDP andrebbe comunque oltre gli scopi di questa tesi. 
@@ -236,7 +236,7 @@ Di conseguenza ci si concentrerà sulla struttura di un \emph{datagramma {UDP}} 
 |          data octets ...
 +---------------- ...
         \end{BVerbatim}
-    \caption{Datagramma UDP}
+    \caption{\emph{Composizione di un Datagramma UDP}}
     \label{udp-datagram}
 \end{figure}
 
@@ -283,7 +283,7 @@ Inoltre, l'utilizzo di \emph{UDP} non introduce alcun \emph{overhead}\footnote{\
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.7\columnwidth]{descrizione/quic/tcp-quic}
-    \caption{\emph{TCP/IP - QUIC/UDP (da modificare)}}
+    \caption{\emph{Differenza nella struttura del protocollo QUIC dal protocollo TCP}}
     \label{tcp-quic}
 \end{figure}
 \noindent Come illutrato nella Figura \ref{tcp-quic}, \emph{QUIC} si basa su \emph{UDP} in modo analogo a come \emph{TCP} si basa su \emph{IP}.
@@ -314,14 +314,16 @@ Al contrario,\emph{QUIC} gestisce questa transazione in modo più efficiente com
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=0.90\columnwidth]{descrizione/quic/tcp-handoff}
-        \caption{\emph{TCP}}
+        \caption{\emph{Meccanismo di hand-off nel caso di connessione TCP}}
+        \subcaption{Con TCP, quando l'utente passa da rete WiFi a rete mobile, ciò comporta un cambiamento del suo indirizzo IP. Tale cambio causa la terminazione della connessione esistente. Poiché TCP identifica la connessione tramite l'indirizzo IP.}
         \label{tcp-handoff}
     \end{minipage}
     \hfill
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=0.90\columnwidth]{descrizione/quic/quic-handoff}
-        \caption{\emph{QUIC}}
+        \caption{\emph{Meccanismo di hand-off nel caso di connessione QUIC}}
+        \subcaption{Con QUIC, quando l'utente passa da WiFi a rete mobile cambiando il suo indirizzo IP, la connessione non viene terminata. Questo perché QUIC utilizza il Connection ID invece dell'indirizzo IP per identificare la connessione, permettendo di mantenere la sessione attiva nonostante il cambio di rete.}
         \label{quic-handoff}
     \end{minipage}
 \end{figure}
@@ -352,7 +354,7 @@ Ogni spazio inizia con un \emph{Packet Number} pari a 0, ogni pacchetto successi
 \begin{figure}[!h]
     \centering
     \includegraphics[width=1\columnwidth]{descrizione/quic/packet}
-    \caption{\emph{QUIC Packet}}
+    \caption{\emph{Composizione di un pacchetto QUIC}}
     \label{quic-packet}
 \end{figure}
 \\
@@ -380,7 +382,7 @@ Di seguito, viene riportata una breve descrizione dei campi presenti (Figura \re
  }
         \end{BVerbatim}
     \end{small}
-        \caption{\emph{QUIC Long header}}
+        \caption{\emph{Composizione di un Long Header QUIC}}
         \label{long-header}
     \end{minipage}
     \hfill
@@ -399,7 +401,7 @@ Di seguito, viene riportata una breve descrizione dei campi presenti (Figura \re
             0x03 & \emph{Retry}  \\
             \hline
             \end{tabular}
-        \caption{\emph{QUIC Long Header Packet Types}}
+        \caption{\emph{Tipi di Long Header QUIC}}
         \label{packet-type}
     \end{minipage}
 \end{figure}
@@ -445,7 +447,7 @@ Passiamo ora ad analizzare il \emph{short header}, utilizzato esclusivamente dop
   }
     \end{BVerbatim}
 \end{small}
-    \caption{\emph{QUIC Short header}}
+    \caption{\emph{Composizione di un Short Header QUIC}}
     \label{short-header}
 \end{figure}
 \begin{itemize}
@@ -466,14 +468,16 @@ Procediamo ora con l'analisi del processo di \emph{handshake} in \emph{QUIC} (Fi
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=1\columnwidth]{descrizione/tcp/tls-handshake}
-        \caption{\emph{TCP + TLS 2-RTT Handshake}}
+        \caption{\emph{Processo three-way handshake in TCP con TLS 1.3}}
         \label{tcp-handshake-quic}
     \end{minipage}
     \hfill
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=1\columnwidth]{descrizione/quic/handshake}
-        \caption{\emph{QUIC (TLS) 1-RTT \& 0-RTT Handshake}}
+        \caption{\emph{Processo di handshake in QUIC}}
+        \subcaption{Initial RTT}
+        \subcaption{O-RTT}
         \label{quic-handshake-quic}
     \end{minipage}
 \end{figure}
@@ -514,8 +518,8 @@ Questo approccio elimina il problema del \emph{Head of Line blocking (HoL)\footn
 Uno degli aspetti fondamentali alla base di \emph{QUIC} è l'attenzione alla sicurezza. Fin dalla sua progettazione iniziale, è stato concepito per migliorare l'affidabilità e la sicurezza delle connessioni. 
 Sono diversi i meccanismi integrati all'interno di \emph{QUIC} per ottenere questo obbiettivo.
 \\\\
-In \emph{QUIC} l'integrazione della sicurezza tramite \emph{TLS 1.3} è parte integrante del protocollo. Il processo di stabilimento della connesione incorpora nello stesso \emph{handshake} la negozazione e l'instaurazione della sicurezza \emph{TLS}. 
-Al contrario di \emph{TCP}, dove \emph{TLS} è un protocollo aggiuntivo che viene usato per aggiungere un livello di sicurezza sopra alla connesione \emph{TCP}. Questo comporta molteplici differenze e vantaggi.
+In \emph{QUIC} l'integrazione della sicurezza tramite \emph{TLS 1.3} è parte integrante del protocollo. Il processo di stabilimento della connessione incorpora nello stesso \emph{handshake} la negozazione e l'instaurazione della sicurezza \emph{TLS}. 
+Al contrario di \emph{TCP}, dove \emph{TLS} è un protocollo aggiuntivo che viene usato per aggiungere un livello di sicurezza sopra alla connessione \emph{TCP}. Questo comporta molteplici differenze e vantaggi.
 \\\\
 L'integrazione delle fasi necessarie al \emph{TLS} nel processo di stabilimento della connessione \emph{QUIC} permette di ridurre il numero di round trip necessari.
 Inoltre, con \emph{QUIC}, non solo gli \emph{user data} vengono crittografati, ma l'intero pacchetto (\emph{header} escluso) \cite{site:Explaining-QUIC}.
@@ -628,7 +632,7 @@ Per identificare le opzioni specifiche di \emph{MPTCP}, il campo \emph{Kind} nel
 ~\\
 \indent \textbf{\emph{Multipath Capable}} viene utilizzato durante il processo di avvio di una connessione, verifica che entrambi gli \emph{endpoint} supportano \emph{MPTCP} e contiene ulteriori informazioni per l'autenticazione di ulteriori \emph{subflow}.
 \\
-\indent \textbf{\emph{Join Connection}} viene utilizzato per stabilire nuovi \emph{subflow} all'interno di una connesione \emph{MPTCP} esistente, utilizza le informazioni condivise nel \emph{Multipath Capable} per autenticare il \emph{subflow} come parte della connessione principale.
+\indent \textbf{\emph{Join Connection}} viene utilizzato per stabilire nuovi \emph{subflow} all'interno di una connessione \emph{MPTCP} esistente, utilizza le informazioni condivise nel \emph{Multipath Capable} per autenticare il \emph{subflow} come parte della connessione principale.
 \\
 \indent \textbf{\emph{Data Sequence Signal}} gestisce la mappatura dei dati del livello applicativo sui \emph{subflow}, gestendo la riordinazione e la ritrasmissione dei segmenti. 
 Utilizza un \emph{Data Sequence Number} a 64 bit per numerare in modo univoco tutti i dati trasmessi attraverso la connessione \emph{MPTCP}.
