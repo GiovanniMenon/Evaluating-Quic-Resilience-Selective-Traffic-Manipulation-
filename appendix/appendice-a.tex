@@ -1,3 +1,95 @@
-\chapter{Appendice A}
+\chapter{Appendice}
 
-\epigraph{Citazione}{Autore della citazione}
+\begin{table}[h!]
+    \caption*{Elenco completo delle varianti Esperimento 1}
+    \resizebox{\textwidth}{!}{ % Adatta la tabella alla larghezza del testo disponibile
+        \begin{tabular}{|c|c|c|c|c|c|}
+            \hline
+            \textbf{Nome} & \textbf{Connection Close} & \textbf{ACK Ignored} & \textbf{timeThreshold} & \textbf{packetThreshold} & \textbf{amplificationFactor} \\
+            \hline
+            retrasmission - 1  & Ignored & All & 9.0/8  & 3 & 3 \\
+            \hline
+            retrasmission - 1.1  & Ignored & All & 9.0/8  & 1 & 1 \\
+            \hline
+            retrasmission - 2 & Not Ignored & All & 9.0/8  & 3 & 3 \\
+            \hline
+            retrasmission - 4 & Not Ignored & 1/2  & 9.0/8  & 3 & 3\\
+            \hline
+            retrasmission - 4.1 & Not Ignored & 1/2 & 9.0/8  & 5 & 5 \\
+            \hline
+            retrasmission - 4.2 & Not Ignored & 1/2 & 9.0/8  & 10 & 3 \\
+            \hline
+            retrasmission - 5 & Ignored & 1/2 & 9.0/8  & 3 & 3 \\
+            \hline
+            retrasmission - 5.1 & Ignored & 1/2 & 9.0/8  & 5 & 5 \\
+            \hline
+            retrasmission - 5.2 & Ignored & 1/2 & 9.0/8  & 10 & 3 \\
+            \hline
+            retrasmission - 5.2 & Ignored & 1/2 & 9.0/8  & 20 & 3 \\
+            \hline
+            retrasmission - 6 & Not Ignored & 1/2 & 9.0/8  & 1 & 1 \\
+            \hline
+            retrasmission - 7 & Not Ignored & 2/3 & 9.0/8  & 3 & 3 \\
+            \hline
+            retrasmission - 8 & Not Ignored & 4/5 & 9.0/8  & 3 & 3 \\
+            \hline
+
+        \end{tabular}
+    }
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption*{Elenco completo delle varianti Esperimento 2}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{Worker} & \textbf{Packet/s} \\
+        \hline
+        inject - 1 & 6 & 1000 \\
+        \hline
+        inject - 2 & 6 & 2000 \\
+        \hline
+        inject - 3 & 8 & 1000 \\
+        \hline
+        inject - 4 & 8 & 2000 \\
+        \hline
+        inject - 5 & 6 & 3000 \\
+        \hline
+        inject - 6 & 6 & 4000 \\
+        \hline
+        inject - 7 & 8 & 3000 \\
+        \hline
+        inject - 8 & 8 & 4000 \\
+        \hline
+        inject - 9 & 4 & 3000 \\
+        \hline
+        inject - 10 & 4 & 4000 \\
+        \hline
+        inject - 11 & 4 & 5000 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption*{Elenco completo delle varianti Esperimento 3}
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{ACK Packet} \\
+        \hline
+        spurious - 1  & All \\
+        \hline
+        spurious - 2 & 1/2 \\
+        \hline
+        spurious - 3 & 2/3 \\
+        \hline
+        spurious - 4 & 4/5 \\
+        \hline
+        spurious - 5 & 7/8 \\
+        \hline
+        spurious - 6 & 9/10 \\
+        \hline
+        spurious - 7 & 19/20 \\
+        \hline
+    \end{tabular}
+\end{table}

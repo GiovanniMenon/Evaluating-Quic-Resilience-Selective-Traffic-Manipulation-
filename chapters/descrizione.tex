@@ -577,8 +577,8 @@ Il sottolivello superiore di \emph{MPTCP} opera end-to-end ed è responsabile de
         a)                                   b)
                \end{BVerbatim}
     \caption{\emph{Confronto tra gli stack di protocollo TCP e MPTCP standard}}
-    \subcaption{Nel TCP il protocollo }
-    \subcaption{Con MPTCP }
+    \subcaption{Nel TCP, il protocollo opera su un singolo flusso di dati, utilizzando un unico percorso di rete tra il livello applicazione e lo strato IP.}
+    \subcaption{Con MPTCP, il protocollo gestisce più sottoflussi TCP simultaneamente, permettendo l'utilizzo di percorsi di rete multipli tra il livello applicazione e gli strati IP sottostanti.}
     \label{comparison}
     \end{figure}
 \\\\
@@ -598,13 +598,13 @@ Per identificare le opzioni specifiche di \emph{MPTCP}, il campo \emph{Kind} nel
 |                       (variable length)                       |
 +---------------------------------------------------------------+   
         \end{BVerbatim}
-    \caption{\emph{MPTCP Option Format}}
+    \caption{\emph{Composizione opzione MPTCP}}
     \label{mptcp-option-format}
 \end{figure}
 
 \noindent Il campo \emph{Subtype} specifica la funzione dell'opzione \emph{MPTCP}. La Figura \ref{options-subtypes} presenta un elenco completo dei sottotipi disponibili come definito nel RFC 8684 \cite{site:mptcp-packet}. Di seguito, viene riportata una breve descrizione di ogni tipo.
 
-\begin{figure}[!h]
+\begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|c|}
         \hline
@@ -629,9 +629,9 @@ Per identificare le opzioni specifiche di \emph{MPTCP}, il campo \emph{Kind} nel
         0x8 & \emph{MP\_TCPRST} & Subflow Reset \\
         \hline
     \end{tabular}
-    \caption{\emph{MPTCP Option Subtypess}}
+    \caption{\emph{Tabella dei sottotipi dell'opzione MPTCP}}
     \label{options-subtypes}
-\end{figure}
+\end{table}
 ~\\
 \indent \textbf{\emph{Multipath Capable}} viene utilizzato durante il processo di avvio di una connessione, verifica che entrambi gli \emph{endpoint} supportano \emph{MPTCP} e contiene ulteriori informazioni per l'autenticazione di ulteriori \emph{subflow}.
 \\

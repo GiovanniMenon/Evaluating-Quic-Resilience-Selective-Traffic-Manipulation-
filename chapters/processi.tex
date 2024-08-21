@@ -35,7 +35,7 @@ Come illustrato nella Figura \ref{table-implementazioni-quic}, esistono numerose
 La scelta di utilizzare questa specifica implementazione di \emph{QUIC} è motivata dal suo utilizzo all'interno di \textbf{Caddy}\footnote{\url{https://caddyserver.com/}}, un \emph{web server} moderno e performante. \emph{Caddy} integra \emph{Quic-go} per offrire il supporto nativo del protocollo \emph{QUIC} e \emph{HTTP/3}.
 Inoltre, si è utilizzato \textbf{xCaddy}, un \emph{tool} che consente di creare build personalizzate di \emph{Caddy}, adattandolo specificatamente alle esigenze del progetto.
 
-\begin{figure}[!h]
+\begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|c|}
         \hline
@@ -88,9 +88,9 @@ Inoltre, si è utilizzato \textbf{xCaddy}, un \emph{tool} che consente di creare
         kwik & Java & GNU Lesser General Public License version 3 \\
         \hline
     \end{tabular}
-    \caption{\emph{Quic Source Code (da controllare)}}
+    \caption{\emph{Tabella implementazioni QUIC}}
     \label{table-implementazioni-quic}
-\end{figure}
+\end{table}
 
 \subsection{Tecnologie Specifiche per MPTCP}
 ~\\
@@ -98,7 +98,7 @@ Inoltre, si è utilizzato \textbf{xCaddy}, un \emph{tool} che consente di creare
 \\\\
 Per garantire che le applicazioni utilizzassero \emph{MPTCP} si è usato \textbf{mptcpize}\footnote{\url{https://manpages.ubuntu.com/manpages/lunar/man8/mptcpize.8.html}}, un tool specifico che forza la creazione di \emph{socket MPTCP} al posto di quelli \emph{TCP}.
 \hfill
-\begin{figure}[!h]
+\begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|c|}
         \hline
@@ -129,9 +129,9 @@ Per garantire che le applicazioni utilizzassero \emph{MPTCP} si è usato \textbf
         Linguaggio & \emph{Go} & 1.21 \\
         \hline
     \end{tabular}
-    \caption{\emph{Tabella Tecnologie}}
+    \caption{\emph{Tabella riassuntiva technologie usate}}
     \label{table-tecnologie}
-\end{figure}
+\end{table}
 
 \section{Esperimenti}
 ~\\
@@ -268,9 +268,9 @@ func (h *sentPacketHandler) ReceivedAck(ack *wire.AckFrame, encLevel protocol.En
 \end{lstlisting}
 \noindent Ulteriori modifiche secondarie apportate, come la rimozione delle richieste di chiusura della comunicazione, sono visibili nel codice completo dell'esperimento \footnote{\url{https://github.com/GiovanniMenon/quic-go/tree/retransmission-1}} \cite{site:my-fork}.
 \\\\
-Partendo dall'idea di base di questo esperimento, sono state sviluppate diverse varianti ottenute modificando alcuni valori e parametri chiave.
-Le più significative di esse sono catalogate nella tabella \ref{table-retransmission}.
-\begin{figure}[!h]
+Partendo dall'idea di base di questo esperimento, sono state sviluppate diverse varianti ottenute modificando alcuni valori e parametri chiave. 
+La lista completa è presente nell'Appendice. Le più significative di esse sono catalogate nella tabella \ref{table-retransmission}.
+\begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|c|}
         \hline
@@ -287,7 +287,7 @@ Le più significative di esse sono catalogate nella tabella \ref{table-retransmi
     \end{tabular}
     \caption{\emph{Tabella varianti esperimento 1}}
     \label{table-retransmission}
-\end{figure}
+\end{table}
 
 \paragraph{Esperimento 2: Server Web con Iniezione di Pacchetti in Background}
 \noindent L'idea alla base di questo secondo esperimento è quella di simulare un \emph{server web QUIC} che, 
@@ -375,8 +375,9 @@ tali modifiche includono:
 \end{itemize}
 \noindent Infine si utilizza la funzione \emph{WriteMsgUDP} per costruire il pacchetto \emph{UDP} con il payload \emph{QUIC} ed inviarlo al destinatario \footnote{\url{https://github.com/GiovanniMenon/quic-go/tree/inject-1}}.
 \\\\
-Come nel primo esperimento, anche in questo caso sono state sviluppate diverse varianti che si distinguono principalmente per il numero di \emph{worker} impiegati e per le impostazioni del limitatore. Le più significative sono elencate nella tabella \ref{table-inject}.
-\begin{figure}[!h]
+Come nel primo esperimento, anche in questo caso sono state sviluppate diverse varianti che si distinguono principalmente per il numero di \emph{worker} impiegati e per le impostazioni del limitatore.
+La lista completa è presente nell'Appendice. Le più significative sono elencate nella tabella \ref{table-inject}.
+\begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|c|}
         \hline
@@ -393,7 +394,7 @@ Come nel primo esperimento, anche in questo caso sono state sviluppate diverse v
     \end{tabular}
     \caption{\emph{Tabella varianti esperimento 2}}
     \label{table-inject}
-\end{figure}
+\end{table}
 \paragraph{Esperimento 3: Manipolazione del traffico QUIC }
 \noindent L'idea alla base di questo terzo esperimento si discosta da quelle precedenti, concentrandosi su uno scenario in cui non è presente un \emph{server} malevolo.
 Viene invece simulata la presenza di un attaccante esterno in grado di manipolare il traffico in una connessione legittima tra \emph{client} e \emph{server}.
@@ -421,9 +422,8 @@ if len(p.data)+42 < 85 {
 	return p, nil
 }
 \end{lstlisting}
-Come negli esperimenti precedenti, sono state sviluppate diverse varianti che si differenziano per il numero di pacchetti che l'attaccante oscura.
-Le più rilevanti sono elencate nella tabella \ref{table-spurious}.
-\begin{figure}[!h]
+Come negli esperimenti precedenti, sono state sviluppate diverse varianti che si differenziano per il numero di pacchetti che l'attaccante oscura. La lista completa è presente nell'Appendice. Le più rilevanti sono elencate nella tabella \ref{table-spurious}.
+\begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|}
         \hline
@@ -440,7 +440,7 @@ Le più rilevanti sono elencate nella tabella \ref{table-spurious}.
     \end{tabular}
     \caption{\emph{Tabella varianti esperimento 3}}
     \label{table-spurious}
-\end{figure}
+\end{table}
 \pagebreak
 \subsection{Esperimenti MPTCP}
 ~\\
@@ -453,5 +453,23 @@ In questo scenario, il \emph{server} stabilisce e gestisce una connessione \emph
 Una differenza significativa rispetto all'esperimento \emph{QUIC} è che \emph{MPTCP}, essendo un'estensione di \emph{TCP}, non include la crittografia \emph{end-to-end} integrata. 
 Questo potrebbe influenzare il modo in cui i pacchetti iniettati vengono gestiti e rilevati lungo il percorso di rete.
 \\\\
-(Questa parte non mi convince, sono indeciso se rimuoverla o meno perchè a tutti gli effetti ci siamo concentrati di più su QUIC,
- e gli esperimenti di mptcp non sono molto rilevanti. Magari lasciamo un pezzo in cui spiego cosa si è fatto e perchè non si è andato oltre.)
+Come negli esperimenti precedenti, sono state sviluppate diverse varianti che si differenziano per il numero di \emph{worker} usati e per le impostazioni del limitatore. 
+La lista completa è presente nella tabella \ref{table-inject-MPTCP}.
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{Worker} & \textbf{Packet/s} \\
+        \hline
+        inject - 1  & 6 & 1500 \\
+        \hline
+        inject - 2 & 6 & 3000 \\
+        \hline
+        inject - 3 & 8 & 1500 \\
+        \hline
+        inject - 4 & 8 & 3000 \\
+        \hline
+    \end{tabular}
+    \caption{\emph{Tabella esperimento 1 MPTCP}}
+    \label{table-inject-MPTCP}
+\end{table}
