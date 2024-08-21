@@ -283,7 +283,7 @@ Inoltre, l'utilizzo di \emph{UDP} non introduce alcun \emph{overhead}\footnote{\
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.7\columnwidth]{descrizione/quic/tcp-quic}
-    \caption{\emph{Differenza nella struttura del protocollo QUIC dal protocollo TCP}}
+    \caption{\emph{Confronto tra gli stack di protocollo TCP e QUIC}}
     \label{tcp-quic}
 \end{figure}
 \noindent Come illutrato nella Figura \ref{tcp-quic}, \emph{QUIC} si basa su \emph{UDP} in modo analogo a come \emph{TCP} si basa su \emph{IP}.
@@ -475,9 +475,9 @@ Procediamo ora con l'analisi del processo di \emph{handshake} in \emph{QUIC} (Fi
     \begin{minipage}{0.48\textwidth}
         \centering
         \includegraphics[width=1\columnwidth]{descrizione/quic/handshake}
-        \caption{\emph{Processo di handshake in QUIC}}
-        \subcaption{Initial RTT}
-        \subcaption{O-RTT}
+        \caption{\emph{Processi di handshake in QUIC}}
+        \subcaption{Processo di handshake 1-RTT}
+        \subcaption{Processo di handshake 0-RTT}
         \label{quic-handshake-quic}
     \end{minipage}
 \end{figure}
@@ -574,8 +574,11 @@ Il sottolivello superiore di \emph{MPTCP} opera end-to-end ed è responsabile de
 +---------------+            +-------------------------------+
 |      IP       |            |       IP      |      IP       |
 +---------------+            +-------------------------------+
+        a)                                   b)
                \end{BVerbatim}
-    \caption{\emph{Comparison of Standard TCP and MPTCP Protocol Stacks}}
+    \caption{\emph{Confronto tra gli stack di protocollo TCP e MPTCP standard}}
+    \subcaption{Nel TCP il protocollo }
+    \subcaption{Con MPTCP }
     \label{comparison}
     \end{figure}
 \\\\
