@@ -226,7 +226,7 @@ In particolare, sono state alterate le costanti :
 \end{itemize}
 \noindent inoltre le funzioni che ricalcolano il \emph{PTO} sono state cambiate così che non lo modifichino.
 \\
-Di seguito,viene riportato il codice che impedisce al \emph{server} di riconoscere gli \emph{ACK} dei pacchetti inviati. 
+Di seguito, viene riportato il codice che impedisce al \emph{server} di riconoscere gli \emph{ACK} dei pacchetti inviati. 
 Per ottenere questo risultato si è rimossa totalmente la logica che gestisce il ricevimento di un \emph{acknowledge} dalla funzione responsabile di questo e nel contempo ritorna sempre una tupla \emph{false|nil}, 
 segnalando che nessun pacchetto è stato confermato.
 \\
