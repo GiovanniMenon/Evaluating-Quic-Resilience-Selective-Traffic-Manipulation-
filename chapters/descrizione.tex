@@ -315,7 +315,7 @@ Al contrario,\emph{QUIC} gestisce questa transazione in modo più efficiente com
         \centering
         \includegraphics[width=0.90\columnwidth]{descrizione/quic/tcp-handoff}
         \caption{\emph{Meccanismo di hand-off nel caso di connessione TCP}}
-        \subcaption{Con TCP, quando l'utente passa da rete WiFi a rete mobile, ciò comporta un cambiamento del suo indirizzo IP. Tale cambio causa la terminazione della connessione esistente. Poiché TCP identifica la connessione tramite l'indirizzo IP.}
+        \subcaption*{Con TCP, quando l'utente passa da rete WiFi a rete mobile, ciò comporta un cambiamento del suo indirizzo IP. Tale cambio causa la terminazione della connessione esistente. Poiché TCP identifica la connessione tramite l'indirizzo IP.}
         \label{tcp-handoff}
     \end{minipage}
     \hfill
@@ -323,7 +323,7 @@ Al contrario,\emph{QUIC} gestisce questa transazione in modo più efficiente com
         \centering
         \includegraphics[width=0.90\columnwidth]{descrizione/quic/quic-handoff}
         \caption{\emph{Meccanismo di hand-off nel caso di connessione QUIC}}
-        \subcaption{Con QUIC, quando l'utente passa da WiFi a rete mobile cambiando il suo indirizzo IP, la connessione non viene terminata. Questo perché QUIC utilizza il Connection ID invece dell'indirizzo IP per identificare la connessione, permettendo di mantenere la sessione attiva nonostante il cambio di rete.}
+        \subcaption*{Con QUIC, quando l'utente passa da WiFi a rete mobile cambiando il suo indirizzo IP, la connessione non viene terminata. Questo perché QUIC utilizza il Connection ID invece dell'indirizzo IP per identificare la connessione, permettendo di mantenere la sessione attiva nonostante il cambio di rete.}
         \label{quic-handoff}
     \end{minipage}
 \end{figure}
@@ -476,8 +476,8 @@ Procediamo ora con l'analisi del processo di \emph{handshake} in \emph{QUIC} (Fi
         \centering
         \includegraphics[width=1\columnwidth]{descrizione/quic/handshake}
         \caption{\emph{Processi di handshake in QUIC}}
-        \subcaption{Processo di handshake 1-RTT}
-        \subcaption{Processo di handshake 0-RTT}
+        \subcaption*{Processo di handshake 1-RTT}
+        \subcaption*{Processo di handshake 0-RTT}
         \label{quic-handshake-quic}
     \end{minipage}
 \end{figure}
@@ -577,8 +577,8 @@ Il sottolivello superiore di \emph{MPTCP} opera end-to-end ed è responsabile de
         a)                                   b)
                \end{BVerbatim}
     \caption{\emph{Confronto tra gli stack di protocollo TCP e MPTCP standard}}
-    \subcaption{Nel TCP, il protocollo opera su un singolo flusso di dati, utilizzando un unico percorso di rete tra il livello applicazione e lo strato IP.}
-    \subcaption{Con MPTCP, il protocollo gestisce più sottoflussi TCP simultaneamente, permettendo l'utilizzo di percorsi di rete multipli tra il livello applicazione e gli strati IP sottostanti.}
+    \subcaption*{Nel TCP, il protocollo opera su un singolo flusso di dati, utilizzando un unico percorso di rete tra il livello applicazione e lo strato IP.}
+    \subcaption*{Con MPTCP, il protocollo gestisce più sottoflussi TCP simultaneamente, permettendo l'utilizzo di percorsi di rete multipli tra il livello applicazione e gli strati IP sottostanti.}
     \label{comparison}
     \end{figure}
 \\\\
