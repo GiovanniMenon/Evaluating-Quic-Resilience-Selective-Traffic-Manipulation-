@@ -3,19 +3,28 @@
 
 \section{Consuntivo finale}
 
+In questo studio, si sono creati diversi esperimenti con lo scopo di analizzare se anche \emph{QUIC} è vulnerabile ad attacchi di ritrasmissioni o 
+eventuali metodi per aumentare il traffico dati con lo scopo di incrementare artificialmente il consumo di un utente.
+Dopo una analisi dei risultati degli esperimenti condotti si può dire che abbiano avuto un esito positivo. 
+Mostrando come con la creazione di un server malevolo si riesca ad aumentare il traffico dati e comportare un corrispoettivo aumento del consumo totale il client. 
+Un attaccante può combinare gli esperimenti 1 e 2 per avere un server che allo stesso tempo ignori gli ack e passivamente inietti in background finti pacchetti.
+Aumentando ancor di piu il traffico per il client.
+Inoltre, con il 3 esperimento si è visto che un attaccante anche senza avere il controllo di una delle parti è in grado di poter manipolare il traffico dati causando un aumento 
+del traffico (in pacchetit) del 50\%.
+
 \section{Futuri Lavori}
 ~\\
-\indent Nonostante il presente studio si sia concentrato principalmente sull'analisi delle vulnerabilità di QUIC e sul loro potenziale sfruttamento per manipolare i sistemi di contabilizzazione del traffico mobile, questa ricerca si inserisce in un contesto più ampio che include anche un'analisi di MPTCP, sebbene per ragioni di tempo ci si sia concentrati maggiormente su QUIC.
-\\
-Un possibile sviluppo futuro è rappresentato da un'analisi più dettagliata della parte relativa a MPTCP. Sarebbe particolarmente interessante applicare la costruzione di un server malevolo equivalente a quello dell'esperimento 1 di QUIC, aspetto che per motivi di tempo non si è riusciti a implementare in questo studio.
+\indent Nonostante il presente studio si sia concentrato principalmente sull'analisi delle vulnerabilità di \emph{QUIC} e sul loro potenziale sfruttamento per manipolare i sistemi di contabilizzazione del traffico mobile, questa ricerca si inserisce in un contesto più ampio che include anche un'analisi di \emph{MPTCP}, 
+sebbene per ragioni di tempo l'attenzione è stata rivolta maggiormente su \emph{QUIC}. Un possibile sviluppo futuro è rappresentato da un'analisi più dettagliata della parte relativa a \emph{MPTCP}.
+Sarebbe interessante replicare l'approccio utilizzato nell'esperimento uno di \emph{QUIC}, costruendo un server malevolo per \emph{MPTCP}, aspetto che per motivi di tempo non si è riusciti a implementare in questo studio.
 \\\\
-
-Riprodurre gli esperimenti su MPTCP dedicandoci più tempo Questo studio si inserisce in un contesto più ampio che include anche l’analisi di
-MPTCP, sebbene per ragioni di tempo ci si sia concentrati principalmente su QUIC.
-
-Testare i diversi esperimenti in scenari reale e non sono in un ambiente di Testare,Sono numerose le cause che possono provocare la perdita di un pacchetto. Nel caso delle reti mobile ciò può accadere in punti diversi dell'infrasstruttura. Nel caso il segmento venga perso tra il client e la stazione base in \emph{RAN}\footnote{\gls{RAN}} è compito del \emph{link layer} occuparsi della ritrasmissione. Questo significa che, se il pacchetto venisse perso un numero di volte ma poi venisse ricevuto, il \emph{TCP} non rileverebbe alcun pacchetto perso ma solo un aumento del \emph{RTT}.
-Questo studio si inserisce in un contesto più ampio che include anche l'analisi di \emph{MPTCP}, sebbene per ragioni di tempo ci si sia concentrati principalmente su \emph{QUIC}. 
-
-Testare i diversi operatori. 
-
-Approfondire quanto riguarda MPQUIC.
+Un altro possibile sviluppo sarebbe l'estensione della sperimentazione in scenari reali, uscendo dagli ambienti controllati utilizzati finora. 
+Condurre esperimenti in contesti reali permetterebbe di valutare l'effettivo impatto delle vulnerabilità individuate. 
+Inoltre, questo approccio consentirebbe di analizzare le politiche di contabilizzazione delle ritrasmissioni adottate dai diversi operatori 
+e di confrontarli per identificare eventuali differenze nel conteggio del consumo dati.
+\\\\
+Un approfondimento specifico su \emph{Multipath QUIC (MPQUIC)} sarebbe di grande interesse. 
+Introdotto per la prima volta nel 2017 nel paper \emph{"Multipath QUIC: Design and Evaluation"} \cite{article:mpquic},
+è un'estensione del protocollo \emph{QUIC} che permette agli host di scambiare dati su reti multiple attraverso una singola connessione.
+Data la sua natura di estensione di \emph{QUIC} per l'utilizzo di percorsi multipli,
+\emph{MPQUIC} potrebbe presentare vulnerabilità uniche o comportamenti di rete differenti, che meriterebbero un'analisi dettagliata.
