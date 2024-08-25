@@ -2,15 +2,16 @@
 \label{cap:conclusioni}
 
 \section{Consuntivo finale}
-
-In questo studio, si sono creati diversi esperimenti con lo scopo di analizzare se anche \emph{QUIC} è vulnerabile ad attacchi di ritrasmissioni o 
-eventuali metodi per aumentare il traffico dati con lo scopo di incrementare artificialmente il consumo di un utente.
-Dopo una analisi dei risultati degli esperimenti condotti si può dire che abbiano avuto un esito positivo. 
-Mostrando come con la creazione di un server malevolo si riesca ad aumentare il traffico dati e comportare un corrispoettivo aumento del consumo totale il client. 
-Un attaccante può combinare gli esperimenti 1 e 2 per avere un server che allo stesso tempo ignori gli ack e passivamente inietti in background finti pacchetti.
-Aumentando ancor di piu il traffico per il client.
-Inoltre, con il 3 esperimento si è visto che un attaccante anche senza avere il controllo di una delle parti è in grado di poter manipolare il traffico dati causando un aumento 
-del traffico (in pacchetit) del 50\%.
+In questo studio, si sono analizzate diverse possibili strategie per alterare il traffico dati in connessioni \emph{QUIC},
+con particolare attenzione sulle ritrasmissioni e sulle tecniche per aumentare artificialmente il consumo di dati.
+\\\\
+I risultati degli esperimenti condotti hanno confermato le ipotesi iniziali, rivelando una serie di metodi efficaci per aumentare il traffico dati. 
+Si è evidenziato come un \emph{server} malevolo possa effettivamente incrementare il traffico dati, causando un aumento misurabile del consumo totale del \emph{client}.
+In particolare, nel primo esperimento ignorando gli ACK, mentre nel secondo iniettando pacchetti aggiuntivi alla connessione normale. 
+I risultati ottenuti suggeriscono che combinando le diverse strategie sperimentate si
+potrebbe potenzialmente amplificare ulteriormente l'impatto sull'incremento del traffico. 
+Ancora più significativi sono i risultati del terzo esperimento, dove si è evidenziato che anche senza il controllo diretto di \emph{client} o \emph{server}, 
+un attaccante può manipolare il traffico dati, causando un aumento del 50\% nel volume di pacchetti trasmessi.
 
 \section{Futuri Lavori}
 ~\\
@@ -25,6 +26,6 @@ e di confrontarli per identificare eventuali differenze nel conteggio del consum
 \\\\
 Un approfondimento specifico su \emph{Multipath QUIC (MPQUIC)} sarebbe di grande interesse. 
 Introdotto per la prima volta nel 2017 nel paper \emph{"Multipath QUIC: Design and Evaluation"} \cite{article:mpquic},
-è un'estensione del protocollo \emph{QUIC} che permette agli host di scambiare dati su reti multiple attraverso una singola connessione.
-Data la sua natura di estensione di \emph{QUIC} per l'utilizzo di percorsi multipli,
-\emph{MPQUIC} potrebbe presentare vulnerabilità uniche o comportamenti di rete differenti, che meriterebbero un'analisi dettagliata.
+\emph{MPQUIC} è un'estensione del protocollo \emph{QUIC} che permette agli host di scambiare dati su reti multiple attraverso una singola connessione.
+Data la sua natura di estensione di \emph{QUIC},
+\emph{MPQUIC} potrebbe presentare vulnerabilità uniche o comportamenti di rete differenti, che meriterebbero un approfondimento.
