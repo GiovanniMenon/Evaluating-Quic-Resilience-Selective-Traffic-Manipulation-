@@ -156,6 +156,7 @@ Per quanto riguarda il \emph{client}, si sono utilizzati i \emph{browser} \emph{
 Sul lato \emph{server}, è stato impiegato \emph{Caddy} come \emph{web server}.
 
 \paragraph{Esperimento 1: Server Web QUIC che ignora gli ACK}
+\label{esperimento1}
 \noindent L'idea alla base di questo esperimento è simulare un \emph{server web Quic} con un comportamento non convenzionale. 
 Il \emph{server} è configurato per operare come se non ricevesse mai conferme \emph{(acknowledge)} per i pacchetti inviati, mantenendo al contempo un \emph{PTO} impostato a zero. 
 Di conseguenza, il \emph{server} continua a ritrasmettere i pacchetti, presumendo erroneamente che non siano mai giunti a destinazione. Con il \emph{PTO} azzerato, queste ritrasmissioni avvengono in rapida successione, quasi simultaneamente.
@@ -290,6 +291,7 @@ La lista completa è presente nell'Appendice. Le più significative di esse sono
 \end{table}
 
 \paragraph{Esperimento 2: Server Web con Iniezione di Pacchetti in Background}
+\label{esperimento2}
 \noindent L'idea alla base di questo secondo esperimento è quella di simulare un \emph{server web QUIC} che, 
 pur mantenendo un comportamento apparentemente normale durante la connessione, inietta in background pacchetti aggiuntivi non richiesti.
 \\\\
@@ -396,6 +398,7 @@ La lista completa è presente nell'Appendice. Le più significative sono elencat
     \label{table-inject}
 \end{table}
 \paragraph{Esperimento 3: Manipolazione del traffico QUIC }
+\label{esperimento3}
 \noindent L'idea alla base di questo terzo esperimento si discosta da quelle precedenti, concentrandosi su uno scenario in cui non è presente un \emph{server} malevolo.
 Viene invece simulata la presenza di un attaccante esterno in grado di manipolare il traffico in una connessione legittima tra \emph{client} e \emph{server}.
 \\\\

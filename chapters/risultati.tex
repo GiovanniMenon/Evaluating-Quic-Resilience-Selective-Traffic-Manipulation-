@@ -6,14 +6,14 @@ Questo capitolo presenta un'analisi dettagliata dei risultati ottenuti dagli esp
 \section{Risultati degli Esperimenti QUIC}
 \subsection{Risultati Esperimento 1}
 ~\\
-\indent In questa sezione si analizzano i risultati ottenuti dall'esperimento in cui si è simulato un \emph{server web QUIC} con un comportamento modificato. 
+\indent In questa sezione si analizzano i risultati ottenuti dall'esperimento in cui si è simulato un \emph{server web QUIC} con un comportamento modificato, vedi sezione \ref{esperimento1}.
 Il \emph{server} è configurato per operare come se non ricevesse mai conferme dei pacchetti inviati, mantenendo al contempo un \emph{PTO} impostato a 0. 
 Di seguito, vengono presentati i risultati emersi accompagnati dai relativi grafici. I dati in versione tabellare sono presenti nell'Appendice.
 \\\\
 In condizioni standard, la trasmissione ha generato un traffico di circa 5.8 \emph{Mb} con un totale di circa 4100 pacchetti scambiati. 
 Questi dati rappresentano il punto di riferimento per valutare l'impatto dei cambiamenti al comportamento del \emph{server}.
 \\\\
-Come illustrato in Figura \ref{grafico12}, che mostra il confronto del consumo dati tra i vari esperimenti e lo scenario standard, le modifiche hanno prodotto effetti notevolmente diversi.
+Come illustrato in Figura \ref{grafico12}, che mostra il confronto del consumo dati tra i vari esperimenti e lo scenario standard, le modifiche hanno prodotto effetti considerevolmente diversi.
 Negli scenari di \emph{Retransmission 1 e 2}, si è osservato un incremento del traffico dati di più del $100\%$, passando dai 5.8 \emph{Mb} dello scenario standard a circa 13 \emph{Mb} nel primo caso e 15 \emph{Mb} nel secondo. 
 Parallelamente, come viene evidenziato in Figura \ref{grafico1}, il numero di pacchetti scambiati è aumentato da 4100 a circa 18000. 
 Tuttavia, questi scenari hanno presentato problemi di congestione e latenza che ne hanno compromesso l'applicabilità pratica.
@@ -45,7 +45,7 @@ La variante 4, in particolare, incrementa il traffico dati di dieci volte, passa
 Ciò implica che, pur mantenendo una connessione all'apparenza normale, le modifiche comportano un potenziale aumento significativo del traffico contabilizzato per l'utente.
 \subsection{Risultati Esperimento 2}
 ~\\
-\indent In questa sezione si analizzano i risultati ottenuti dall'esperimento in cui si è simulato un \emph{server web QUIC} che inietta pacchetti aggiuntivi non richiesti in background.
+\indent In questa sezione si analizzano i risultati ottenuti dall'esperimento in cui si è simulato un \emph{server web QUIC} che inietta pacchetti aggiuntivi non richiesti in background, vedi sezione \ref{esperimento2}.
 Il \emph{server} è stato configurato per mantenere una connessione \emph{QUIC} standard con il \emph{client}, mentre contemporaneamente invia pacchetti aggiuntivi non correlati alla comunicazione principale.
 \\\\
 I risultati di questo esperimento, illustrati nelle Figure \ref{grafico22} e \ref{grafico2}, mostrano gli effetti dell'iniezione di pacchetti sul consumo di dati e sul volume del traffico in termini di pacchetti scambiati.
@@ -55,7 +55,7 @@ L'introduzione dell'iniezione di pacchetti ha portato a un aumento prevedibile s
 Nel primo scenario \emph{(Inject - 1)}, con 6 \emph{worker} che inviano 1000 pacchetti al secondo, si è ottenuto un aumento significativo del traffico raggiungendo circa 272 \emph{Mb} e quasi 190'000 pacchetti scambiati in 30 secondi. 
 Aumentando la frequenza di invio a 2000 pacchetti al secondo \emph{(Inject - 2)} e mantendo sempre a 6 i \emph{workers}, il traffico è quasi raddoppiato, arrivando a circa 566 \emph{Mb} con 396'000 pacchetti.
 \\\\
-Nel terzo scenario \emph{(Inject - 3)}, aumentando il numeri \emph{worker} a 8 ma mantenendo i pacchetti al secondo a 1000, si è ottenuto un aumento del consumo dati di circa 407 \emph{Mb} 535'000 pacchetti. 
+Nel terzo scenario \emph{(Inject - 3)}, aumentando i \emph{worker} a 8 ma mantenendo i pacchetti al secondo a 1000, si è ottenuto un aumento del consumo dati di circa 407 \emph{Mb} e 535'000 pacchetti. 
 Infine nella quarta variante \emph{(Inject - 4)}, combinando 8 \emph{worker} e una frequenza di invio di 2000 pacchetti al secondo, si è ottenuto il picco di circa 753 \emph{Mb}, con 543'000 pacchetti.
 \begin{figure}[!h]
     \centering
@@ -75,8 +75,8 @@ Infine nella quarta variante \emph{(Inject - 4)}, combinando 8 \emph{worker} e u
         \label{grafico2}
     \end{minipage}
 \end{figure}
-\noindent (Questo va tenuto (riformulato) oppure inserito nella sezione futuri sviluppi riformulato come un futuro sviluppo)\\
-Da sottolineare che l'ambiente di test è locale e via cavo. È proprio per questa ragione che non si sono sperimentati né congestione né latenza durante gli esperimenti. 
+\\
+\noindent Da sottolineare che l'ambiente di test è locale e via cavo. È proprio per questa ragione che non si sono sperimentati né congestione né latenza durante gli esperimenti. 
 In uno scenario di rete reale, con connessioni \emph{wireless} o su lunghe distanze, ci si aspetterebbe la presenza di latenza o congestione, soprattutto considerando gli elevati volumi di traffico generati. 
 \begin{figure}[!h]
     \centering
@@ -96,7 +96,7 @@ Nell'esperimento che si è condotto, la connessione è stata simulata per una du
 \subsection{Risultati Esperimento 3}
 ~\\
 \indent In questa sezione si analizzano i risultati ottenuti dall’esperimento in cui si è simulato
-uno scenario di attacco in cui un attaccante esterno cerca di manipolare il traffico di una connessione \emph{QUIC} tra un \emph{client} e \emph{server}.
+uno scenario di attacco in cui un attaccante esterno cerca di manipolare il traffico di una connessione \emph{QUIC} tra un \emph{client} e \emph{server}, vedi sezione \ref{esperimento3}.
 L'attacco si concentra sull'oscuramento selettivo di pacchetti con lo scopo di causare ritrasmissioni e aumentare il traffico.
 \\\\
 I risultati di questo esperimento, riportati nelle Figure \ref{grafico3} e \ref{grafico32}, mostrano l'efficacia del pattern di selezione applicato per determinare quali pacchetti oscurare. 
@@ -124,7 +124,4 @@ Aumentando la frequenza di oscuramento a due ogni tre \emph{(Spurious Retransmis
     \end{minipage}
 \end{figure}
 Nel quarto e ultimo scenario \emph{(Spurious Retransmission - 4)} sono stati oscurati quattro pacchetti su cinque, sempre selezionando quelli inferiori a 85 \emph{byte}.
-Questo ha portato un aumento del numero di pacchetti quasi del 50\%, con un totale di poco meno di 8 \emph{Mb} e 6200 pacchetti scambiati. 
-\section{MPTCP}
-
-(Non so se mettere o meno, l'idea dell'esperimento è presente ma i risultati non sono ottimi. Sono un normale tcp flood. )
+Questo ha portato un aumento del numero di pacchetti quasi del 50\%, con un totale di poco meno di 8 \emph{Mb} e 6200 pacchetti scambiati.
