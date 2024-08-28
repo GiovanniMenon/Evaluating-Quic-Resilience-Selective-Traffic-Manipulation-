@@ -1,15 +1,26 @@
 \chapter{Introduzione}
 \label{cap:introduzione}
 
-(Ultima parte da fare)(abstract)\\
-Qui Si parla delle reti mobile e di come negli ultimi anni siano cresciute e siano diventate molto diffuse. Si parla anche di come i protocolli di rete si sono evluti e di come ci si debba muovere per assicurare che non avvengano problemi durante questo tipo di connessioni. 
+(Bozza)\\\\
+\emph{Abstract}- L'adozione di nuovi protocolli come \emph{Quick UDP Internet Connections (QUIC) } nelle reti moderne ha introdotto nuove sfide nella gestione e tariffazione del traffico.
+Questo studio si concentra sull'analisi di questo protocollo con particolare attenzione alle problematiche relative alla tariffazione dei consumi e alle possibili tecniche per aumentare il traffico.
+Si sono analizzate tre diverse strategie per la manipolazione del traffico: (1) un server malevolo che agisce come se non ricevesse alcun ACK e con un PTO costante a zero, (2) l'inserimento silenzioso di 
+pacchetti aggiuntivi da parte del server durante una comunicazione, e (3) un attacco esterno che manipola il traffico mascherando selettivamente alcuni pacchetti.
+Attraverso lo studio di queste strategie sono stati esaminati i risultati ottenuti. Lo studio ha evidenziato come queste strategie possano portare ad un aumento del traffico e 
+dei consumi.
 
 
 \section{Motivazione}
-(Ultima parte da fare)(abstract)\\
-(Perchè abbiamo deciso di andare a lavorare su questo tipo di protocollo e su questo scopo )
-\section{Organizzazione del testo}
+L'avvento di Internet e la continua evoluzione delle tecnologie di comunicazione ha trasformato radicalmente il modo di interagire e accedere alle informazioni.
+Tuttavia, tale progresso porta con sè nuove sfide nella gestione e tariffazione del traffico.
+I piani tariffari attuali, basati su soglie o sui consumi effettivi, si affidano al calcolo del consumo dati effettuato dagli operatori di rete.
+Questo approccio, tuttavia, introduce una serie di nuove problematiche. Un esempio significativo è rappresentato 
+dalla possibilità che un malintenzionato potrebbe sfruttare le caratteristiche intrinseche di un protocollo di rete o del sistema di comunicazione 
+per manipolare artificialmente il consumo dati degli utenti senza che questi ne siano consapevoli.
+Ciò comporta un aumento del costo o l'esaurimento prematuro delle risorse dati disponibili.
+Risulta quindi necessario analizzare le possibili strategie utilizzate e valutare gli impatti che queste potrebbero avere sugli utenti.
 
+\section{Organizzazione del testo}
 \indent Di seguito, viene presentata la struttura del documento :
 \begin{description}
     \item[{\hyperref[cap:RelatedWorks]{Il secondo capitolo}}] presenta quanto trovato di simile nella letteratura attuale;
