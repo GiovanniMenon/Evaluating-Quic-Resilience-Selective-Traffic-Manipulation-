@@ -1,25 +1,17 @@
 \chapter{Introduzione}
 \label{cap:introduzione}
 
-(Bozza)\\\\
-\emph{Abstract}- L'adozione di nuovi protocolli come \emph{Quick UDP Internet Connections (QUIC) } nelle reti moderne ha introdotto nuove sfide nella gestione e tariffazione del traffico.
-Questo studio si concentra sull'analisi di questo protocollo con particolare attenzione alle problematiche relative alla tariffazione dei consumi e alle possibili tecniche per aumentare il traffico.
-Si sono analizzate tre diverse strategie per la manipolazione del traffico: (1) un server malevolo che agisce come se non ricevesse alcun ACK e con un PTO costante a zero, (2) l'inserimento silenzioso di 
-pacchetti aggiuntivi da parte del server durante una comunicazione, e (3) un attacco esterno che manipola il traffico mascherando selettivamente alcuni pacchetti.
-Attraverso lo studio di queste strategie sono stati esaminati i risultati ottenuti. Lo studio ha evidenziato come queste strategie possano portare ad un aumento del traffico e 
-dei consumi.
-
-
 \section{Motivazione}
-L'avvento di Internet e la continua evoluzione delle tecnologie di comunicazione ha trasformato radicalmente il modo di interagire e accedere alle informazioni.
-Tuttavia, tale progresso porta con sè nuove sfide nella gestione e tariffazione del traffico.
-I piani tariffari attuali, basati su soglie o sui consumi effettivi, si affidano al calcolo del consumo dati effettuato dagli operatori di rete.
+L'avvento di Internet e la continua evoluzione delle tecnologie di comunicazione ha trasformato radicalmente il modo in cui le persone interagiscono, lavorano e accedono alle informazioni.
+Tuttavia, l'aumento esponenziale del traffico e la crescente complessità delle reti moderne comportano nuove sfide nella gestione e tariffazione del traffico.
+Attualmente, le infrastrutture si basano su piani tariffari che dipendono da soglie prestabilite o sul consumo effettivo di dati, il cui calcolo è affidato agli operatori di rete.
 Questo approccio, tuttavia, introduce una serie di nuove problematiche. Un esempio significativo è rappresentato 
 dalla possibilità che un malintenzionato potrebbe sfruttare le caratteristiche intrinseche di un protocollo di rete o del sistema di comunicazione 
 per manipolare artificialmente il consumo dati degli utenti senza che questi ne siano consapevoli.
-Ciò comporta un aumento del costo o l'esaurimento prematuro delle risorse dati disponibili.
-Risulta quindi necessario analizzare le possibili strategie utilizzate e valutare gli impatti che queste potrebbero avere sugli utenti.
-
+Tale manipolazione comporta un aumento ingiustificato dei costi o l'esaurimento prematuro delle risorse dati disponibili.
+In questo contesto, questo studio si propone di analizzare in dettaglio alcune delle possibili strategie che possono essere adottate dai malintenzionati, 
+valutandone gli impatti potenziali e studiandone gli effetti sul consumo dati di una vittima. 
+Questa analisi è importante per esplorare la portata delle minacce e i potenziali rischi connessi legati a questa tipologia di attacco.
 \section{Organizzazione del testo}
 \indent Di seguito, viene presentata la struttura del documento :
 \begin{description}
