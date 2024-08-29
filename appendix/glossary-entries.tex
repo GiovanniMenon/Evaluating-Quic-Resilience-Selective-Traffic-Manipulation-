@@ -1,7 +1,4 @@
 % Acronyms
-\newacronym[description={\glslink{ISO/OSIg}{Open System Interconnection}}]
-    {ISO/OSI}{ISO/OSI}{Open System Interconnection}
-
 \newacronym[description={\glslink{TCP}{Transmission Control Protocol}}]
     {TCP}{TCP}{Open System Interconnection}
 
@@ -32,8 +29,8 @@
 \newacronym[description={\glslink{TLS}{Transport Layer Security}}]
     {TLS}{TLS}{Transport Layer Security}
 
-\newacronym[description={\glslink{QUIC}{Quic UDP Internet Connections}}]
-    {QUIC}{QUIC}{Quic UDP Internet Connections}
+\newacronym[description={\glslink{QUIC}{QuicK UDP Internet Connections}}]
+    {QUIC}{QUIC}{QuicK UDP Internet Connections}
 
 \newacronym[description={\glslink{IETF}{Internet Engineering Task Force}}]
     {IETF}{IETF}{Internet Engineering Task Force}
@@ -89,39 +86,26 @@
     name=Acknowledgements,
     text=\emph{Acknowledgements},
     sort=acknowledgements,
-    description={Da fare}
+    description={egnale di riconoscimento utilizzato per indicare la corretta ricezione di un'informazione o di un pacchetto di dati in un sistema di comunicazione}
 }
 \newglossaryentry{checksum} {
     name=Checksum,
     text=\emph{Checksum},
     sort=checksum,
-    description={Da fare}
+    description={Indica una sequenza di bit che viene associata al pacchetto trasmesso con lo scopo di verificare l'integrità di un dato o di un messaggio}
 }
 \newglossaryentry{sliding window} {
     name=Sliding window,
     text=\emph{Sliding window},
     sort=sliding window,
-    description={Da fare}
+    description={È un metodo utilizzato per gestire il flusso di dati tra due entità in una comunicazione. Una finestra mobile rappresenta un intervallo di pacchetti o dati che possono essere inviati o ricevuti senza la necessità di una conferma per ogni singolo pacchetto.
+    La finestra si sposta avanti man mano che i pacchetti vengono riconosciuti e confermati, ottimizzando l'utilizzo della banda e l'efficienza della trasmissione}
 }
 \newglossaryentry{multihoming} {
     name=Multihoming,
     text=\emph{Multihoming},
     sort=multihoming,
-    description={Da fare}
-}
-
-\newglossaryentry{livello di presentazione} {
-    name=Livello di presentazione,
-    text=\emph{Livello di presentazione},
-    sort=livello di presentazione,
-    description={Da fare}
-}
-
-\newglossaryentry{ISO/OSIg} {
-    name=\glslink{ISO/OSI}{ISO/OSI},
-    text=\emph{ISO/OSI},
-    sort=ISO/OSI,
-    description={Da fare}
+    description={Indica una tecnica con la quale un singolo nodo, come un server o un router, sia connesso a più reti o provider di servizi Internet. In questo modo si ha maggiore flessibilità e disponibilità, poichè il nodo può continuare a comunicare anche se una delle connessioni fallisce}
 }
 
 \newglossaryentry{VOIPg} {
@@ -135,19 +119,19 @@
     name=\glslink{HTTP/3}{HTTP/3},
     text=\emph{HTTP/3},
     sort=HTTP/3,
-    description={Da fare}
+    description={È la terza versione del protocollo \gls{HTTPg} basata sul protocollo \gls{QUIC}. Migliora le prestazioni riducendo la latenza e migliorando la gestione dei pacchetti persi grazie alla capacità di effettuare \gls{multiplexing}}
 }
 \newglossaryentry{HTTPg} {
     name=\glslink{HTTP}{HTTP},
     text=\emph{HTTP},
     sort=HTTP,
-    description={Da fare}
+    description={È un protocollo a livello applicativo utilizzato per il trasferimento di dati sul web. HTTP è il protocollo di base per la trasmissione di pagine web e altre risorse tra un \gls{client} e un \gls{server}}
 }
 \newglossaryentry{ossification} {
     name=Ossification,
     text=\emph{Ossification},
     sort=Ossification,
-    description={Da fare}
+    description={È un fenomeno per }
 }
 \newglossaryentry{middle box} {
     name=Middle box,
@@ -159,13 +143,6 @@
     name=Overhead,
     text=\emph{Overhead},
     sort=Overhead,
-    description={Da fare}
-}
-
-\newglossaryentry{livello applicativo} {
-    name=Livello Applicativo ,
-    text=\emph{Livello Applicativo },
-    sort=Livello Applicativo ,
     description={Da fare}
 }
 
