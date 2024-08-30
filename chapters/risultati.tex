@@ -1,7 +1,7 @@
 \chapter{Risultati}
 \label{cap:risultati}
 
-Questo capitolo presenta un'analisi dettagliata dei risultati ottenuti dagli esperimenti descritti nel capitolo precedente.
+In questo capitolo si presenta un'analisi dettagliata dei risultati ottenuti dagli esperimenti descritti in precedenza.
 
 \section{Risultati degli Esperimenti QUIC}
 \subsection{Risultati Esperimento 1}
@@ -14,7 +14,7 @@ In condizioni standard, la trasmissione ha generato un traffico di circa 5.8 \em
 Questi dati rappresentano il punto di riferimento per valutare l'impatto dei cambiamenti al comportamento del \emph{server}.
 \\\\
 Come illustrato in Figura \ref{grafico12}, che mostra il confronto del consumo dati tra i vari esperimenti e lo scenario standard, le modifiche hanno prodotto effetti considerevolmente diversi.
-Negli scenari di \emph{Retransmission 1 e 2}, si è osservato un incremento del traffico dati di più del $100\%$, passando dai 5.8 \emph{Mb} dello scenario standard a circa 13 \emph{Mb} nel primo caso e 15 \emph{Mb} nel secondo. 
+Negli scenari di \emph{Retransmission 1 e 2} si è osservato un incremento del traffico dati di più del $100\%$, passando dai 5.8 \emph{Mb} dello scenario standard a circa 13 \emph{Mb} nel primo caso e 15 \emph{Mb} nel secondo. 
 Parallelamente, come viene evidenziato in Figura \ref{grafico1}, il numero di pacchetti scambiati è aumentato da 4100 a circa 18000. 
 Tuttavia, questi scenari hanno presentato problemi di congestione e latenza che ne hanno compromesso l'applicabilità pratica.
 \\\\
@@ -40,15 +40,15 @@ La variante 5, che invece blocca le richieste di chiusura della connessione, ha 
         \label{grafico1}
     \end{minipage}
 \end{figure}
-\noindent Questi risultati evidenziano come la gestione degli \emph{ACK} unita ad un \emph{PTO} costante a 0 influenzi significativamente sia il consumo di dati che il numero di pacchetti scambiati.
-La variante 4, in particolare, incrementa il traffico dati di dieci volte, passando da 5.8 Mb a 58 Mb, e il numero di pacchetti da 4100 a 65500, senza però introdurre latenza o congestione. 
-Ciò implica che, pur mantenendo una connessione all'apparenza normale, le modifiche comportano un potenziale aumento significativo del traffico contabilizzato per l'utente.
+\noindent I risultati evidenziano come la gestione degli \emph{ACK} unita ad un \emph{PTO} costante a 0 influenzi significativamente sia il consumo di dati che il numero di pacchetti scambiati.
+La variante 4 in particolare, incrementa il traffico dati di dieci volte, passando da 5.8 Mb a 58 Mb, e il numero di pacchetti da 4100 a 65500, senza però introdurre latenza o congestione. 
+Tutto questo implica che, pur mantenendo una connessione all'apparenza normale, le modifiche comportino un potenziale aumento significativo del traffico contabilizzato per l'utente.
 \subsection{Risultati Esperimento 2}
 ~\\
 \indent In questa sezione si analizzano i risultati ottenuti dall'esperimento in cui si è simulato un \emph{server web QUIC} che inietta pacchetti aggiuntivi non richiesti in background, vedi sezione \ref{esperimento2}.
 Il \emph{server} è stato configurato per mantenere una connessione \emph{QUIC} standard con il \emph{client}, mentre contemporaneamente invia pacchetti aggiuntivi non correlati alla comunicazione principale.
 \\\\
-I risultati di questo esperimento, illustrati nelle Figure \ref{grafico22} e \ref{grafico2}, mostrano gli effetti dell'iniezione di pacchetti sul consumo di dati e sul volume del traffico in termini di pacchetti scambiati.
+I risultati dell'esperimento illustrati nelle Figure \ref{grafico22} e \ref{grafico2}, mostrano gli effetti dell'iniezione di pacchetti sul consumo di dati e sul volume del traffico in termini di pacchetti scambiati.
 Come punto di riferimento si ha che la connessione \emph{QUIC} standard genera un traffico di circa 5.8 \emph{Mb} con 4100 pacchetti scambiati.
 \\\\
 L'introduzione dell'iniezione di pacchetti ha portato a un aumento prevedibile sia nel volume di traffico che nel numero di pacchetti.
@@ -90,8 +90,9 @@ In uno scenario di rete reale, con connessioni \emph{wireless} o su lunghe dista
 Mentre nel primo scenario il volume era influenzato dalla variabile del peso della connessione principale, in questo esperimento tale fattore diventa irrilevante,
 poichè i pacchetti vengono inviati con una frequenza costante, indipendentemente dagli altri parametri.
 \\\\
-Ciò che assume rilevanza, invece, è la durata in cui la connessione rimane attiva, poiché essa determina la quantità totale di pacchetti che possono essere inviati.
-Nell'esperimento che si è condotto, la connessione è stata simulata per una durata di 30 secondi. La Figura \ref{grafico23} illustra l'andamento dei singoli esperimenti a paragone con quello della connessione standard, in questo intervallo di tempo.
+Ciò che assume particolare rilevanza è la durata in cui la connessione rimane attiva, poiché essa determina la quantità totale di pacchetti che possono essere inviati.
+Nell'esperimento che si è condotto, la connessione è stata simulata per una durata di 30 secondi. 
+La Figura \ref{grafico23} illustra l'andamento dei singoli esperimenti a paragone con quello della connessione standard nel medesimo intervallo di tempo.
 
 \subsection{Risultati Esperimento 3}
 ~\\
@@ -99,7 +100,7 @@ Nell'esperimento che si è condotto, la connessione è stata simulata per una du
 uno scenario di attacco in cui un attaccante esterno cerca di manipolare il traffico di una connessione \emph{QUIC} tra un \emph{client} e \emph{server}, vedi sezione \ref{esperimento3}.
 L'attacco si concentra sull'oscuramento selettivo di pacchetti con lo scopo di causare ritrasmissioni e aumentare il traffico.
 \\\\
-I risultati di questo esperimento, riportati nelle Figure \ref{grafico3} e \ref{grafico32}, mostrano l'efficacia del pattern di selezione applicato per determinare quali pacchetti oscurare. 
+I risultati dell'esperimento, riportati nelle Figure \ref{grafico3} e \ref{grafico32}, mostrano l'efficacia del pattern di selezione applicato per determinare quali pacchetti oscurare. 
 Nel primo scenario \emph{(Spurious Retransmission - 1)}, l'attacco è stato eseguito bloccando tutti i pacchetti nella connessione inferiori a 85 \emph{byte}, avendo come effetto un totale blocco della risorsa.
 Ciò ha impedito qualsiasi accesso al \emph{server web}, nonostante questo sia un risultato significativo per un possibile attaccante non è rilevante per lo scopo di questo studio che invece cerca di aumentare il traffico.
 \\\\

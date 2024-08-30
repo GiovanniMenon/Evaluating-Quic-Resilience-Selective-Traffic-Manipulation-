@@ -7,31 +7,31 @@
             \hline
             \textbf{Nome} & \textbf{Connection Close} & \textbf{ACK Ignored} & \textbf{timeThreshold} & \textbf{packetThreshold} & \textbf{amplificationFactor} \\
             \hline
-            retrasmission - 1  & Ignored & All & 9.0/8  & 3 & 3 \\
+            Retransmission - 1  & Ignored & All & 9.0/8  & 3 & 3 \\
             \hline
-            retrasmission - 1.1  & Ignored & All & 9.0/8  & 1 & 1 \\
+            Retransmission - 1.1  & Ignored & All & 9.0/8  & 1 & 1 \\
             \hline
-            retrasmission - 2 & Not Ignored & All & 9.0/8  & 3 & 3 \\
+            Retransmission - 2 & Not Ignored & All & 9.0/8  & 3 & 3 \\
             \hline
-            retrasmission - 4 & Not Ignored & 1/2  & 9.0/8  & 3 & 3\\
+            Retransmission - 4 & Not Ignored & 1/2  & 9.0/8  & 3 & 3\\
             \hline
-            retrasmission - 4.1 & Not Ignored & 1/2 & 9.0/8  & 5 & 5 \\
+            Retransmission - 4.1 & Not Ignored & 1/2 & 9.0/8  & 5 & 5 \\
             \hline
-            retrasmission - 4.2 & Not Ignored & 1/2 & 9.0/8  & 10 & 3 \\
+            Retransmission - 4.2 & Not Ignored & 1/2 & 9.0/8  & 10 & 3 \\
             \hline
-            retrasmission - 5 & Ignored & 1/2 & 9.0/8  & 3 & 3 \\
+            Retransmission - 5 & Ignored & 1/2 & 9.0/8  & 3 & 3 \\
             \hline
-            retrasmission - 5.1 & Ignored & 1/2 & 9.0/8  & 5 & 5 \\
+            Retransmission - 5.1 & Ignored & 1/2 & 9.0/8  & 5 & 5 \\
             \hline
-            retrasmission - 5.2 & Ignored & 1/2 & 9.0/8  & 10 & 3 \\
+            Retransmission - 5.2 & Ignored & 1/2 & 9.0/8  & 10 & 3 \\
             \hline
-            retrasmission - 5.2 & Ignored & 1/2 & 9.0/8  & 20 & 3 \\
+            Retransmission - 5.2 & Ignored & 1/2 & 9.0/8  & 20 & 3 \\
             \hline
-            retrasmission - 6 & Not Ignored & 1/2 & 9.0/8  & 1 & 1 \\
+            Retransmission - 6 & Not Ignored & 1/2 & 9.0/8  & 1 & 1 \\
             \hline
-            retrasmission - 7 & Not Ignored & 2/3 & 9.0/8  & 3 & 3 \\
+            Retransmission - 7 & Not Ignored & 2/3 & 9.0/8  & 3 & 3 \\
             \hline
-            retrasmission - 8 & Not Ignored & 4/5 & 9.0/8  & 3 & 3 \\
+            Retransmission - 8 & Not Ignored & 4/5 & 9.0/8  & 3 & 3 \\
             \hline
 
         \end{tabular}
@@ -93,3 +93,58 @@
         \hline
     \end{tabular}
 \end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption*{Risultati Esperimento 1}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{Consumo} & \textbf{Numero Pacchetti} \\
+        \hline
+        retransmission - 1 & ~13mb & 18030 \\
+        \hline
+        retransmission - 2 & ~15mb & 18000 \\
+        \hline
+        retransmission - 4 & ~58mb & 65500 \\
+        \hline
+        retransmission - 5 & ~29mb & 35900 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption*{Risultati Esperimento 2}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{Durata} & \textbf{Consumo} & \textbf{Numero Pacchetti} \\
+        \hline
+        inject - 1 & ~30s & ~272mb & 198482 \\
+        \hline
+        inject - 2 & ~30s & ~566mb & 396429 \\
+        \hline
+        inject - 3 & ~30s & ~407mb & 535913 \\
+        \hline
+        inject - 4 & ~30s & ~753mb & 543020 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption*{Risultati Esperimento 3}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Nome} & \textbf{Consumo} & \textbf{Numero Pacchetti} \\
+        \hline
+        spurious - 1 & - & - \\
+        \hline
+        spurious - 2 & ~5.9mb & 4700 \\
+        \hline
+        spurious - 3 & ~6.6mb & 5377 \\
+        \hline
+        spurious - 4 & ~7.7mb & 6226 \\
+        \hline
+    \end{tabular}
+\end{table}
+
