@@ -1,12 +1,14 @@
 % Acronyms
 \newacronym[description={\glslink{TCP}{Transmission Control Protocol}}]
-    {TCP}{TCP}{Open System Interconnection}
-
-\newacronym[description={\glslink{IoTg}{Internet of Things}}]
-    {IoT}{IoT}{Internet of Things}
-
+    {TCP}{TCP}{Transmission Control Protocol}
 \newacronym[description={\glslink{UDP}{User Datagram Protocol}}]
     {UDP}{UDP}{User Datagram Protocol}
+\newacronym[description={\glslink{QUIC}{Quick UDP Internet Connections}}]
+    {QUIC}{QUIC}{Quick UDP Internet Connections}
+    \newacronym[description={\glslink{MPTCP}{Multipath TCP}}]
+    {MPTCP}{MPTCP}{Multipath TCP}
+\newacronym[description={\glslink{IoTg}{Internet of Things}}]
+    {IoT}{IoT}{Internet of Things}
 
 \newacronym[description={\glslink{ISN}{Initial Sequence Number}}]
     {ISN}{ISN}{Initial Sequence Number}
@@ -17,7 +19,7 @@
 \newacronym[description={\glslink{RTT}{Round Trip Time}}]
     {RTT}{RTT}{Round Trip Time}
 
-\newacronym[description={\glslink{RTO}{Retransmission TimeOut}}]
+\newacronym[description={\glslink{RTO}{Retransmission Timeout}}]
     {RTO}{RTO}{Retransmission TimeOut}
 
 \newacronym[description={\glslink{VOIPg}{Voice Over IP}}]
@@ -29,22 +31,19 @@
 \newacronym[description={\glslink{TLS}{Transport Layer Security}}]
     {TLS}{TLS}{Transport Layer Security}
 
-\newacronym[description={\glslink{QUIC}{QuicK UDP Internet Connections}}]
-    {QUIC}{QUIC}{QuicK UDP Internet Connections}
-
 \newacronym[description={\glslink{IETF}{Internet Engineering Task Force}}]
     {IETF}{IETF}{Internet Engineering Task Force}
 \newacronym[description={\glslink{HTTP/3g}{HyperText Transfer Protocol/3}}]
     {HTTP/3}{HTTP/3}{HyperText Transfer Protocol/3}
 \newacronym[description={\glslink{HTTPg}{HyperText Transfer Protocol}}]
     {HTTP}{HTTP}{HyperText Transfer Protocol}
-\newacronym[description={\glslink{CHLOg}{Inchoate Client Hello}}]
+\newacronym[description={\glslink{CHLO}{Inchoate Client Hello}}]
     {CHLO}{CHLO}{Inchoate Client Hello}
-\newacronym[description={\glslink{REJg}{Reject}}]
+\newacronym[description={\glslink{REJ}{Reject}}]
     {REJ}{REJ}{Reject}
-\newacronym[description={\glslink{SHLOg}{Server Hello}}]
+\newacronym[description={\glslink{SHLO}{Server Hello}}]
     {SHLO}{SHLO}{Server Hello}
-\newacronym[description={\glslink{HoLg}{Head of Line Blocking}}]
+\newacronym[description={\glslink{HoL}{Head of Line Blocking}}]
     {HoL}{HoL}{Head of Line Blocking}
 \newacronym[description={\glslink{IANA}{Internet Assigned Number Authority}}]
     {IANA}{IANA}{Internet Assigned Number Authority}
@@ -59,7 +58,7 @@
     name=\glslink{IoT}{IoT},
     text=\emph{IoT},
     sort=IoT,
-    description={Per IoT si intende l'internet delle cose, o meglio l'internet degli oggetti. Con questo termine si fa riferimento all'estensione di Internet al mondo degli oggetti e dei luoghi concreti. }
+    description={Per IoT si intende l'internet delle cose, o meglio l'internet degli oggetti. Con questo termine si fa riferimento all'estensione di Internet al mondo degli oggetti e dei luoghi concreti}
 }
 
 \newglossaryentry{Handshake} {
@@ -73,7 +72,7 @@
     name=Client,
     text=\emph{Client},
     sort=client,
-    description={Il client è componente che accede a servizi o alle risorse forniti da un altro componente, detto \gls{server} }
+    description={Il client è componente che accede a servizi o alle risorse forniti da un altro componente, detto \gls{server}}
 }
 \newglossaryentry{server} {
     name=Server,
@@ -159,48 +158,17 @@
     sort=Endpoint ,
     description={Indica un dispositivo o un nodo di rete finale che si trova all'estremità di un canale di comunicazione. Può essere un \gls{client}, un \gls{server}, un dispositivo mobile e qualsiasi altro dispositivo che si collega a una rete per inviare o ricevere dati}
 }
-
-\newglossaryentry{CHLOg} {
-    name=CHLO ,
-    text=\emph{CHLO},
-    sort=CHLO ,
-    description={Da fare}
-}
-\newglossaryentry{REJg} {
-    name=REJ ,
-    text=\emph{REJ},
-    sort=REJ ,
-    description={Da fare}
-}
 \newglossaryentry{Diffie-Hellman} {
     name=Diffie-Hellman,
     text=\emph{Diffie-Hellman},
     sort=Diffie-Hellman,
-    description={Da fare}
-}
-\newglossaryentry{SHLOg} {
-    name=SHLOg,
-    text=\emph{SHLOg},
-    sort=SHLOg,
-    description={Da fare}
-}
-\newglossaryentry{multiplexing} {
-    name=Multiplexing,
-    text=\emph{Multiplexing},
-    sort=Multiplexing,
-    description={Da fare}
+    description={È un protocollo crittografico che consente a due entità di stabilire una chiave condivisa e segreta utilizzando un canale di comunicazione insicuro. Non è richiesto uno scambio di informazioni in precedenza e la chiave ottenuta mediante questo protocollo può essere successivamente impiegata per cifrare le comunicazioni successive}
 }
 \newglossaryentry{stream} {
     name=Stream,
     text=\emph{Stream},
     sort=Stream,
-    description={Da fare}
-}
-\newglossaryentry{HoLg} {
-    name=HoL,
-    text=\emph{HoL},
-    sort=HoL,
-    description={Da fare}
+    description={È un canele in cui scorrono i dati tra la sorgente e destinazione. Rappresenta una sequenza continua di dati che vengono trasmessi attraverso una rete. È un concetto fondamentale per comprendere come il multiplexing gestisce più flussi di dati simultaneamente}
 }
 \newglossaryentry{end-to-end} {
     name=End-to-End,
@@ -213,13 +181,13 @@
     name=Multipath,
     text=\emph{Multipath},
     sort=Multipath,
-    description={Da fare}
+    description={Tecnologia o metodo utilizzato nelle reti di comunicazione per inviare dati attraverso più percorsi simultaneamente tra un punto di origine e una destinazione}
 }
 \newglossaryentry{fork} {
     name=Fork,
     text=\emph{Fork},
     sort=Fork,
-    description={Da fare}
+    description={Nel contesto dello sviluppo del software un fork è una nuova versione di un progetto esistente, che in particolare utilizza lo codice sorgente originale e può evolversi in modo indipendente dal progetto iniziale}
 }
 \newglossaryentry{Go} {
     name=Go,
@@ -237,5 +205,5 @@
     name=UDP flooding,
     text=\emph{UDP flooding},
     sort=UDP flooding,
-    description={È un tipo di attacco informatic \emph{DoS (Denial of Service)} in cui l'attaccante invia una grande quantità di pacchetti \gls{UDP} a un \gls{server} o a un altro dispositivo di rete con l'intento di sovraccaricarlo e renderlo non disponibile agli utenti}
+    description={È un tipo di attacco informatic \emph{DoS (Denial of Service)} in cui l'attaccante invia una grande quantità di pacchetti \gls{UDP}{} a un \gls{server} o a un altro dispositivo di rete con l'intento di sovraccaricarlo e renderlo non disponibile agli utenti}
 }
