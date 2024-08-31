@@ -9,6 +9,15 @@ supportare servizi su scala globale, come \emph{YouTube} e \emph{Google}. \\
 per capirne i punti di forza e di depolezza \cite{article:securityAnaP}. Lo studio dimostra come \emph{QUIC} sia soggetto ad alcune problematiche legate alla \emph{data loss recovery}.
 \\
 Gli studi, condotti nel 2022 e 2023, di \citeauthor{article:QuicAtt} e \Citeauthor{article:forge} offrono un'analisi più dettagliata e approfondita
-della sicurezza del protocollo \emph{QUIC}, mettendo in luce come esso sia vulnerabile a numerosi attacchi e presenti diverse criticità in termini di sicurezza \cite{article:QuicAtt,article:forge}.
-\\\\
-Qui parlo di cosa ho fatto io e delle ricerche sulle problematiche delle reti mobili. 
+della sicurezza del protocollo \emph{QUIC}, mettendo in luce come esso sia vulnerabile a numerosi attacchi e presenti diverse criticità in termini di sicurezza.
+I risultati del lavoro di \citeauthor{article:QuicAtt} sono particolarmente rilevanti nella letteratura, in quanto hanno portato all'identificazione di diverse vulnerabilità \emph{zero-day} efficaci e pratiche.
+Queste vulnerabilità hanno evidenziato come le implementazioni a livello di produzione di \emph{QUIC} non siano ancora sufficientemente pronte per le reti moderne \cite{article:QuicAtt,article:forge}.
+\\
+Nel 2014, \citeauthor{article:cellular} ha pubblicato uno studio in cui vengono discusse alcune vulnerabilità delle reti mobili e della tariffazione del traffico dati 
+per il protocollo \emph{TCP} \cite{article:cellular}. Questo lavoro evidenzia un importante problema di politiche relativo alla contabilizzazione dei dati da perte degli operatori.
+Lo studio rivela che le ritrasmissioni \emph{TCP} possono essere facilmente sfruttate per manipolare la contabilizzazione del traffico cellulare. 
+Questa scoperta non solo identifica una potenziale vulnerabilità nei sistemi di contabilizzazione del traffico dati,
+ma dimostra anche come i diversi operatori adottino politiche diverse per il conteggio del traffico dati.
+\\
+Il nostro studio si propone di espandere il lavoro svolto da \citeauthor{article:cellular} applicando lo stesso approccio al protocollo \emph{QUIC}. 
+In particolare, si esaminano le potenziali vulnerabilità di \emph{QUIC} e le possibili strategie per manipolare artificialmente il traffico dati di un utente nel contesto delle reti mobili. 
