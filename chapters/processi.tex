@@ -7,7 +7,7 @@ Provvede a dare inoltre tutte le informazioni necessarie per replicare gli esper
 \section{Ambiente}
 ~\\
 \indent Questa sezione offre una panoramica completa dell'ambiente di lavoro e delle tecnologie impiegate nello sviluppo degli esperimenti descritti successivamente. 
-Di seguito, viene riportata una descrizione degli strumenti utilizzati durante lo svolgimento del progetto (riassunte con le relative versioni nella Figura \ref{table-tecnologie}).
+Di seguito, viene riportata una descrizione degli strumenti utilizzati durante lo svolgimento del progetto (riassunte con le relative versioni nella Tabella \ref{table-tecnologie}).
 \\\\
 La totalità del progetto è stata svolta su \textbf{\emph{Ubuntu}}\footnote{\url{https://ubuntu.com/}}. 
 Questa scelta di sistema operativo è dovuta al vasto supporto di strumenti per l'analisi e lo sviluppo.
@@ -30,7 +30,7 @@ In particolare si è rivelato vantaggioso in quanto ha permesso di lavorare effi
 definite negli \emph{RFC}\footnote{\gls{RFC}} 9000, 9001 e 9002 \cite{site:rfc9000,site:rfc9001,site:rfc9002}. 
 \\\\
 \emph{Quic-go} non è l'unica versione disponibile del protocollo \emph{QUIC}.
-Come illustrato nella Figura \ref{table-implementazioni-quic}, esistono numerose altre implementazioni, sia \emph{open source} che proprietarie, ciascuna cerca di rispettare rigorosamente le specifiche definite negli \emph{RFC}. 
+Come illustrato nella Tabella \ref{table-implementazioni-quic}, esistono numerose altre implementazioni, sia \emph{open source} che proprietarie, ciascuna cerca di rispettare rigorosamente le specifiche definite negli \emph{RFC}. 
 \\\\
 La scelta di utilizzare questa specifica implementazione di \emph{QUIC} è motivata dal suo utilizzo all'interno di \textbf{Caddy}\footnote{\url{https://caddyserver.com/}}, un \emph{web server} moderno e performante. \emph{Caddy} integra \emph{Quic-go} per offrire il supporto nativo del protocollo \emph{QUIC} e \emph{HTTP/3}.
 Inoltre, si è utilizzato \textbf{xCaddy}, un \emph{tool} che consente di creare build personalizzate di \emph{Caddy}, adattandolo specificatamente alle esigenze del progetto.
@@ -129,7 +129,7 @@ Per garantire che le applicazioni utilizzassero \emph{MPTCP} si è usato \textbf
         Linguaggio & \emph{Go} & 1.21 \\
         \hline
     \end{tabular}
-    \caption{\emph{Tabella riassuntiva technologie usate}}
+    \caption{\emph{Tabella riassuntiva tecnologie usate}}
     \label{table-tecnologie}
 \end{table}
 
@@ -270,7 +270,7 @@ func (h *sentPacketHandler) ReceivedAck(ack *wire.AckFrame, encLevel protocol.En
 \noindent Ulteriori modifiche secondarie apportate, come la rimozione delle richieste di chiusura della comunicazione, sono visibili nel codice completo dell'esperimento \footnote{\url{https://github.com/GiovanniMenon/quic-go/tree/retransmission-1}} \cite{site:my-fork}.
 \\\\
 Partendo dall'idea di base di questo esperimento, sono state sviluppate diverse varianti ottenute modificando alcuni valori e parametri chiave. 
-La lista completa è presente nell'Appendice. Le più significative di esse sono catalogate nella tabella \ref{table-retransmission}.
+La lista completa è presente nell'Appendice. Le più significative di esse sono catalogate nella Tabella \ref{table-retransmission}.
 \begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|c|}
@@ -302,7 +302,7 @@ Anche in questo esperimento si è utilizzato \emph{xCaddy} per la creazione di u
 L'operazione di iniezione avviene solo dopo la fase di \emph{handshake}, questa scelta è stata fatta per evitare potenziali interferenze, rallentamenti o errori nella prima fase della connessione. 
 \\\\
 Come nell'esperimento precedente, la natura \emph{end-to-end} della connessione \emph{QUIC} gioca un ruolo fondamentale. Si prevede che solo il \emph{client} sia in grado di verificare l'autenticità dei pacchetti ricevuti. 
-Di conseguenza, questi finti pacchetti verranno contabilizzati nel traffico del client, nonostante non facciano parte della comunicazione.
+Di conseguenza, questi finti pacchetti verranno contabilizzati nel traffico del \emph{client}, nonostante non facciano parte della comunicazione.
 \\\\
 Questo particolare esperimento può essere considerato una variante del \emph{UDP flooding} \footnote{\gls{udp flooding}} \cite{site:udp-flood}, che sfrutta la natura \emph{end-to-end} del protocollo \emph{QUIC}.
 \\\\
@@ -378,7 +378,7 @@ tali modifiche includono:
 \noindent Infine si utilizza la funzione \emph{WriteMsgUDP} per costruire il pacchetto \emph{UDP} con il payload \emph{QUIC} ed inviarlo al destinatario \footnote{\url{https://github.com/GiovanniMenon/quic-go/tree/inject-1}}.
 \\\\
 Come nel primo esperimento, anche in questo caso sono state sviluppate diverse varianti che si distinguono principalmente per il numero di \emph{worker} impiegati e per le impostazioni del limitatore.
-La lista completa è presente nell'Appendice. Le più significative sono elencate nella tabella \ref{table-inject}.
+La lista completa è presente nell'Appendice. Le più significative sono elencate nella Tabella \ref{table-inject}.
 \begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|c|}
@@ -425,7 +425,7 @@ if len(p.data)+42 < 85 {
 	return p, nil
 }
 \end{lstlisting}
-Come negli esperimenti precedenti, sono state sviluppate diverse varianti che si differenziano per il numero di pacchetti che l'attaccante oscura. La lista completa è presente nell'Appendice. Le più rilevanti sono elencate nella tabella \ref{table-spurious}.
+Come negli esperimenti precedenti, sono state sviluppate diverse varianti che si differenziano per il numero di pacchetti che l'attaccante oscura. La lista completa è presente nell'Appendice. Le più rilevanti sono elencate nella Tabella \ref{table-spurious}.
 \begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|}
@@ -457,7 +457,7 @@ Una differenza significativa rispetto all'esperimento \emph{QUIC} è che \emph{M
 Questo potrebbe influenzare il modo in cui i pacchetti iniettati vengono gestiti e rilevati lungo il percorso di rete.
 \\\\
 Come negli esperimenti precedenti, sono state sviluppate diverse varianti che si differenziano per il numero di \emph{worker} usati e per le impostazioni del limitatore. 
-La lista completa è presente nella tabella \ref{table-inject-MPTCP}.
+La lista completa è presente nella Tabella \ref{table-inject-MPTCP}.
 \begin{table}[!h]
     \centering
     \begin{tabular}{|c|c|c|}
